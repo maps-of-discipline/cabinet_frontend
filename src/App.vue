@@ -1,85 +1,142 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <header class="header">
+    <Card
+      class="logo-block p-ripple"
+      v-ripple
+      style="border: 1px solid #3f3f46"
+    >
+      <template #content>
+        <div class="logo-block__logo">Кабинет преподавателя</div>
+      </template>
+    </Card>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <Menubar class="navigation" :model="items">
+      <template #item="{ item, props, hasSubmenu }">
+        <router-link
+          v-if="item.route"
+          v-slot="{ href, navigate }"
+          :to="item.route"
+          custom
+        >
+          <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+            <span :class="item.icon" />
+            <span class="ml-2">{{ item.label }}</span>
+          </a>
+        </router-link>
+        <a
+          v-else
+          v-ripple
+          :href="item.url"
+          :target="item.target"
+          v-bind="props.action"
+        >
+          <span :class="item.icon" />
+          <span class="ml-2">{{ item.label }}</span>
+          <span v-if="hasSubmenu" class="pi pi-fw pi-angle-down ml-2" />
+        </a>
+      </template>
+    </Menubar>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <Card
+      class="profile-block p-ripple"
+      v-ripple
+      style="border: 1px solid #3f3f46"
+    >
+      <template #content>
+        <div class="profile-block__inner">
+          <Avatar icon="pi pi-user" class="mr-2" />
+          <div class="profile-block__info">
+            <div class="profile-block__name">Даниил Кириллов</div>
+            <div class="profile-block__role">Преподаватель</div>
+          </div>
+
+          <i class="profile-block__chevron pi pi-chevron-down"></i>
+        </div>
+      </template>
+    </Card>
   </header>
 
   <RouterView />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script setup lang="ts">
+  import Menubar from 'primevue/menubar'
+  import Avatar from 'primevue/avatar'
+  import Card from 'primevue/card'
+  import { RouterView } from 'vue-router'
+  import { ref } from 'vue'
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+  const items = ref([
+    {
+      label: 'Главная',
+      route: '/',
+    },
+    {
+      label: 'Журнал',
+      route: '/grades',
+    },
+    {
+      label: 'Темы занятий',
+      route: '/lessons',
+    },
+  ])
+</script>
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+<style lang="scss">
+  .header {
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 16px;
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
+  .navigation {
+    width: 100%;
   }
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  .logo-block {
+    justify-content: center;
+
+    .p-card-body {
+      padding: 8px 16px;
+    }
+
+    &__logo {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+    }
   }
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+  .profile-block {
+    .p-card-body {
+      padding: 8px 16px;
+    }
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+    &__inner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__name {
+      font-size: 15px;
+    }
+
+    &__role {
+      font-size: 12px;
+    }
   }
-}
+
+  .p-menubar .p-menuitem {
+    margin: 2px 0 !important;
+  }
 </style>
