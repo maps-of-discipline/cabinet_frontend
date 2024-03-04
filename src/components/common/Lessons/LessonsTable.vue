@@ -8,7 +8,7 @@
     @cell-edit-complete="onCellEditComplete"
   >
     <!-- Дата -->
-    <Column
+    <!-- <Column
       headerClass="column-header_center"
       bodyClass="column-cell_center"
       field="date"
@@ -18,10 +18,10 @@
       <template #body="{ data, field }">
         <Tag :value="data[field]"></Tag>
       </template>
-    </Column>
+    </Column> -->
 
     <!-- Время -->
-    <Column
+    <!-- <Column
       headerClass="column-header_center"
       bodyClass="column-cell_center"
       field="datetimeRange"
@@ -31,7 +31,7 @@
       <template #body="{ data, field }">
         <Tag :value="data[field]"></Tag>
       </template>
-    </Column>
+    </Column> -->
 
     <!-- Раздел -->
     <Column
@@ -47,7 +47,7 @@
     </Column>
 
     <!-- Тема -->
-    <Column field="chapter" header="Раздел" headerStyle="width: 300px">
+    <Column field="chapter" header="Раздел" headerStyle="width: 50%">
       <template #body="{ data, field }">
         {{ data[field] }}
       </template>
@@ -57,7 +57,7 @@
     </Column>
 
     <!-- Задание -->
-    <Column field="topic" header="Тема" headerStyle="width: 100%">
+    <Column field="topic" header="Тема" headerStyle="width: 50%">
       <template #body="{ data, field }">
         {{ data[field] }}
       </template>
