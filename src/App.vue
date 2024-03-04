@@ -68,10 +68,6 @@
 
   const items = ref([
     {
-      label: 'Главная',
-      route: '/',
-    },
-    {
       label: 'Журнал',
       route: '/grades',
     },

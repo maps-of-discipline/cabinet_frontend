@@ -1,11 +1,5 @@
 <template>
-  <div class="HomeView">
-    <MeterGroup
-      :value="value"
-      labelPosition="start"
-      labelOrientation="vertical"
-    />
-  </div>
+  <div class="HomeView"></div>
 </template>
 
 <script setup>
