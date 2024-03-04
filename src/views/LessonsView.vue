@@ -5,5 +5,5 @@
 </template>
 
 <script setup>
-  import LessonsTable from '@/components/common/Lessons/LessonsTable.vue'
+  import LessonsTable from '@/components/Lessons/LessonsTable.vue'
 </script>
