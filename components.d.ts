@@ -8,7 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
-    CellEditor: typeof import('./src/components/common/Lessons/common/CellEditor.vue')['default']
+    CellEditor: typeof import('./src/components/Lessons/common/CellEditor.vue')['default']
     Chip: typeof import('primevue/chip')['default']
     Column: typeof import('primevue/column')['default']
     DataTable: typeof import('primevue/datatable')['default']
@@ -19,7 +19,7 @@ declare module 'vue' {
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
-    LessonsTable: typeof import('./src/components/common/Lessons/LessonsTable.vue')['default']
+    LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tag: typeof import('primevue/tag')['default']
