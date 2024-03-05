@@ -7,7 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AppHeader: typeof import('./src/components/common/AppHeader/AppHeader.vue')['default']
+    Avatar: typeof import('primevue/avatar')['default']
     Button: typeof import('primevue/button')['default']
+    Card: typeof import('primevue/card')['default']
     CellEditor: typeof import('./src/components/Lessons/common/CellEditor.vue')['default']
     Chip: typeof import('primevue/chip')['default']
     Column: typeof import('primevue/column')['default']
@@ -20,6 +23,7 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
     LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
+    Menubar: typeof import('primevue/menubar')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Tag: typeof import('primevue/tag')['default']

@@ -1,7 +1,6 @@
 import './assets/main.css'
 import 'primeicons/primeicons.css'
-import 'primevue/resources/themes/aura-dark-amber/theme.css'
-/* import "primevue/resources/themes/saga-blue/theme.css"; */
+import 'primevue/resources/themes/aura-dark-noir/theme.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

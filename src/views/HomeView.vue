@@ -1,15 +1,18 @@
 <template>
-  <div class="HomeView"></div>
+  <div class="HomeView">
+    <Button label="Ping" @click="onClickButton" />
+    <div>{{ message }}</div>
+  </div>
 </template>
 
 <script setup>
-  import MeterGroup from 'primevue/metergroup'
   import { ref } from 'vue'
+  import Api from '@/services/Api'
 
-  const value = ref([
-    { label: 'Apps', color: '#34d399', value: 16 },
-    { label: 'Messages', color: '#fbbf24', value: 8 },
-    { label: 'Media', color: '#60a5fa', value: 24 },
-    { label: 'System', color: '#c084fc', value: 10 },
-  ])
+  const message = ref('')
+
+  const onClickButton = async () => {
+    const { data } = await Api.ping()
+    message.value = data
+  }
 </script>
