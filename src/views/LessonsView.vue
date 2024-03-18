@@ -1,9 +1,9 @@
 <template>
-  <div class="Lessons">
-    <LessonsTable />
-  </div>
+	<div class="Lessons">
+		<LessonsTable />
+	</div>
 </template>
 
 <script setup>
-  import LessonsTable from '@/components/Lessons/LessonsTable.vue'
+import LessonsTable from '@/components/Lessons/LessonsTable.vue'
 </script>
