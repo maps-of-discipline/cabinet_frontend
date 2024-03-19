@@ -58,18 +58,6 @@
 				<CellEditor v-model="data[field]" />
 			</template>
 		</Column>
-
-		<!-- <Column
-			field="task"
-			header="Задание"
-			headerClass="column-header_center"
-			bodyClass="column-cell_center"
-			headerStyle="width: 200px"
-		>
-			<template #body="{ data, field }">
-				<Chip class="LessonsTable__chip" label="Задание - BIOS" />
-			</template>
-		</Column> -->
 	</DataTable>
 </template>
 
@@ -80,9 +68,6 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import lessonsService from '@services/LessonsService'
-
-const route = useRoute()
-const aupCode = route.query?.aup
 
 /* 
     TODO Обновлять и lessons ref() тоже (либо ref вынести в сервис), 
@@ -99,18 +84,20 @@ const onCellEditComplete = event => {
 	}
 }
 
-const test = event => {
-	console.log(1)
-	event()
-}
-
 const lessons = ref([])
-const isLoadingLessons = ref(true)
+const isLoadingLessons = ref(false)
 
-lessonsService.fetchLessons(aupCode).then(data => {
-	lessons.value = data
-	isLoadingLessons.value = false
-})
+const route = useRoute()
+const aupCode = route.query?.aup
+
+if (aupCode) {
+	isLoadingLessons.value = true
+
+	lessonsService.fetchLessons(aupCode).then(data => {
+		lessons.value = data
+		isLoadingLessons.value = false
+	})
+}
 </script>
 
 <style lang="scss">
