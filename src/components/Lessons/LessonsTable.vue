@@ -76,6 +76,8 @@ import lessonsService from '@services/LessonsService'
 const onCellEditComplete = event => {
 	let { data, field, newValue, newData } = event
 
+	if (data[field] === newValue) return
+
 	const newLesson = Object.assign({}, newData)
 	const res = lessonsService.editLesson(newLesson.id, newLesson)
 

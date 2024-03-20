@@ -1,10 +1,11 @@
 <template>
-  <AppHeader />
-
-  <RouterView />
+	<MainLayout>
+		<RouterView />
+	</MainLayout>
 </template>
 
-<script setup lang="ts">
-  import AppHeader from '@/components/common/AppHeader/AppHeader.vue'
-  import { RouterView } from 'vue-router'
+<script setup>
+import MainLayout from '@layouts/MainLayout.vue'
+
+import { RouterView } from 'vue-router'
 </script>
