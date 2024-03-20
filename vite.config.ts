@@ -35,8 +35,12 @@ export default defineConfig({
 				replacement: fileURLToPath(new URL('./src/layouts', import.meta.url)),
 			},
 			{
-				find: '@ddd',
-				replacement: fileURLToPath(new URL('./src/layouts', import.meta.url)),
+				find: '@assets',
+				replacement: fileURLToPath(new URL('./src/assets', import.meta.url)),
+			},
+			{
+				find: '@styles',
+				replacement: fileURLToPath(new URL('./src/styles', import.meta.url)),
 			},
 		],
 	},
