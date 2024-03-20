@@ -20,12 +20,13 @@
 	border-radius: $border-radius-main;
 
 	&__icon {
-		font-size: 2.5rem;
+		font-size: 3.5rem;
 		color: var(--red-700);
 	}
 
 	&__title {
-		margin-bottom: 16px;
+		margin-top: 8px;
+		font-size: 1.25rem;
 	}
 }
 </style>
