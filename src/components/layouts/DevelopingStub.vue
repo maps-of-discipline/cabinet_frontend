@@ -1,24 +1,18 @@
 <template>
-	<div class="DevelopingStub">
+	<Stub class="DevelopingStub">
 		<i class="DevelopingStub__icon mdi mdi-alert" />
 		<div class="DevelopingStub__title">Страница в разработке</div>
-	</div>
+	</Stub>
 </template>
 
-<script setup></script>
+<script setup>
+import Stub from '@components/layouts/Stub.vue'
+</script>
 
 <style lang="scss" scoped>
 @import '@styles/_variables.scss';
 
 .DevelopingStub {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	background-color: $view-bg;
-	border-radius: $border-radius-main;
-
 	&__icon {
 		font-size: 3.5rem;
 		color: var(--red-700);

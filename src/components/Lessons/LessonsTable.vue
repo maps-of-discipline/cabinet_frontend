@@ -1,5 +1,6 @@
 <template>
 	<DataTable
+		v-if="lessons.length"
 		class="LessonsTable"
 		:value="lessons"
 		:loading="isLoadingLessons"
@@ -59,9 +60,15 @@
 			</template>
 		</Column>
 	</DataTable>
+
+	<Stub v-else>
+		<div class="LessonsTable__empty-msg">Данные отсутствуют</div>
+	</Stub>
 </template>
 
 <script setup>
+import Stub from '@components/layouts/Stub.vue'
+
 import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
 
 import { ref } from 'vue'
@@ -105,7 +112,8 @@ if (aupCode) {
 <style lang="scss">
 .LessonsTable {
 	font-size: 14px;
-	min-height: 100vh;
+	border-radius: 8px;
+	overflow: hidden;
 
 	$row-height: 60px;
 
@@ -126,6 +134,10 @@ if (aupCode) {
 
 	&__chip {
 		font-size: 14px;
+	}
+
+	&__empty-msg {
+		font-size: 1.2rem;
 	}
 }
 

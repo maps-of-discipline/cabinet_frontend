@@ -22,6 +22,7 @@ declare module 'vue' {
     MainHeaderNav: typeof import('./src/components/layouts/MainHeaderNav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Stub: typeof import('./src/components/layouts/Stub.vue')['default']
     Tag: typeof import('primevue/tag')['default']
   }
 }
