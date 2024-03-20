@@ -1,6 +1,6 @@
 import './assets/main.css'
 import 'primeicons/primeicons.css'
-import 'primevue/resources/themes/aura-dark-noir/theme.css'
+import '@styles/prime-theme/theme.scss'
 import '@mdi/font/css/materialdesignicons.css'
 
 import { createApp } from 'vue'
