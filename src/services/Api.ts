@@ -11,9 +11,14 @@ abstract class Api {
 		return await axios('ping')
 	}
 
-	static async fetchLessons(aupCode: Key) {
+	static async fetchLessons(aup: Key, id: Key) {
 		try {
-			const { data } = await axios.get(`lessons/${aupCode}`)
+			const { data } = await axios.get(`lessons`, {
+				params: {
+					aup,
+					id,
+				},
+			})
 
 			return data
 		} catch (e) {

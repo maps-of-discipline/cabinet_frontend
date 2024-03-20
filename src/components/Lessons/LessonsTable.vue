@@ -98,11 +98,12 @@ const isLoadingLessons = ref(false)
 
 const route = useRoute()
 const aupCode = route.query?.aup
+const idDiscipline = route.query?.id
 
-if (aupCode) {
+if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
 
-	lessonsService.fetchLessons(aupCode).then(data => {
+	lessonsService.fetchLessons(aupCode, idDiscipline).then(data => {
 		lessons.value = data
 		isLoadingLessons.value = false
 	})

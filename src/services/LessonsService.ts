@@ -9,10 +9,11 @@ class LessonsService {
 
 	/**
 	 * @desc Метод для подгрузки списка занятий
-	 * @param aupCode - АУП по которому нужно получить список занятий
+	 * @param aup - АУП по которому нужно получить список занятий
+	 * @param id - Айди уникальной дисциплины
 	 */
-	async fetchLessons(aupCode: Key): Promise<ILesson[] | null> {
-		const data: ILesson[] | null = await Api.fetchLessons(aupCode)
+	async fetchLessons(aup: Key, id: Key): Promise<ILesson[] | null> {
+		const data: ILesson[] | null = await Api.fetchLessons(aup, id)
 		if (!data) return []
 
 		this.setLessons(data)
