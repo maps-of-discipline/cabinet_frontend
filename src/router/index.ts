@@ -17,7 +17,7 @@ const router = createRouter({
 			name: 'grades',
 			component: () => import('../views/GradesView.vue'),
 			meta: {
-				title: 'КП | Успеваемость',
+				title: 'Успеваемость | Кабинет преподавателя',
 			},
 		},
 		{
@@ -25,7 +25,7 @@ const router = createRouter({
 			name: 'lessons',
 			component: () => import('../views/LessonsView.vue'),
 			meta: {
-				title: 'КП | Темы занятий',
+				title: 'Темы занятий | Кабинет преподавателя',
 			},
 		},
 	],
