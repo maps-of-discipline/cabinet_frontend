@@ -42,6 +42,10 @@ export default defineConfig({
 				find: '@styles',
 				replacement: fileURLToPath(new URL('./src/styles', import.meta.url)),
 			},
+			{
+				find: '@',
+				replacement: fileURLToPath(new URL('./src/', import.meta.url)),
+			},
 		],
 	},
 })

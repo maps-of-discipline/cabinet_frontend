@@ -4,17 +4,29 @@ import type { ILesson } from '@models/lessons/ILesson'
 import axios from './axios'
 import { HttpStatusCode } from 'axios'
 
+import app from '@/main.ts'
+
 abstract class Api {
 	static async ping() {
 		return await axios('ping')
 	}
 
 	static async fetchLessons(aupCode: Key) {
-		const { data, status } = await axios.get(`lessons/${aupCode}`)
+		try {
+			const { data } = await axios.get(`lessons/${aupCode}`)
 
-		if (status !== HttpStatusCode.Ok) return null
+			return data
+		} catch (e) {
+			app.config.globalProperties.$toast.add({
+				severity: 'error',
+				summary: 'Неизвестная ошибка.',
+				detail: 'Произошла ошибка при подгрузке таблицы.',
+				life: 2000,
+			})
 
-		return data
+			console.log(e)
+			return null
+		}
 	}
 
 	/**

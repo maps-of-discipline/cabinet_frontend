@@ -7,11 +7,22 @@
 			<div class="MainHeaderAccount__role">Преподаватель</div>
 		</div>
 
-		<Button icon="mdi mdi-logout" text rounded />
+		<Button icon="mdi mdi-logout" text rounded @click="onClick" />
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import app from '@/main.ts'
+
+const onClick = () => {
+	console.log('click')
+	app.config.globalProperties.$toast.add({
+		severity: 'info',
+		summary: 'Учетные записи в разработке.',
+		life: 2000,
+	})
+}
+</script>
 
 <style lang="scss" scoped>
 .MainHeaderAccount {

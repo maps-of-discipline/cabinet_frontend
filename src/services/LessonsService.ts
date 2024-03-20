@@ -13,7 +13,7 @@ class LessonsService {
 	 */
 	async fetchLessons(aupCode: Key): Promise<ILesson[] | null> {
 		const data: ILesson[] | null = await Api.fetchLessons(aupCode)
-		if (!data) return null
+		if (!data) return []
 
 		this.setLessons(data)
 
