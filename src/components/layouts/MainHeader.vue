@@ -1,9 +1,9 @@
 <template>
 	<header class="MainHeader">
-		<div class="MainHeader__logo-block">
+		<router-link class="MainHeader__logo-block" to="/">
 			<img class="MainHeader__logo" src="@assets/logo.png" alt="" />
 			<div class="MainHeader__logo-title">Кабинет преподавателя</div>
-		</div>
+		</router-link>
 
 		<MainHeaderNav class="MainHeader__nav" :data="items" />
 
@@ -23,6 +23,11 @@ import MainHeaderAccount from '@components/layouts/MainHeaderAccount.vue'
 const items = ref([
 	{
 		items: [
+			{
+				label: 'Главная',
+				route: '/',
+				icon: 'mdi-home',
+			},
 			{
 				label: 'Успеваемость',
 				route: '/grades',

@@ -12,3 +12,8 @@ body {
 	padding: 0;
 	background-color: #3a3a3a;
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
