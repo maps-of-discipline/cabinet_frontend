@@ -12,6 +12,8 @@ class LessonsService {
 		items: [],
 	})
 
+	private readonly stubId: string = 'empty'
+
 	aup: Key | null = null
 	disciplineId: Key | null = null
 	rpdId: Key | null = null
@@ -41,6 +43,10 @@ class LessonsService {
 	}
 
 	async editLesson(id: Key, lesson: ILesson) {
+		if (id === this.stubId) {
+			console.log('Попытка сохранить новую строку')
+		}
+
 		const data: ILesson | null = await Api.saveLesson(id, lesson)
 		if (!data) return null
 
