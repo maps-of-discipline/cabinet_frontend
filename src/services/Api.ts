@@ -1,6 +1,7 @@
 import type { Key } from '@models/Key'
 import type { ILesson } from '@models/lessons/ILesson'
 
+import { isAxiosError } from 'axios'
 import axios from './axios'
 import { HttpStatusCode } from 'axios'
 
@@ -20,16 +21,28 @@ abstract class Api {
 				},
 			})
 
-			return data
-		} catch (e) {
-			app.config.globalProperties.$toast.add({
-				severity: 'error',
-				summary: 'Неизвестная ошибка.',
-				detail: 'Произошла ошибка при подгрузке таблицы.',
-				life: 2000,
-			})
+			if (data.error) throw new Error(data.error)
 
-			console.log(e)
+			console.log(data)
+
+			return data
+		} catch (error) {
+			if (isAxiosError(error) && !error) {
+				app.config.globalProperties.$toast.add({
+					severity: 'error',
+					summary: 'Неизвестная ошибка.',
+					detail: 'Произошла ошибка при подгрузке таблицы.',
+					life: 2000,
+				})
+			} else {
+				app.config.globalProperties.$toast.add({
+					severity: 'error',
+					summary: error as string,
+					life: 2000,
+				})
+			}
+
+			console.error(error)
 			return null
 		}
 	}

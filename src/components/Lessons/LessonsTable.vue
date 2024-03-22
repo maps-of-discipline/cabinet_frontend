@@ -1,73 +1,91 @@
 <template>
-	<DataTable
-		v-if="lessons.length"
-		class="LessonsTable"
-		:value="lessons"
-		:loading="isLoadingLessons"
-		stripedRows
-		:rowClass="() => 'LessonsTable__row'"
-		dataKey="id"
-		editMode="cell"
-		@cell-edit-complete="onCellEditComplete"
-	>
-		<!-- 		editMode="cell" -->
-		<!-- Нагрузка -->
-		<Column
-			headerClass="column-header_center"
-			bodyClass="column-cell_center"
-			field="id_type_control"
-			header="Вид"
-			headerStyle="width: 75px"
+	<div class="LessonsTableView">
+		<LessonsTableHeader :title="lessonsService.title" @add="onAddRow" />
+
+		<!-- v-if="lessonsService.lessons.length || isLoadingLessons" -->
+		<DataTable
+			class="LessonsTable"
+			:value="lessons.items"
+			:loading="isLoadingLessons"
+			stripedRows
+			scrollable
+			scrollHeight="flex"
+			:rowClass="() => 'LessonsTable__row'"
+			dataKey="id"
+			editMode="cell"
+			@cell-edit-complete="onCellEditComplete"
 		>
-			<template #body="{ data, field }">
-				<Tag :value="ControlIdsEnum[data[field]]"></Tag>
-			</template>
-		</Column>
+			<!-- № -->
+			<Column
+				headerClass="column-header_center"
+				bodyClass="column-cell_center"
+				field="id_type_control"
+				header="№"
+				headerStyle="width: 35px"
+			>
+				<template #body="{ index }">
+					{{ index }}
+				</template>
+			</Column>
 
-		<!-- Глава -->
-		<Column field="chapter" header="Глава" headerStyle="width: 50%">
-			<template #body="{ data, field }">
-				<span>
-					{{ data[field] }}
-				</span>
-			</template>
-			<template #editor="{ data, field }">
-				<CellEditor v-model="data[field]" />
-			</template>
-		</Column>
+			<!-- Нагрузка -->
+			<Column
+				headerClass="column-header_center"
+				bodyClass="column-cell_center"
+				field="id_type_control"
+				header="Вид"
+				headerStyle="width: 75px"
+			>
+				<template #body="{ data, field }">
+					<Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag>
+				</template>
+			</Column>
 
-		<!-- Тема -->
-		<Column field="topic" header="Тема" headerStyle="width: 50%">
-			<template #body="{ data, field }">
-				<span>
-					{{ data[field] }}
-				</span>
-			</template>
-			<template #editor="{ data, field }">
-				<CellEditor v-model="data[field]" />
-			</template>
-		</Column>
+			<!-- Глава -->
+			<Column field="chapter" header="Глава" headerStyle="width: 50%">
+				<template #body="{ data, field }">
+					<span>
+						{{ data[field] }}
+					</span>
+				</template>
+				<template #editor="{ data, field }">
+					<CellEditor v-model="data[field]" />
+				</template>
+			</Column>
 
-		<!-- Задание -->
-		<Column field="task_link" header="Задание" headerStyle="width: 50%">
-			<template #body="{ data, field }">
-				<span>
-					{{ data[field] }}
-				</span>
-			</template>
-			<template #editor="{ data, field }">
-				<CellEditor v-model="data[field]" />
-			</template>
-		</Column>
-	</DataTable>
+			<!-- Тема -->
+			<Column field="topic" header="Тема" headerStyle="width: 50%">
+				<template #body="{ data, field }">
+					<span>
+						{{ data[field] }}
+					</span>
+				</template>
+				<template #editor="{ data, field }">
+					<CellEditor v-model="data[field]" />
+				</template>
+			</Column>
 
-	<Stub v-else>
-		<div class="LessonsTable__empty-msg">Данные отсутствуют</div>
-	</Stub>
+			<!-- Задание -->
+			<Column field="task_link" header="Задание" headerStyle="width: 50%">
+				<template #body="{ data, field }">
+					<span>
+						{{ data[field] }}
+					</span>
+				</template>
+				<template #editor="{ data, field }">
+					<CellEditor v-model="data[field]" />
+				</template>
+			</Column>
+
+			<template #empty>Отсутвуют записи.</template>
+		</DataTable>
+		<!-- {{ lessons }} -->
+	</div>
 </template>
 
 <script setup>
 import Stub from '@components/layouts/Stub.vue'
+import LessonsTable from '@components/Lessons/LessonsTableHeader.vue'
 
 import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
 
@@ -76,10 +94,6 @@ import { useRoute } from 'vue-router'
 
 import lessonsService from '@services/LessonsService'
 
-/* 
-    TODO Обновлять и lessons ref() тоже (либо ref вынести в сервис), 
-    пока оставил так
-*/
 const onCellEditComplete = event => {
 	let { data, field, newValue, newData } = event
 
@@ -93,28 +107,49 @@ const onCellEditComplete = event => {
 	}
 }
 
-const lessons = ref([])
 const isLoadingLessons = ref(false)
 
 const route = useRoute()
 const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
+const onAddRow = () => lessonsService.addEmptyRow()
+
+const lessons = lessonsService.lessons
+
 if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
 
 	lessonsService.fetchLessons(aupCode, idDiscipline).then(data => {
-		lessons.value = data
 		isLoadingLessons.value = false
 	})
 }
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
+.LessonsTableView {
+	height: 100%;
+	display: grid;
+	grid-template-rows: 60px calc(100vh - 132px);
+	gap: 12px;
+
+	&__empty {
+		height: 100%;
+		background-color: $view-bg;
+		border-radius: $border-radius-main;
+		display: grid;
+		place-items: center;
+		font-size: 1.2rem;
+	}
+}
+
 .LessonsTable {
-	font-size: 14px;
+	font-size: 16px;
 	border-radius: 8px;
 	overflow: hidden;
+	background-color: $view-bg;
 
 	$row-height: 60px;
 
@@ -133,12 +168,23 @@ if (aupCode && idDiscipline) {
 		padding: 0;
 	}
 
-	&__chip {
-		font-size: 14px;
+	/* 	.p-datatable-wrapper {
+		height: 100%;
 	}
 
-	&__empty-msg {
-		font-size: 1.2rem;
+	.p-datatable-table {
+		height: 100%;
+	}
+
+	.p-datatable-emptymessage {
+		td {
+			text-align: center;
+			font-size: 1rem;
+		}
+	} */
+
+	&__chip {
+		font-size: 14px;
 	}
 }
 
