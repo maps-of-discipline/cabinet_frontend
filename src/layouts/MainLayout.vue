@@ -22,7 +22,7 @@ import MainHeader from '@components/layouts/MainHeader.vue'
 	}
 
 	&__main {
-		margin: 30px;
+		margin: 16px 30px;
 	}
 }
 </style>

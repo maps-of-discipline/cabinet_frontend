@@ -34,7 +34,7 @@
 				bodyClass="column-cell_center"
 				field="id_type_control"
 				header="Вид"
-				headerStyle="width: 135px"
+				headerStyle="width: 110px"
 			>
 				<template #body="{ data, field }">
 					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
@@ -140,7 +140,7 @@ if (aupCode && idDiscipline) {
 .LessonsTableView {
 	height: 100%;
 	display: grid;
-	grid-template-rows: 60px calc(100vh - 132px);
+	grid-template-rows: 70px calc(100vh - 70px - 12px - 16px - 16px);
 	gap: 12px;
 
 	&__empty {
@@ -169,11 +169,16 @@ if (aupCode && idDiscipline) {
 		height: $row-height;
 	}
 
+	.p-datatable-tbody td,
+	th {
+		padding: 0.5rem;
+	}
+
 	.p-cell-editing {
 		/* Непонятно почему, но это единственное решение, чтобы растянуть элемент внутри клетки */
 		/* https://stackoverflow.com/questions/22220698/height-100-for-div-inside-div-with-display-table-cell#answer-32112698 */
 		height: 1px;
-		padding: 0;
+		padding: 0 !important;
 	}
 
 	.column-header-index,
