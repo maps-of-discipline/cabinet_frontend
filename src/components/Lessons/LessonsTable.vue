@@ -24,7 +24,7 @@
 				headerStyle="width: 45px"
 			>
 				<template #body="{ index }">
-					{{ index }}
+					{{ index + 1 }}
 				</template>
 			</Column>
 
@@ -34,10 +34,11 @@
 				bodyClass="column-cell_center"
 				field="id_type_control"
 				header="Вид"
-				headerStyle="width: 75px"
+				headerStyle="width: 135px"
 			>
 				<template #body="{ data, field }">
-					<Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag>
+					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
+					<LessonsLoadSelect :editMode="editMode" />
 				</template>
 			</Column>
 
@@ -87,14 +88,19 @@
 
 <script setup>
 import Stub from '@components/layouts/Stub.vue'
-import LessonsTable from '@components/Lessons/LessonsTableHeader.vue'
+import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
+import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 
 import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
-
-import { ref } from 'vue'
+import { useLessonsStore } from '@/stores/lessons'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import lessonsService from '@services/LessonsService'
+
+const lessonsStore = useLessonsStore()
+
+const editMode = computed(() => lessonsStore.editMode)
 
 const onCellEditComplete = event => {
 	let { data, field, newValue, newData } = event

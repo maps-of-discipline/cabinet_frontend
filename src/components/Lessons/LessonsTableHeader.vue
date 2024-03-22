@@ -1,12 +1,38 @@
 <template>
 	<div class="LessonsTableHeader">
 		<div class="LessonsTableHeader__title">{{ title }}</div>
-		<Button icon="mdi mdi-plus" label="Добавить строку" @click="onAddButton" />
+
+		<div class="LessonsTableHeader__right">
+			<Button
+				v-if="editMode"
+				icon="mdi mdi-plus"
+				label="Добавить строку"
+				@click="onAddButton"
+			/>
+
+			<div class="LessonsTableHeader__editMode">
+				Режим редактирования
+				<InputSwitch v-model="editMode" />
+			</div>
+		</div>
 	</div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useLessonsStore } from '@/stores/lessons'
 const emit = defineEmits(['add'])
+
+const lessonsStore = useLessonsStore()
+
+const editMode = computed({
+	get() {
+		return lessonsStore.editMode
+	},
+	set(val) {
+		lessonsStore.switchMode(val)
+	},
+})
 
 defineProps({
 	title: {
@@ -31,5 +57,17 @@ const onAddButton = () => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	&__right {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+	}
+
+	&__editMode {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+	}
 }
 </style>
