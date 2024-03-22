@@ -3,8 +3,12 @@
 		<LessonsTableHeader :title="lessonsService.title" @add="onAddRow" />
 
 		<!-- v-if="lessonsService.lessons.length || isLoadingLessons" -->
+		<!-- rowGroupMode="subheader"
+		groupRowsBy="chapter" 
+        expandableRowGroups-->
 		<DataTable
 			class="LessonsTable"
+			v-model:expandedRowGroups="expandedRowGroups"
 			:class="{ isEmpty: !lessons.items.length }"
 			:value="lessons.items"
 			:loading="isLoadingLessons"
@@ -15,7 +19,16 @@
 			dataKey="id"
 			editMode="cell"
 			@cell-edit-complete="onCellEditComplete"
+			@row-click="onRowClick"
 		>
+			<!-- <template #groupheader="slotProps">
+				<div class="LessonsTable__subheader flex align-items-center gap-2">
+					<span>{{ slotProps.data.chapter }}</span>
+				</div>
+			</template>
+
+			<Column field="chapter" header="chapter"></Column> -->
+
 			<!-- № -->
 			<Column
 				headerClass="column-header-index"
@@ -78,6 +91,18 @@
 				</template>
 			</Column>
 
+			<Column v-if="editMode" header="" headerStyle="width: 75px">
+				<template #body="{ data, field }">
+					<Button
+						icon="mdi mdi-delete"
+						severity="danger"
+						text
+						rounded
+						@click="onDeleteRow(data.id)"
+					/>
+				</template>
+			</Column>
+
 			<template #empty>
 				<div v-if="!isLoadingLessons">Записи отсутствуют.</div>
 			</template>
@@ -108,7 +133,7 @@ const onCellEditComplete = event => {
 	if (data[field] === newValue) return
 
 	const newLesson = Object.assign({}, newData)
-	const res = lessonsService.editLesson(newLesson.id, newLesson)
+	const res = lessonsService.editLesson(newLesson)
 
 	if (res) {
 		data[field] = newValue
@@ -121,7 +146,11 @@ const route = useRoute()
 const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
-const onAddRow = () => lessonsService.addEmptyRow()
+const onAddRow = () => lessonsService.createLocalLesson()
+const onDeleteRow = id => lessonsService.deleteLesson(id)
+const onRowClick = e => console.log({ ...e.data })
+
+const expandedRowGroups = ref()
 
 const lessons = lessonsService.lessons
 
@@ -161,6 +190,12 @@ if (aupCode && idDiscipline) {
 
 	$row-height: 60px;
 
+	&__subheader {
+		padding: 0 35px;
+		font-weight: bold;
+		display: inline-block;
+	}
+
 	table {
 		table-layout: fixed;
 	}
@@ -172,6 +207,16 @@ if (aupCode && idDiscipline) {
 	.p-datatable-tbody td,
 	th {
 		padding: 0.5rem;
+	}
+
+	.p-rowgroup-header {
+		padding: 0;
+
+		/* td {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		} */
 	}
 
 	.p-cell-editing {

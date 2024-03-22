@@ -52,13 +52,50 @@ abstract class Api {
 
 	/**
 	 * Метод для сохранения строки
-	 * @param id - Айди строки
-	 * @param lesson - Обновленная строкоа
+	 * @param {Key} id - Айди строки
+	 * @param {ILesson} lesson - Обновленная строкоа
 	 */
-	static async saveLesson(id: Key, lesson: ILesson) {
-		const { data, status } = await axios.post(`save-topic`, { id, lesson })
+	static async editLesson(lesson: ILesson) {
+		const { data, status } = await axios.post(`edit-lesson`, { lesson })
 
 		if (status !== HttpStatusCode.Ok) return null
+
+		return data
+	}
+
+	/**
+	 * Метод для создания строки
+	 * @param {Key} id - Айди строки
+	 * @param {ILesson} lesson - Обновленная строкоа
+	 */
+	static async createLesson(lesson: ILesson) {
+		const { data, status } = await axios.post(`create-lesson`, lesson)
+
+		if (status !== HttpStatusCode.Ok) return null
+
+		app.config.globalProperties.$toast.add({
+			severity: 'success',
+			summary: 'Новая запись успешно сохранена.',
+			life: 2000,
+		})
+
+		return data
+	}
+
+	/**
+	 * Метод для удаления строки
+	 * @param {Key} id - Айди строки
+	 */
+	static async deleteLesson(id: Key) {
+		const { data, status } = await axios.post(`delete-lesson`, { id })
+
+		if (status !== HttpStatusCode.Ok) return null
+
+		app.config.globalProperties.$toast.add({
+			severity: 'success',
+			summary: 'Запись успешно удалена.',
+			life: 2000,
+		})
 
 		return data
 	}

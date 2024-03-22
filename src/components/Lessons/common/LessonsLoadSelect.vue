@@ -1,6 +1,6 @@
 <template>
 	<Dropdown
-		v-if="selectedControl || editMode"
+		v-show="selectedControl || editMode"
 		v-model="selectedControl"
 		:options="controls"
 		optionLabel="name"
