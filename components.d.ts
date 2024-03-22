@@ -16,6 +16,7 @@ declare module 'vue' {
     DevelopingStub: typeof import('./src/components/layouts/DevelopingStub.vue')['default']
     Divider: typeof import('primevue/divider')['default']
     LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
+    LessonsTableHeader: typeof import('./src/components/Lessons/LessonsTableHeader.vue')['default']
     MainHeader: typeof import('./src/components/layouts/MainHeader.vue')['default']
     MainHeaderAccount: typeof import('./src/components/layouts/MainHeaderAccount.vue')['default']
     MainHeaderLink: typeof import('./src/components/layouts/MainHeaderLink.vue')['default']

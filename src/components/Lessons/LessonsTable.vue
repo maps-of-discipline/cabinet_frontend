@@ -5,6 +5,7 @@
 		<!-- v-if="lessonsService.lessons.length || isLoadingLessons" -->
 		<DataTable
 			class="LessonsTable"
+			:class="{ isEmpty: !lessons.items.length }"
 			:value="lessons.items"
 			:loading="isLoadingLessons"
 			stripedRows
@@ -17,11 +18,10 @@
 		>
 			<!-- № -->
 			<Column
-				headerClass="column-header_center"
-				bodyClass="column-cell_center"
-				field="id_type_control"
+				headerClass="column-header-index"
+				bodyClass="column-cell-index"
 				header="№"
-				headerStyle="width: 35px"
+				headerStyle="width: 45px"
 			>
 				<template #body="{ index }">
 					{{ index }}
@@ -77,7 +77,9 @@
 				</template>
 			</Column>
 
-			<template #empty>Отсутвуют записи.</template>
+			<template #empty>
+				<div v-if="!isLoadingLessons">Записи отсутствуют.</div>
+			</template>
 		</DataTable>
 		<!-- {{ lessons }} -->
 	</div>
@@ -168,20 +170,34 @@ if (aupCode && idDiscipline) {
 		padding: 0;
 	}
 
-	/* 	.p-datatable-wrapper {
-		height: 100%;
+	.column-header-index,
+	.column-cell-index {
+		padding: 0;
+		text-align: center;
 	}
 
-	.p-datatable-table {
-		height: 100%;
-	}
-
-	.p-datatable-emptymessage {
-		td {
-			text-align: center;
-			font-size: 1rem;
+	.column-header-index {
+		.p-column-header-content {
+			justify-content: center;
 		}
-	} */
+	}
+
+	&.isEmpty {
+		.p-datatable-wrapper {
+			height: 100%;
+		}
+
+		.p-datatable-table {
+			height: 100%;
+		}
+
+		.p-datatable-emptymessage {
+			td {
+				text-align: center;
+				font-size: 1rem;
+			}
+		}
+	}
 
 	&__chip {
 		font-size: 14px;

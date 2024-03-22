@@ -5,6 +5,7 @@ import { isAxiosError } from 'axios'
 import axios from './axios'
 import { HttpStatusCode } from 'axios'
 
+// @ts-ignore
 import app from '@/main.ts'
 
 abstract class Api {
@@ -14,6 +15,8 @@ abstract class Api {
 
 	static async fetchLessons(aup: Key, id: Key) {
 		try {
+			/* await new Promise(r => setTimeout(r, 3000)) */
+
 			const { data } = await axios.get(`lessons`, {
 				params: {
 					aup,
