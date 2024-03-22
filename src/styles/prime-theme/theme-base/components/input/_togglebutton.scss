@@ -42,10 +42,16 @@
         .p-button-icon-left,
         .p-button-icon-right {
             color: $toggleButtonIconColor;
+            transition: color $transitionDuration;
+        }
+
+        /* Из-за изначалаьного значения анимация работает с задержкой */
+        .p-button-label {
+            transition-duration: 0s;
         }
     }
 
-    &.p-highlight {
+    /* &.p-highlight {
         .p-button {
             background: $toggleButtonActiveBg;
             border-color: $toggleButtonActiveBorderColor;
@@ -56,11 +62,22 @@
                 color: $toggleButtonIconActiveColor;
             }
         }
-    }
+    } */
 
     &:not(.p-disabled) {
         &:has(.p-togglebutton-input:hover) {
-            &:not(.p-highlight) {
+            .p-button {
+                background: $toggleButtonHoverBg;
+                border-color: $toggleButtonHoverBorderColor;
+                color: $toggleButtonTextHoverColor;
+
+                .p-button-icon-left,
+                .p-button-icon-right {
+                    color: $toggleButtonIconHoverColor;
+                }
+            }
+
+            /* &:not(.p-highlight) {
                 .p-button {
                     background: $toggleButtonHoverBg;
                     border-color: $toggleButtonHoverBorderColor;
@@ -84,7 +101,7 @@
                         color: $toggleButtonIconActiveHoverColor;
                     }
                 }
-            }
+            } */
         }
 
         &:has(.p-togglebutton-input:focus-visible) {

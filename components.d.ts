@@ -28,5 +28,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Stub: typeof import('./src/components/layouts/Stub.vue')['default']
     Tag: typeof import('primevue/tag')['default']
+    ToggleButton: typeof import('primevue/togglebutton')['default']
   }
 }

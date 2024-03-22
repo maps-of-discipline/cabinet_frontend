@@ -11,8 +11,16 @@
 			/>
 
 			<div class="LessonsTableHeader__editMode">
-				Режим редактирования
-				<InputSwitch v-model="editMode" />
+				<!-- Режим редактирования
+				<InputSwitch v-model="editMode" /> -->
+
+				<ToggleButton
+					v-model="editMode"
+					onLabel="Редактирование"
+					offLabel="Просмотр"
+					onIcon="mdi mdi-pen"
+					offIcon="mdi mdi-eye"
+				/>
 			</div>
 		</div>
 	</div>
