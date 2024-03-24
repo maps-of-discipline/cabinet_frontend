@@ -99,6 +99,18 @@ abstract class Api {
 
 		return data
 	}
+
+	/**
+	 * Метод для получения доступных нагрузок РПД
+	 * @param {Key} id - Айди РПД
+	 */
+	static async fetchLessonControlTypes(rpdId: Key) {
+		const { data, status } = await axios.get(`control_types?rpd=${rpdId}`)
+
+		if (status !== HttpStatusCode.Ok) return null
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

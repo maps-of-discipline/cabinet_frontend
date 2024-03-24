@@ -1,6 +1,10 @@
 import type { Key } from '@models/Key'
 import type { IFetchLessons } from '@models/lessons/IFetchLessons'
 import type { ILesson } from '@models/lessons/ILesson'
+import type {
+	IFetchLessonControls,
+	ILessonControls,
+} from '@models/lessons/IFetchLessonControls'
 
 import { reactive, ref } from 'vue'
 
@@ -11,6 +15,8 @@ class LessonsService {
 	lessons: { items: ILesson[] } = reactive({
 		items: [],
 	})
+
+	controlTypes: ILessonControls = {}
 
 	private readonly prefixLocalId: string = 'local_'
 
@@ -34,6 +40,8 @@ class LessonsService {
 		this.disciplineId = id
 		this.rpdId = data.rpd_id
 		this.title = data.title
+
+		await this.fetchControlTypes(data.rpd_id)
 
 		return data.topics
 	}
@@ -114,6 +122,20 @@ class LessonsService {
 	 */
 	isLocalLesson(id: Key) {
 		return `${id}`.startsWith(this.prefixLocalId)
+	}
+
+	async fetchControlTypes(rpdId) {
+		const data: IFetchLessonControls | null = await Api.fetchLessonControlTypes(
+			rpdId
+		)
+
+		if (!data) return []
+
+		this.setControlTypes(data.control_types)
+	}
+
+	setControlTypes(controlTypes) {
+		this.controlTypes = controlTypes
 	}
 }
 
