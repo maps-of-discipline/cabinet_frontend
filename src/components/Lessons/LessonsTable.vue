@@ -51,7 +51,12 @@
 			>
 				<template #body="{ data, field }">
 					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
-					<LessonsLoadSelect :editMode="editMode" />
+					<LessonsLoadSelect
+						:editMode="editMode"
+						:controlTypes="controlTypes"
+						:item="data"
+						@change="id => onChangeControlType(data, id)"
+					/>
 				</template>
 			</Column>
 
@@ -140,6 +145,17 @@ const onCellEditComplete = event => {
 	}
 }
 
+const onChangeControlType = (data, id) => {
+	const newLesson = Object.assign({}, data)
+	newLesson.id_type_control = id
+
+	const res = lessonsService.editLesson(newLesson)
+
+	if (res) {
+		data.id_type_control = id
+	}
+}
+
 const isLoadingLessons = ref(false)
 
 const route = useRoute()
@@ -160,6 +176,10 @@ const lessons = computed(() =>
 )
 
 const isEmpty = computed(() => !lessons.value.length)
+
+const controlTypes = computed(
+	() => lessonsService.controlTypes.value[lessonsStore.selectedSemester]
+)
 
 if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
