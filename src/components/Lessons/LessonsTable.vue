@@ -9,8 +9,8 @@
 		<DataTable
 			class="LessonsTable"
 			v-model:expandedRowGroups="expandedRowGroups"
-			:class="{ isEmpty: !lessons.items.length }"
-			:value="lessons.items"
+			:class="{ isEmpty }"
+			:value="lessons"
 			:loading="isLoadingLessons"
 			stripedRows
 			scrollable
@@ -146,19 +146,29 @@ const route = useRoute()
 const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
-const onAddRow = () => lessonsService.createLocalLesson()
+const onAddRow = () =>
+	lessonsService.createLocalLesson(lessonsStore.selectedSemester)
 const onDeleteRow = id => lessonsService.deleteLesson(id)
 const onRowClick = e => console.log({ ...e.data })
 
 const expandedRowGroups = ref()
 
-const lessons = lessonsService.lessons
+const lessons = computed(() =>
+	lessonsService.lessons.items.filter(
+		lesson => lesson.semester === lessonsStore.selectedSemester
+	)
+)
+
+const isEmpty = computed(() => !lessons.value.length)
 
 if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
 
 	lessonsService.fetchLessons(aupCode, idDiscipline).then(data => {
 		isLoadingLessons.value = false
+		lessonsStore.setSemester(
+			+Object.keys(lessonsService.controlTypes.value)?.[0]
+		)
 	})
 }
 </script>

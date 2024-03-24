@@ -16,7 +16,9 @@ class LessonsService {
 		items: [],
 	})
 
-	controlTypes: ILessonControls = {}
+	controlTypes: { value: ILessonControls } = reactive({
+		value: [],
+	})
 
 	private readonly prefixLocalId: string = 'local_'
 
@@ -87,7 +89,7 @@ class LessonsService {
         Блок методов для работы с локальным состоянием     
     */
 
-	createLocalLesson() {
+	createLocalLesson(semester: number) {
 		if (!this.rpdId) return
 
 		this.lessons.items.push({
@@ -97,6 +99,7 @@ class LessonsService {
 			chapter: '',
 			task_link: '',
 			topic: '',
+			semester,
 		})
 	}
 
@@ -135,7 +138,7 @@ class LessonsService {
 	}
 
 	setControlTypes(controlTypes) {
-		this.controlTypes = controlTypes
+		this.controlTypes.value = controlTypes
 	}
 }
 

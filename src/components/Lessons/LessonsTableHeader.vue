@@ -14,6 +14,8 @@
 				<!-- Режим редактирования
 				<InputSwitch v-model="editMode" /> -->
 
+				<SemesterSelect />
+
 				<ToggleButton
 					v-model="editMode"
 					onLabel="Редактирование"
@@ -27,9 +29,19 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useLessonsStore } from '@/stores/lessons'
+
+import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
+
 const emit = defineEmits(['add'])
+
+defineProps({
+	title: {
+		type: String,
+		default: '',
+	},
+})
 
 const lessonsStore = useLessonsStore()
 
@@ -39,13 +51,6 @@ const editMode = computed({
 	},
 	set(val) {
 		lessonsStore.switchMode(val)
-	},
-})
-
-defineProps({
-	title: {
-		type: String,
-		default: '',
 	},
 })
 

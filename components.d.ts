@@ -26,6 +26,8 @@ declare module 'vue' {
     MainHeaderNav: typeof import('./src/components/layouts/MainHeaderNav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SemesterSelect: typeof import('./src/components/Lessons/SemesterSelect.vue')['default']
+    SemestrSelect: typeof import('./src/components/Lessons/SemestrSelect.vue')['default']
     Stub: typeof import('./src/components/layouts/Stub.vue')['default']
     Tag: typeof import('primevue/tag')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
