@@ -106,9 +106,10 @@ input.p-dropdown-label {
         border-color: $inputHoverBorderColor;
     }
 
+    /* 
     &:not(.p-disabled).p-focus {
         @include focused-input();
-    }
+    } */
 
     &.p-variant-filled {
         background: $inputFilledBg;
