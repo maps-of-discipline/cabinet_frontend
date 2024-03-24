@@ -136,6 +136,7 @@ input.p-dropdown-label {
     .p-dropdown-label {
         background: transparent;
         border: 0 none;
+        padding: 0.5rem 0 0.5rem 0.75rem;
 
         &.p-placeholder {
             color: $inputPlaceholderTextColor;

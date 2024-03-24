@@ -16,7 +16,7 @@ declare module 'vue' {
     DevelopingStub: typeof import('./src/components/layouts/DevelopingStub.vue')['default']
     Divider: typeof import('primevue/divider')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
-    InputSwitch: typeof import('primevue/inputswitch')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     LessonsLoadSelect: typeof import('./src/components/Lessons/common/LessonsLoadSelect.vue')['default']
     LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
     LessonsTableHeader: typeof import('./src/components/Lessons/LessonsTableHeader.vue')['default']
@@ -27,9 +27,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SemesterSelect: typeof import('./src/components/Lessons/SemesterSelect.vue')['default']
-    SemestrSelect: typeof import('./src/components/Lessons/SemestrSelect.vue')['default']
     Stub: typeof import('./src/components/layouts/Stub.vue')['default']
-    Tag: typeof import('primevue/tag')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
   }
 }
