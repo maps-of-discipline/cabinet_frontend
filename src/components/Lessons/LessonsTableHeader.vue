@@ -5,8 +5,11 @@
 		<div class="LessonsTableHeader__right">
 			<Button
 				v-if="editMode"
+				style="height: 34px"
+				severity="success"
+				outlined=""
 				icon="mdi mdi-plus"
-				label="Добавить строку"
+				label="Добавить тему"
 				@click="onAddButton"
 			/>
 
