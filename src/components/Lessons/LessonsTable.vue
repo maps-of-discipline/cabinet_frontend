@@ -3,9 +3,6 @@
 		<LessonsTableHeader :title="lessonsService.title" @add="onAddRow" />
 
 		<!-- v-if="lessonsService.lessons.length || isLoadingLessons" -->
-		<!-- rowGroupMode="subheader"
-		groupRowsBy="chapter" 
-        expandableRowGroups-->
 		<DataTable
 			class="LessonsTable"
 			v-model:expandedRowGroups="expandedRowGroups"
@@ -14,6 +11,9 @@
 			:loading="isLoadingLessons"
 			stripedRows
 			scrollable
+			:rowGroupMode="nestedViewMode ? 'subheader' : null"
+			:groupRowsBy="nestedViewMode ? 'chapter' : null"
+			:expandableRowGroups="nestedViewMode"
 			scrollHeight="flex"
 			:rowClass="() => 'LessonsTable__row'"
 			dataKey="id"
@@ -21,13 +21,13 @@
 			@cell-edit-complete="onCellEditComplete"
 			@row-click="onRowClick"
 		>
-			<!-- <template #groupheader="slotProps">
+			<template v-if="nestedViewMode" #groupheader="slotProps">
 				<div class="LessonsTable__subheader flex align-items-center gap-2">
 					<span>{{ slotProps.data.chapter }}</span>
 				</div>
 			</template>
 
-			<Column field="chapter" header="chapter"></Column> -->
+			<Column v-if="nestedViewMode" field="chapter" header="chapter"></Column>
 
 			<!-- № -->
 			<Column
@@ -61,7 +61,12 @@
 			</Column>
 
 			<!-- Глава -->
-			<Column field="chapter" header="Глава" headerStyle="width: 50%">
+			<Column
+				v-if="!nestedViewMode"
+				field="chapter"
+				header="Глава"
+				headerStyle="width: 50%"
+			>
 				<template #body="{ data, field }">
 					<span>
 						{{ data[field] }}
@@ -122,6 +127,7 @@ import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 
 import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
+import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -131,6 +137,9 @@ import lessonsService from '@services/LessonsService'
 const lessonsStore = useLessonsStore()
 
 const editMode = computed(() => lessonsStore.editMode)
+const nestedViewMode = computed(
+	() => lessonsStore.viewMode === ViewModesEnum.Nested
+)
 
 const onCellEditComplete = event => {
 	let { data, field, newValue, newData } = event
@@ -221,9 +230,9 @@ if (aupCode && idDiscipline) {
 	$row-height: 60px;
 
 	&__subheader {
-		padding: 0 35px;
+		padding: 0 25px;
 		font-weight: bold;
-		display: inline-block;
+		display: inline;
 	}
 
 	table {

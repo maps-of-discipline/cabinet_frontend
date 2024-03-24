@@ -1,4 +1,5 @@
 import type { Key } from '@models/Key'
+import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
@@ -15,5 +16,17 @@ export const useLessonsStore = defineStore('lessons', () => {
 		selectedSemester.value = +semestr
 	}
 
-	return { editMode, switchMode, selectedSemester, setSemester }
+	const viewMode: Ref<ViewModesEnum> = ref(ViewModesEnum.Simple)
+	const setViewMode = (mode: ViewModesEnum) => {
+		viewMode.value = mode
+	}
+
+	return {
+		editMode,
+		switchMode,
+		selectedSemester,
+		setSemester,
+		viewMode,
+		setViewMode,
+	}
 })

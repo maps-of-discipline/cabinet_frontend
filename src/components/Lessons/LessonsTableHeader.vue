@@ -14,8 +14,7 @@
 			/>
 
 			<div class="LessonsTableHeader__editMode">
-				<!-- Режим редактирования
-				<InputSwitch v-model="editMode" /> -->
+				<ViewSelect />
 
 				<SemesterSelect />
 
@@ -35,6 +34,7 @@
 import { computed, ref } from 'vue'
 import { useLessonsStore } from '@/stores/lessons'
 
+import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
 
 const emit = defineEmits(['add'])
