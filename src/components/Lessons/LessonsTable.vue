@@ -17,7 +17,7 @@
 			scrollHeight="flex"
 			:rowClass="() => 'LessonsTable__row'"
 			dataKey="id"
-			editMode="cell"
+			:editMode="editMode ? 'cell' : null"
 			@cell-edit-complete="onCellEditComplete"
 			@row-click="onRowClick"
 		>
