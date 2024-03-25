@@ -55,7 +55,7 @@
 						/>
 						<Column
 							v-for="controlType in controlTypes"
-							:header="controlType.shortname"
+							:header="controlType.shortname.toUpperCase()"
 							class="column-header--center"
 							headerStyle="width: 50px"
 							:colspan="1"
@@ -100,6 +100,10 @@
 						@change="id => onChangeControlType(data, id)"
 					/>
 				</template>
+
+				<template v-if="loadViewMode" #footer>
+					<div>Сумма:</div>
+				</template>
 			</Column>
 
 			<Column
@@ -113,6 +117,10 @@
 					<span v-if="data.id_type_control === controlType.id_type_control">
 						2
 					</span>
+				</template>
+
+				<template #footer>
+					<div>{{ getSumLoadByControlType(controlType.id_type_control) }}</div>
 				</template>
 			</Column>
 
@@ -246,6 +254,13 @@ const isEmpty = computed(() => !lessons.value.length)
 const controlTypes = computed(
 	() => lessonsService.controlTypes.value[lessonsStore.selectedSemester]
 )
+
+const getSumLoadByControlType = id => {
+	return lessonsService.lessons.items.reduce((acc, value) => {
+		if (id === value.id_type_control) return acc + 2
+		return acc
+	}, 0)
+}
 
 if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
