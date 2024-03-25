@@ -66,6 +66,7 @@
 
 					<Column header="Тема" :colspan="1" />
 					<Column header="Задание" :colspan="1" />
+					<Column v-if="editMode" :colspan="1" headerStyle="width: 75px" />
 				</Row>
 			</ColumnGroup>
 
@@ -150,7 +151,7 @@
 				</template>
 			</Column>
 
-			<Column v-if="editMode" header="" headerStyle="width: 75px">
+			<Column v-if="editMode">
 				<template #body="{ data, field }">
 					<Button
 						icon="mdi mdi-delete"

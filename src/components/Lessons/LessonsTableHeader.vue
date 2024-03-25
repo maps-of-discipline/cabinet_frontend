@@ -1,6 +1,9 @@
 <template>
 	<div class="LessonsTableHeader">
-		<div class="LessonsTableHeader__title">{{ title }}</div>
+		<div class="LessonsTableHeader__left">
+			<div class="LessonsTableHeader__title">{{ title }}</div>
+			<SemesterSelect />
+		</div>
 
 		<div class="LessonsTableHeader__right">
 			<Button
@@ -16,8 +19,6 @@
 			<div class="LessonsTableHeader__editMode">
 				<ViewSelect />
 				<LoadViewSelect />
-
-				<SemesterSelect />
 
 				<ToggleButton
 					v-model="editMode"
@@ -76,7 +77,8 @@ const onAddButton = () => {
 	justify-content: space-between;
 	align-items: center;
 
-	&__right {
+	&__right,
+	&__left {
 		display: flex;
 		gap: 12px;
 		align-items: center;
