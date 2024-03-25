@@ -39,6 +39,8 @@ const value = computed({
 	},
 
 	set(option: IOption) {
+		if (!option || !option.value) return
+
 		lessonsStore.setViewMode(option.value)
 	},
 })
