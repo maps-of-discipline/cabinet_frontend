@@ -152,12 +152,11 @@
 			<!-- Задание -->
 			<Column field="task_link" header="Задание" headerStyle="width: 50%">
 				<template #body="{ data, field }">
-					<span>
-						{{ data[field] }}
-					</span>
-				</template>
-				<template #editor="{ data, field }">
-					<CellEditor v-model="data[field]" />
+					<Button
+						v-if="data[field] || editMode"
+						:label="getAttachLabel(data)"
+						@click="openAttachLink(data)"
+					/>
 				</template>
 			</Column>
 
@@ -177,13 +176,19 @@
 				<div v-if="!isLoadingLessons">Записи отсутствуют.</div>
 			</template>
 		</DataTable>
-		<!-- {{ lessons }} -->
+		<AttachLinkDialog
+			v-model="attachDialogModel"
+			:link="link"
+			:linkName="linkName"
+			@save="onSaveLink"
+		/>
 	</div>
 </template>
 
 <script setup>
 import Stub from '@components/layouts/Stub.vue'
 import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
+import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 
 import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
@@ -244,6 +249,44 @@ const lessons = computed(() =>
 		lesson => lesson.semester === lessonsStore.selectedSemester
 	)
 )
+
+const attachDialogModel = ref(false)
+const linkLessonId = ref()
+const link = ref()
+const linkName = ref()
+
+const openAttachLink = row => {
+	if (!editMode.value) {
+		return window.open(row.task_link, '_blank')
+	}
+
+	linkLessonId.value = row.id
+	link.value = row.task_link
+	linkName.value = row.task_link_name
+	attachDialogModel.value = true
+}
+
+const getAttachLabel = row => {
+	const linkName = row['task_link_name']
+
+	if (linkName) return linkName
+
+	return 'Прикрепить'
+}
+
+const onSaveLink = payload => {
+	console.log(payload)
+
+	const newLesson = {
+		...lessons.value.filter(lesson => lesson.id === linkLessonId.value)?.[0],
+		task_link: payload.link,
+		task_link_name: payload.linkName,
+	}
+
+	const res = lessonsService.editLesson(newLesson).then(() => {
+		attachDialogModel.value = false
+	})
+}
 
 const rowsCount = computed(() => lessons.value.length)
 const isEmpty = computed(() => rowsCount.value === 0)

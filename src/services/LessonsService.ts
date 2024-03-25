@@ -98,6 +98,7 @@ class LessonsService {
 			id_type_control: null,
 			chapter: '',
 			task_link: '',
+			task_link_name: '',
 			topic: '',
 			semester,
 		})

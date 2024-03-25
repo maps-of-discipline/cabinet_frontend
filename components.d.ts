@@ -8,14 +8,16 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/common/AppHeader/AppHeader.vue')['default']
+    AttachLink: typeof import('./src/components/Lessons/AttachLink.vue')['default']
+    AttachLinkDialog: typeof import('./src/components/Lessons/AttachLinkDialog.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Button: typeof import('primevue/button')['default']
     CellEditor: typeof import('./src/components/Lessons/common/CellEditor.vue')['default']
     Column: typeof import('primevue/column')['default']
     ColumnGroup: typeof import('primevue/columngroup')['default']
     DataTable: typeof import('primevue/datatable')['default']
-    DetailViewSelect: typeof import('./src/components/Lessons/DetailViewSelect.vue')['default']
     DevelopingStub: typeof import('./src/components/layouts/DevelopingStub.vue')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     Divider: typeof import('primevue/divider')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
     InputText: typeof import('primevue/inputtext')['default']
