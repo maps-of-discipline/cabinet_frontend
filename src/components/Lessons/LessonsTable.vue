@@ -27,8 +27,6 @@
 				</div>
 			</template>
 
-			<Column v-if="nestedViewMode" field="chapter" header="chapter"></Column>
-
 			<ColumnGroup type="header">
 				<Row>
 					<Column
@@ -39,31 +37,27 @@
 					/>
 
 					<Column
-						v-if="!loadViewMode"
 						header="Вид"
 						class="column-header--center"
 						headerStyle="width: 110px"
 						:colspan="1"
 					/>
 
-					<template v-else>
-						<Column
-							header="Вид"
-							class="column-header--center"
-							headerStyle="width: 110px"
-							:colspan="1"
-						/>
-						<Column
-							v-for="controlType in controlTypes"
-							:header="controlType.shortname.toUpperCase()"
-							class="column-header--center"
-							headerStyle="width: 50px"
-							:colspan="1"
-						/>
-					</template>
+					<Column
+						v-if="loadViewMode"
+						v-for="controlType in controlTypes"
+						:header="controlType.shortname.toUpperCase()"
+						class="column-header--center"
+						headerStyle="width: 50px"
+						:colspan="1"
+					/>
 
-					<Column v-if="nestedViewMode" field="chapter" header="chapter" />
-					<Column v-else header="Глава" :colspan="1" />
+					<Column
+						v-if="!nestedViewMode"
+						field="chapter"
+						header="Глава"
+						:colspan="1"
+					/>
 
 					<Column header="Тема" :colspan="1" />
 					<Column header="Задание" :colspan="1" />
@@ -81,6 +75,8 @@
 				<template #body="{ index }">
 					{{ index + 1 }}
 				</template>
+
+				<template v-if="loadViewMode" #footer>{{ rowsCount }}</template>
 			</Column>
 
 			<!-- Вид -->
@@ -193,7 +189,7 @@ import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 import lessonsService from '@services/LessonsService'
@@ -249,7 +245,8 @@ const lessons = computed(() =>
 	)
 )
 
-const isEmpty = computed(() => !lessons.value.length)
+const rowsCount = computed(() => lessons.value.length)
+const isEmpty = computed(() => rowsCount.value === 0)
 
 const controlTypes = computed(
 	() => lessonsService.controlTypes.value[lessonsStore.selectedSemester]
@@ -261,6 +258,27 @@ const getSumLoadByControlType = id => {
 		return acc
 	}, 0)
 }
+
+/* FIX PRIMEVUE BUG
+   https://github.com/primefaces/primevue/issues/3685
+*/
+const addColspanToHeader = () => {
+	const groupHeaders = document.querySelectorAll(
+		'table tbody .p-rowgroup-header td'
+	)
+
+	for (let item of groupHeaders) {
+		const newColspan = parseInt(item.colSpan) + 1
+		item.colSpan = newColspan
+	}
+}
+
+watch([editMode, loadViewMode, nestedViewMode], () => {
+	setTimeout(() => {
+		addColspanToHeader()
+	}, 0)
+})
+/*  */
 
 if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
