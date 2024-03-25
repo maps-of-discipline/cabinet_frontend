@@ -21,6 +21,11 @@ export const useLessonsStore = defineStore('lessons', () => {
 		viewMode.value = mode
 	}
 
+	const loadViewMode = ref(false)
+	function switchLoadViewMode() {
+		loadViewMode.value = !loadViewMode.value
+	}
+
 	return {
 		editMode,
 		switchMode,
@@ -28,5 +33,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 		setSemester,
 		viewMode,
 		setViewMode,
+		loadViewMode,
+		switchLoadViewMode,
 	}
 })

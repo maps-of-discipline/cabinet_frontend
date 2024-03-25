@@ -26,7 +26,7 @@
 			"@mixins/*": ["src/mixins/*"],
 			"@assets/*": ["src/assets/*"],
 			"@styles/*": ["src/styles/*"],
-			"@store/*": ["src/store/*"],
+			"@stores/*": ["src/stores/*"],
 			"@/*": ["src/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"],

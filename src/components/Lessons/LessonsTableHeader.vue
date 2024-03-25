@@ -15,6 +15,7 @@
 
 			<div class="LessonsTableHeader__editMode">
 				<ViewSelect />
+				<LoadViewSelect />
 
 				<SemesterSelect />
 
@@ -35,6 +36,7 @@ import { computed, ref } from 'vue'
 import { useLessonsStore } from '@/stores/lessons'
 
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
+import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
 
 const emit = defineEmits(['add'])

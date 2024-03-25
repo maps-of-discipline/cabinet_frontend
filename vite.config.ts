@@ -43,6 +43,10 @@ export default defineConfig({
 				replacement: fileURLToPath(new URL('./src/styles', import.meta.url)),
 			},
 			{
+				find: '@stores',
+				replacement: fileURLToPath(new URL('./src/stores', import.meta.url)),
+			},
+			{
 				find: '@',
 				replacement: fileURLToPath(new URL('./src/', import.meta.url)),
 			},

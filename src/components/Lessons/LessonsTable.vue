@@ -29,6 +29,46 @@
 
 			<Column v-if="nestedViewMode" field="chapter" header="chapter"></Column>
 
+			<ColumnGroup type="header">
+				<Row>
+					<Column
+						header="№"
+						class="column-header--center"
+						headerStyle="width: 45px"
+						:colspan="1"
+					/>
+
+					<Column
+						v-if="!loadViewMode"
+						header="Вид"
+						class="column-header--center"
+						headerStyle="width: 110px"
+						:colspan="1"
+					/>
+
+					<template v-else>
+						<Column
+							header="Вид"
+							class="column-header--center"
+							headerStyle="width: 110px"
+							:colspan="1"
+						/>
+						<Column
+							header="ЛЕК"
+							class="column-header--center"
+							headerStyle="width: 50px"
+							:colspan="1"
+						/>
+					</template>
+
+					<Column v-if="nestedViewMode" field="chapter" header="chapter" />
+					<Column v-else header="Глава" :colspan="1" />
+
+					<Column header="Тема" :colspan="1" />
+					<Column header="Задание" :colspan="1" />
+				</Row>
+			</ColumnGroup>
+
 			<!-- № -->
 			<Column
 				headerClass="column-header-index"
@@ -41,7 +81,7 @@
 				</template>
 			</Column>
 
-			<!-- Нагрузка -->
+			<!-- Вид -->
 			<Column
 				headerClass="column-header_center"
 				bodyClass="column-cell_center"
@@ -58,6 +98,15 @@
 						@change="id => onChangeControlType(data, id)"
 					/>
 				</template>
+			</Column>
+
+			<Column
+				v-if="loadViewMode"
+				headerClass="column-header-index"
+				bodyClass="column-cell-index"
+				headerStyle="width: 65px"
+			>
+				<template #body="{ index }"> 2 </template>
 			</Column>
 
 			<!-- Глава -->
@@ -137,6 +186,7 @@ import lessonsService from '@services/LessonsService'
 const lessonsStore = useLessonsStore()
 
 const editMode = computed(() => lessonsStore.editMode)
+const loadViewMode = computed(() => lessonsStore.loadViewMode)
 const nestedViewMode = computed(
 	() => lessonsStore.viewMode === ViewModesEnum.Nested
 )
@@ -233,6 +283,14 @@ if (aupCode && idDiscipline) {
 		padding: 0 25px;
 		font-weight: bold;
 		display: inline;
+	}
+
+	.column-header {
+		&--center {
+			.p-column-header-content {
+				justify-content: center;
+			}
+		}
 	}
 
 	table {
