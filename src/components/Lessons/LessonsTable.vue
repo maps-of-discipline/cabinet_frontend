@@ -30,7 +30,7 @@
 			<ColumnGroup type="header">
 				<Row>
 					<Column
-						header="№"
+						header="#"
 						class="column-header--center"
 						headerStyle="width: 45px"
 						:colspan="1"
@@ -65,11 +65,10 @@
 				</Row>
 			</ColumnGroup>
 
-			<!-- № -->
+			<!-- # -->
 			<Column
 				headerClass="column-header-index"
 				bodyClass="column-cell-index"
-				header="№"
 				headerStyle="width: 45px"
 			>
 				<template #body="{ index }">
