@@ -54,7 +54,8 @@
 							:colspan="1"
 						/>
 						<Column
-							header="ЛЕК"
+							v-for="controlType in controlTypes"
+							:header="controlType.shortname"
 							class="column-header--center"
 							headerStyle="width: 50px"
 							:colspan="1"
@@ -103,11 +104,16 @@
 
 			<Column
 				v-if="loadViewMode"
+				v-for="controlType in controlTypes"
 				headerClass="column-header-index"
 				bodyClass="column-cell-index"
 				headerStyle="width: 65px"
 			>
-				<template #body="{ index }"> 2 </template>
+				<template #body="{ data, index }">
+					<span v-if="data.id_type_control === controlType.id_type_control">
+						2
+					</span>
+				</template>
 			</Column>
 
 			<!-- Глава -->
