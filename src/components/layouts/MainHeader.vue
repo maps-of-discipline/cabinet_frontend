@@ -38,6 +38,11 @@ const items = ref([
 				route: '/lessons',
 				icon: 'mdi-table',
 			},
+			{
+				label: 'FAQ',
+				route: '/faq',
+				icon: 'mdi-frequently-asked-questions',
+			},
 		],
 	},
 

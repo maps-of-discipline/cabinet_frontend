@@ -28,6 +28,14 @@ const router = createRouter({
 				title: 'Темы занятий | Кабинет преподавателя',
 			},
 		},
+		{
+			path: '/faq',
+			name: 'faq',
+			component: () => import('../views/FaqView.vue'),
+			meta: {
+				title: 'FAQ | Кабинет преподавателя',
+			},
+		},
 	],
 })
 
