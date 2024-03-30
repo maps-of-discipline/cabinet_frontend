@@ -99,6 +99,8 @@ class LessonsService {
 			chapter: '',
 			task_link: '',
 			task_link_name: '',
+			completed_task_link: '',
+			completed_task_link_name: '',
 			topic: '',
 			semester,
 		})

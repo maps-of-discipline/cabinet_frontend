@@ -60,7 +60,13 @@
 					/>
 
 					<Column header="Тема" :colspan="1" />
-					<Column header="Задание" :colspan="1" />
+
+					<Column header="Задание" :colspan="1" headerStyle="width: 200px" />
+					<Column
+						header="Загрузка задания"
+						:colspan="1"
+						headerStyle="width: 200px"
+					/>
 
 					<Column :colspan="1" headerStyle="width: 75px" />
 				</Row>
@@ -150,7 +156,7 @@
 			</Column>
 
 			<!-- Задание -->
-			<Column field="task_link" header="Задание" headerStyle="width: 50%">
+			<Column field="task_link" header="Задание">
 				<template #body="{ data, field }">
 					<Button
 						v-if="data[field] || editMode"
@@ -160,6 +166,18 @@
 				</template>
 			</Column>
 
+			<!-- Загрузка задания -->
+			<Column field="completed_task_link" header="Загрузка задания">
+				<template #body="{ data, field }">
+					<Button
+						v-if="data[field] || editMode"
+						:label="getAttachLabel(data, true)"
+						@click="openAttachLink(data, true)"
+					/>
+				</template>
+			</Column>
+
+			<!-- Удаление -->
 			<Column>
 				<template #body="{ data, field }">
 					<div v-if="editMode">
@@ -254,22 +272,32 @@ const lessons = computed(() =>
 
 const attachDialogModel = ref(false)
 const linkLessonId = ref()
-const link = ref()
-const linkName = ref()
+const link = ref('')
+const linkName = ref('')
+const isCompletedEditMode = ref(false)
 
-const openAttachLink = row => {
+const openAttachLink = (row, completed = false) => {
+	isCompletedEditMode.value = completed
+
+	const strLink = completed ? row.completed_task_link : row.task_link
+	const strLinkName = completed
+		? row.completed_task_link_name
+		: row.task_link_name
+
 	if (!editMode.value) {
-		return window.open(row.task_link, '_blank')
+		return window.open(strLink, '_blank')
 	}
 
 	linkLessonId.value = row.id
-	link.value = row.task_link
-	linkName.value = row.task_link_name
+	link.value = strLink
+	linkName.value = strLinkName
 	attachDialogModel.value = true
 }
 
-const getAttachLabel = row => {
-	const linkName = row['task_link_name']
+const getAttachLabel = (row, completed = false) => {
+	const linkName = completed
+		? row['completed_task_link_name']
+		: row['task_link_name']
 
 	if (linkName) return linkName
 
@@ -277,12 +305,20 @@ const getAttachLabel = row => {
 }
 
 const onSaveLink = payload => {
-	console.log(payload)
+	let newLesson = null
 
-	const newLesson = {
-		...lessons.value.filter(lesson => lesson.id === linkLessonId.value)?.[0],
-		task_link: payload.link,
-		task_link_name: payload.linkName,
+	if (isCompletedEditMode.value) {
+		newLesson = {
+			...lessons.value.filter(lesson => lesson.id === linkLessonId.value)?.[0],
+			completed_task_link: payload.link,
+			completed_task_link_name: payload.linkName,
+		}
+	} else {
+		newLesson = {
+			...lessons.value.filter(lesson => lesson.id === linkLessonId.value)?.[0],
+			task_link: payload.link,
+			task_link_name: payload.linkName,
+		}
 	}
 
 	const res = lessonsService.editLesson(newLesson).then(() => {

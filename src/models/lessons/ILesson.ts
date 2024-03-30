@@ -7,6 +7,8 @@ export interface ILesson {
 	chapter: Key
 	task_link: string
 	task_link_name: string
+	completed_task_link: string
+	completed_task_link_name: string
 	topic: string
 	semester: number
 }
