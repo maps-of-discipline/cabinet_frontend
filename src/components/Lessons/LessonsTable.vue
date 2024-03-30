@@ -90,8 +90,6 @@
 				headerClass="column-header_center"
 				bodyClass="column-cell_center"
 				field="id_type_control"
-				header="Вид"
-				headerStyle="width: 110px"
 			>
 				<template #body="{ data, field }">
 					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->

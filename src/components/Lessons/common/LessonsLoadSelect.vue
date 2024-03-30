@@ -65,19 +65,8 @@ const selectedControlId = computed({
 
 <style lang="scss">
 .LessonsLoadSelect {
-	width: 70px;
-	height: 34px;
-
 	&__value {
 		text-transform: uppercase;
-	}
-
-	&.editMode {
-		width: 100%;
-
-		.p-dropdown-trigger {
-			display: flex;
-		}
 	}
 
 	&.p-disabled {
@@ -89,8 +78,19 @@ const selectedControlId = computed({
 	}
 
 	.p-dropdown-trigger {
+		color: #fff;
 		display: none;
 		width: 2rem;
+	}
+
+	&.editMode {
+		.p-dropdown-trigger {
+			display: flex;
+		}
+
+		.p-dropdown-label {
+			padding: 8px 0px 8px 12px;
+		}
 	}
 }
 </style>
