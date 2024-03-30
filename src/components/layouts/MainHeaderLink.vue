@@ -56,7 +56,7 @@ defineProps({
 	color: $menu-link-color;
 	display: flex;
 	align-items: center;
-	border-radius: $border-radius-main;
+	border-radius: $borderRadius;
 	padding: 12px 16px;
 	transition: all 0.25s ease;
 

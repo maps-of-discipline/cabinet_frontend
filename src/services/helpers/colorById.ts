@@ -1,13 +1,13 @@
 const colorById = {
-	1: '#EFD334',
-	2: '#ED760E',
-	3: '#FC6C85',
-	4: '#20B2AA',
-	5: '#003153',
-	6: '#EFD334',
-	7: '#ED760E',
-	8: '#FC6C85',
-	9: '#EFD334',
+	1: '#5F6DEC',
+	2: '#A85FEC',
+	3: '#EE9E44',
+	4: '#EC5F6B',
+	5: '#3CD288',
+	6: '#EC5FB6',
+	7: '#40C5C5',
+	8: '#9CBBFF',
+	9: '#5F6DEC',
 }
 
 export default colorById

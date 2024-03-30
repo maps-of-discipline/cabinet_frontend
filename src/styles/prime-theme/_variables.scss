@@ -1,3 +1,5 @@
+@import '../variables';
+
 $colors: (
     "blue": #3b82f6,
     "green": #22c55e,
@@ -178,12 +180,12 @@ $infoButtonTextActiveColor: $infoButtonTextColor !default;
 $infoButtonActiveBorderColor: #bae6fd !default;
 $infoButtonFocusShadow: none;
 
-$successButtonBg: #4ade80 !default;
-$successButtonTextColor: #052e16 !default;
-$successButtonBorder: 1px solid #4ade80 !default;
-$successButtonHoverBg: #86efac !default;
+$successButtonBg: #53a653 !default;
+$successButtonTextColor: #fff !default;
+$successButtonBorder: 1px solid #53a653 !default;
+$successButtonHoverBg: #53a653 !default;
 $successButtonTextHoverColor: $successButtonTextColor !default;
-$successButtonHoverBorderColor: #86efac !default;
+$successButtonHoverBorderColor: #53a653 !default;
 $successButtonActiveBg: #bbf7d0 !default;
 $successButtonTextActiveColor: $successButtonTextColor !default;
 $successButtonActiveBorderColor: #bbf7d0 !default;
@@ -870,10 +872,10 @@ $imagePreviewActionIconFontSize: 1.5rem !default;
 $imagePreviewActionIconBorderRadius: 50% !default;
 
 :root {
-    font-family: "Inter var", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variation-settings: normal;
-    --font-family: "Inter var", sans-serif;
+    --font-family: "Montserrat", sans-serif;
     --font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     --text-color: #{$shade000};
     --text-color-secondary: #{$shade400};

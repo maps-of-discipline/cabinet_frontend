@@ -38,6 +38,8 @@ const setCaretToEnd = () => {
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .CellEditor {
 	width: 100%;
 	font-size: 1rem;
@@ -46,15 +48,15 @@ const setCaretToEnd = () => {
 	resize: none;
 	position: relative;
 	z-index: 2;
-	padding: 0.5rem;
+	padding: $tableHeaderCellPadding;
 	display: flex;
 	align-items: center;
 	border: none;
 	outline: none;
-	box-shadow: 0px 0px 0px 1px #3f3f46;
+	box-shadow: 0px 0px 0px 1px transparent;
 
 	&:focus {
-		box-shadow: 0px 0px 0px 1px #fbbf24;
+		box-shadow: 0px 0px 0px 1px $blue;
 	}
 }
 </style>

@@ -1,6 +1,6 @@
-import './assets/main.css'
 import 'primeicons/primeicons.css'
 import '@styles/prime-theme/theme.scss'
+import '@styles/main.scss'
 import '@mdi/font/css/materialdesignicons.css'
 
 import { createApp } from 'vue'

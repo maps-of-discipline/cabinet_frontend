@@ -1,14 +1,46 @@
-/* Global */
-$border-radius-main: 8px;
+// project colors
+$temp1: #3a3a3a;
+$temp2: #363636;
+$temp3: #2e2e2e;
+$temp4: #252525;
+$temp5: #222222;
 
-/* Menu */
-$menu-bg: #0d0d0d;
+$blue: #90b3e7;
 
-$menu-link-color: #888;
+// overwriting primevue variables
+$shade000: #ffffff;
+$shade50: #fafafa;
+$shade100: #f4f4f4;
+$shade200: #e4e4e4;
+$shade300: #d4d4d4;
+$shade400: #a1a1a1;
+$shade500: #717171;
+$shade600: #525252;
 
-$menu-link-hover-color: #fff;
-$menu-link-hover-bg: #373737;
+$shade700: $temp1;
+$shade800: $temp2;
+$shade900: $temp3;
+$shade950: $temp4;
+$shade1000: $temp5;
 
-/* View */
+//input field (e.g. inputtext, spinner, inputmask)
+$inputBorder: 1px solid transparent !default;
+$inputHoverBorderColor: transparent !default;
+$inputFocusBorderColor: transparent !default;
 
-$view-bg: #0d0d0d
+// table
+
+$tableBodyRowEvenBg: $shade950;
+
+$tableHeaderCellPadding: 0.75rem 1rem;
+
+
+$borderRadius: 7px;
+
+$view-bg: $shade900;
+
+$menu-bg: $shade900;
+$menu-link-color: $shade400;
+$menu-link-hover-color: $shade000;
+$menu-link-hover-bg: $shade950;
+

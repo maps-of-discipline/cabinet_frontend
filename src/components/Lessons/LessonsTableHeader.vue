@@ -2,19 +2,19 @@
 	<div class="LessonsTableHeader">
 		<div class="LessonsTableHeader__left">
 			<div class="LessonsTableHeader__title">{{ title }}</div>
-			<SemesterSelect />
 		</div>
 
 		<div class="LessonsTableHeader__right">
 			<Button
 				v-if="editMode"
 				style="height: 34px"
-				severity="success"
-				outlined=""
 				icon="mdi mdi-plus"
+				severity="success"
 				label="Добавить тему"
 				@click="onAddButton"
 			/>
+
+			<SemesterSelect />
 
 			<div class="LessonsTableHeader__editMode">
 				<ViewSelect />
@@ -72,7 +72,7 @@ const onAddButton = () => {
 	padding: 0 16px;
 
 	background-color: $view-bg;
-	border-radius: $border-radius-main;
+	border-radius: $borderRadius;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

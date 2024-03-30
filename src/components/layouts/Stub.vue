@@ -16,6 +16,6 @@
 	align-items: center;
 	justify-content: center;
 	background-color: $view-bg;
-	border-radius: $border-radius-main;
+	border-radius: $borderRadius;
 }
 </style>

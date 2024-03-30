@@ -14,7 +14,5 @@ import LessonsTable from '@components/Lessons/LessonsTable.vue'
 .Lessons {
 	width: 100%;
 	height: 100%;
-	/* background-color: $view-bg;
-	border-radius: $border-radius-main; */
 }
 </style>

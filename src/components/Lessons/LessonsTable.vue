@@ -39,7 +39,7 @@
 					<Column
 						header="Вид"
 						class="column-header--center"
-						headerStyle="width: 110px"
+						headerStyle="width: 120px"
 						:colspan="1"
 					/>
 
@@ -61,7 +61,8 @@
 
 					<Column header="Тема" :colspan="1" />
 					<Column header="Задание" :colspan="1" />
-					<Column v-if="editMode" :colspan="1" headerStyle="width: 75px" />
+
+					<Column :colspan="1" headerStyle="width: 75px" />
 				</Row>
 			</ColumnGroup>
 
@@ -159,15 +160,17 @@
 				</template>
 			</Column>
 
-			<Column v-if="editMode">
+			<Column>
 				<template #body="{ data, field }">
-					<Button
-						icon="mdi mdi-delete"
-						severity="danger"
-						text
-						rounded
-						@click="onDeleteRow(data.id)"
-					/>
+					<div v-if="editMode">
+						<Button
+							icon="mdi mdi-delete"
+							severity="danger"
+							text
+							rounded
+							@click="onDeleteRow(data.id)"
+						/>
+					</div>
 				</template>
 			</Column>
 
@@ -346,7 +349,7 @@ if (aupCode && idDiscipline) {
 	&__empty {
 		height: 100%;
 		background-color: $view-bg;
-		border-radius: $border-radius-main;
+		border-radius: $borderRadius;
 		display: grid;
 		place-items: center;
 		font-size: 1.2rem;
@@ -383,10 +386,10 @@ if (aupCode && idDiscipline) {
 		height: $row-height;
 	}
 
-	.p-datatable-tbody td,
+	/* .p-datatable-tbody td,
 	th {
 		padding: 0.5rem;
-	}
+	} */
 
 	.p-rowgroup-header {
 		padding: 0;
