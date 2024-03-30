@@ -34,7 +34,7 @@ const items = ref([
 				icon: 'mdi-book-open-page-variant',
 			},
 			{
-				label: 'Темы занятий',
+				label: 'Задания',
 				route: '/lessons',
 				icon: 'mdi-table',
 			},
