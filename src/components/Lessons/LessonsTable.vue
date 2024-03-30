@@ -307,7 +307,7 @@ const getSumLoadByControlType = id => {
 /* FIX PRIMEVUE BUG
    https://github.com/primefaces/primevue/issues/3685
 */
-const addColspanToHeader = () => {
+/* const addColspanToHeader = () => {
 	const groupHeaders = document.querySelectorAll(
 		'table tbody .p-rowgroup-header td'
 	)
@@ -322,7 +322,7 @@ watch([editMode, loadViewMode, nestedViewMode], () => {
 	setTimeout(() => {
 		addColspanToHeader()
 	}, 0)
-})
+}) */
 /*  */
 
 if (aupCode && idDiscipline) {
