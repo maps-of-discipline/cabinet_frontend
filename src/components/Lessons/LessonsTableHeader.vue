@@ -77,6 +77,10 @@ const onAddButton = () => {
 	justify-content: space-between;
 	align-items: center;
 
+	&__title {
+		font-size: 1.2rem;
+	}
+
 	&__right,
 	&__left {
 		display: flex;
