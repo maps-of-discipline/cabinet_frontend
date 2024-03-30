@@ -10,7 +10,7 @@
 				style="height: 34px"
 				icon="mdi mdi-plus"
 				severity="success"
-				label="Добавить тему"
+				label="Добавить задание"
 				@click="onAddButton"
 			/>
 
