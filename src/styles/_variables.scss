@@ -6,7 +6,9 @@ $temp4: #252525;
 $temp5: #222222;
 $temp6: #1d1d1d;
 
-$blue: #90b3e7;
+$blue000: #90b3e7;
+$blue100: #7c88f5;
+$blue200: hsl(234, 86%, 69%);
 
 // overwriting primevue variables
 $shade000: #ffffff;
@@ -26,14 +28,24 @@ $shade1000: $temp5;
 $shade1050: $temp6;
 
 //input field (e.g. inputtext, spinner, inputmask)
-$inputBorder: 1px solid transparent !default;
-$inputHoverBorderColor: transparent !default;
-$inputFocusBorderColor: transparent !default;
+$inputBorder: 1px solid transparent;
+$inputHoverBorderColor: transparent;
+$inputFocusBorderColor: transparent;
+
+// button
+
+$buttonBg: $blue100;
+$buttonTextColor: $shade000;
+$buttonBorder: 1px solid transparent;
+$buttonHoverBg: $blue200;
+$buttonTextHoverColor: $shade000;
+$buttonHoverBorderColor: $blue200;
+$buttonActiveBg: $blue200;
+$buttonTextActiveColor: $shade000;
+$buttonActiveBorderColor: $blue200;
 
 // table
-
 $tableBodyRowEvenBg: $shade950;
-
 $tableHeaderCellPadding: 0.75rem 1rem;
 
 
