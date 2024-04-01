@@ -11,4 +11,5 @@ export interface ILesson {
 	completed_task_link_name: string
 	topic: string
 	semester: number
+	study_group_id: number
 }

@@ -256,7 +256,10 @@ const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
 const onAddRow = () =>
-	lessonsService.createLocalLesson(lessonsStore.selectedSemester)
+	lessonsService.createLocalLesson(
+		lessonsStore.selectedSemester,
+		lessonsStore.selectedGroup.id
+	)
 const onDeleteRow = id => lessonsService.deleteLesson(id)
 const onRowClick = e => console.log({ ...e.data })
 
@@ -264,7 +267,9 @@ const expandedRowGroups = ref()
 
 const lessons = computed(() =>
 	lessonsService.lessons.items.filter(
-		lesson => lesson.semester === lessonsStore.selectedSemester
+		lesson =>
+			lesson.semester === lessonsStore.selectedSemester &&
+			lesson.study_group_id === lessonsStore.selectedGroup.id
 	)
 )
 
@@ -367,6 +372,8 @@ if (aupCode && idDiscipline) {
 		lessonsStore.setSemester(
 			+Object.keys(lessonsService.controlTypes.value)?.[0]
 		)
+
+		lessonsStore.setGroup(lessonsService.groups.value?.[0])
 	})
 }
 </script>

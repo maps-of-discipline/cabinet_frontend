@@ -2,7 +2,7 @@
 	<Dropdown
 		v-model="selectedSemestr"
 		:options="availableSemesters"
-		:optionLabel="test"
+		:optionLabel="getLabel"
 		placeholder="Семестр"
 	/>
 </template>
@@ -29,7 +29,7 @@ const availableSemesters = computed(() =>
 	Object.keys(lessonsService.controlTypes.value)
 )
 
-const test = value => {
+const getLabel = value => {
 	return semesterNamesByNum[+value]
 }
 </script>

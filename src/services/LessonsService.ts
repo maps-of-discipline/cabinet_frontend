@@ -9,11 +9,16 @@ import type {
 import { reactive, ref } from 'vue'
 
 import Api from '@services/Api'
+import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 
 class LessonsService {
 	/* TODO Сделать MapID структуру для прямого доступа, редактирования, удаления и т.д. */
 	lessons: { items: ILesson[] } = reactive({
 		items: [],
+	})
+
+	groups: { value: IStudyGroup[] } = reactive({
+		value: [],
 	})
 
 	controlTypes: { value: ILessonControls } = reactive({
@@ -37,6 +42,7 @@ class LessonsService {
 		if (!data) return []
 
 		this.setLessonItems(data.topics)
+		this.setStudyGroups(data.groups)
 
 		this.aup = aup
 		this.disciplineId = id
@@ -50,6 +56,10 @@ class LessonsService {
 
 	setLessonItems(lessons: ILesson[]) {
 		this.lessons.items = lessons
+	}
+
+	setStudyGroups(groups: IStudyGroup[]) {
+		this.groups.value = groups
 	}
 
 	async editLesson(lesson: ILesson) {
@@ -89,7 +99,7 @@ class LessonsService {
         Блок методов для работы с локальным состоянием     
     */
 
-	createLocalLesson(semester: number) {
+	createLocalLesson(semester: number, study_group_id: number) {
 		if (!this.rpdId) return
 
 		this.lessons.items.push({
@@ -103,6 +113,7 @@ class LessonsService {
 			completed_task_link_name: '',
 			topic: '',
 			semester,
+			study_group_id,
 		})
 	}
 

@@ -16,6 +16,11 @@ export const useLessonsStore = defineStore('lessons', () => {
 		selectedSemester.value = +semestr
 	}
 
+	const selectedGroup: Ref<string | null> = ref(null)
+	function setGroup(group: string) {
+		selectedGroup.value = group
+	}
+
 	const viewMode: Ref<ViewModesEnum> = ref(ViewModesEnum.Simple)
 	const setViewMode = (mode: ViewModesEnum) => {
 		viewMode.value = mode
@@ -35,5 +40,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 		setViewMode,
 		loadViewMode,
 		switchLoadViewMode,
+
+		selectedGroup,
+		setGroup,
 	}
 })

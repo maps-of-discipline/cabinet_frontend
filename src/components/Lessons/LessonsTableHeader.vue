@@ -14,6 +14,7 @@
 				@click="onAddButton"
 			/>
 
+			<GroupSelect />
 			<SemesterSelect />
 
 			<div class="LessonsTableHeader__editMode">
@@ -38,6 +39,7 @@ import { useLessonsStore } from '@/stores/lessons'
 
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
+import GroupSelect from '@components/Lessons/GroupSelect.vue'
 import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
 
 const emit = defineEmits(['add'])
