@@ -4,6 +4,7 @@
 
 		<DataTable
 			class="LessonsTable"
+			ref="table"
 			v-model:expandedRowGroups="expandedRowGroups"
 			:class="{ isEmpty }"
 			:value="lessons"
@@ -219,7 +220,7 @@ import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
 
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const lessonsStore = useLessonsStore()
@@ -251,7 +252,18 @@ const route = useRoute()
 const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
-const onAddRow = () => lessonsStore.createLocalLesson()
+const table = ref()
+const onAddRow = async () => {
+	lessonsStore.createLocalLesson()
+
+	await nextTick()
+	const scrollTableEl = document.querySelector('.p-datatable-wrapper')
+
+	scrollTableEl.scrollTo({
+		top: scrollTableEl.scrollHeight,
+		behavior: 'smooth',
+	})
+}
 const onDeleteRow = id => lessonsStore.deleteLesson(id)
 const onRowClick = e => console.log({ ...e.data })
 

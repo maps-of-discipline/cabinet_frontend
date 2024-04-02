@@ -10,7 +10,7 @@
 		placeholder=""
 		checkmark
 		:highlightOnSelect="false"
-		:class="{ editMode }"
+		:class="{ editMode, isEmpty: !selectedControlId }"
 		:style="{ backgroundColor }"
 	>
 		<template #value="{ value }">
@@ -91,6 +91,11 @@ const selectedControlId = computed({
 		.p-dropdown-label {
 			padding: 8px 0px 8px 12px;
 		}
+	}
+
+	&.isEmpty {
+		height: 37px;
+		width: 80px;
 	}
 }
 </style>
