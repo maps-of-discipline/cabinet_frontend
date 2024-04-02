@@ -85,7 +85,10 @@
 				headerStyle="width: 45px"
 			>
 				<template #body="{ data, index }">
-					<span v-if="!lessonsStore.isLocalLesson(data.id)">
+					<span
+						v-if="!lessonsStore.isLocalLesson(data.id)"
+						class="LessonsTable__index"
+					>
 						{{ index + 1 }}
 					</span>
 					<CloudIconNotSaved v-else />
@@ -394,6 +397,10 @@ if (aupCode && idDiscipline) {
 		padding: 0 25px;
 		font-weight: bold;
 		display: inline;
+	}
+
+	&__index {
+		user-select: none;
 	}
 
 	&__chip {
