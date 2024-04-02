@@ -1,8 +1,7 @@
 <template>
 	<div class="LessonsTableView">
-		<LessonsTableHeader :title="lessonsService.title" @add="onAddRow" />
+		<LessonsTableHeader :title="lessonsStore.title" @add="onAddRow" />
 
-		<!-- v-if="lessonsService.lessons.length || isLoadingLessons" -->
 		<DataTable
 			class="LessonsTable"
 			v-model:expandedRowGroups="expandedRowGroups"
@@ -215,8 +214,6 @@ import { useLessonsStore } from '@/stores/lessons'
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import lessonsService from '@services/LessonsService'
-
 const lessonsStore = useLessonsStore()
 
 const editMode = computed(() => lessonsStore.editMode)
@@ -231,7 +228,7 @@ const onCellEditComplete = event => {
 	if (data[field] === newValue) return
 
 	const newLesson = Object.assign({}, newData)
-	const res = lessonsService.editLesson(newLesson)
+	const res = lessonsStore.editLesson(newLesson)
 
 	if (res) {
 		data[field] = newValue
@@ -242,7 +239,7 @@ const onChangeControlType = (data, id) => {
 	const newLesson = Object.assign({}, data)
 	newLesson.id_type_control = id
 
-	const res = lessonsService.editLesson(newLesson)
+	const res = lessonsStore.editLesson(newLesson)
 
 	if (res) {
 		data.id_type_control = id
@@ -256,20 +253,21 @@ const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
 const onAddRow = () =>
-	lessonsService.createLocalLesson(
+	lessonsStore.createLocalLesson(
 		lessonsStore.selectedSemester,
 		lessonsStore.selectedGroup.id
 	)
-const onDeleteRow = id => lessonsService.deleteLesson(id)
+
+const onDeleteRow = id => lessonsStore.deleteLesson(id)
 const onRowClick = e => console.log({ ...e.data })
 
 const expandedRowGroups = ref()
 
 const lessons = computed(() =>
-	lessonsService.lessons.items.filter(
+	lessonsStore.lessons.filter(
 		lesson =>
 			lesson.semester === lessonsStore.selectedSemester &&
-			lesson.study_group_id === lessonsStore.selectedGroup.id
+			lesson.study_group_id === lessonsStore.selectedGroup?.id
 	)
 )
 
@@ -324,7 +322,7 @@ const onSaveLink = payload => {
 		}
 	}
 
-	const res = lessonsService.editLesson(newLesson).then(() => {
+	const res = lessonsStore.editLesson(newLesson).then(() => {
 		attachDialogModel.value = false
 	})
 }
@@ -333,11 +331,11 @@ const rowsCount = computed(() => lessons.value.length)
 const isEmpty = computed(() => rowsCount.value === 0)
 
 const controlTypes = computed(
-	() => lessonsService.controlTypes.value[lessonsStore.selectedSemester]
+	() => lessonsStore.controlTypes[lessonsStore.selectedSemester]
 )
 
 const getSumLoadByControlType = id => {
-	return lessonsService.lessons.items.reduce((acc, value) => {
+	return lessonsStore.lessons.value.reduce((acc, value) => {
 		if (id === value.id_type_control) return acc + 2
 		return acc
 	}, 0)
@@ -367,13 +365,11 @@ watch([editMode, loadViewMode, nestedViewMode], () => {
 if (aupCode && idDiscipline) {
 	isLoadingLessons.value = true
 
-	lessonsService.fetchLessons(aupCode, idDiscipline).then(data => {
+	lessonsStore.fetchLessons(aupCode, idDiscipline).then(data => {
 		isLoadingLessons.value = false
-		lessonsStore.setSemester(
-			+Object.keys(lessonsService.controlTypes.value)?.[0]
-		)
+		lessonsStore.setSemester(lessonsStore.semesters.value)
 
-		lessonsStore.setGroup(lessonsService.groups.value?.[0])
+		lessonsStore.setGroup(lessonsStore.groups.value?.[0])
 	})
 }
 </script>

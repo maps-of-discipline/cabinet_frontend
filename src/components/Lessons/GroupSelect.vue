@@ -1,7 +1,7 @@
 <template>
 	<Dropdown
 		v-model="selectedGroup"
-		:options="availableGroups"
+		:options="lessonsStore.groups"
 		:optionLabel="getLabel"
 		placeholder="Группа"
 	/>
@@ -10,7 +10,6 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useLessonsStore } from '@/stores/lessons'
-import lessonsService from '@services/LessonsService'
 
 const lessonsStore = useLessonsStore()
 
@@ -24,8 +23,6 @@ const selectedGroup = computed({
 		lessonsStore.setGroup(val)
 	},
 })
-
-const availableGroups = computed(() => lessonsService.groups.value)
 
 const getLabel = value => {
 	return value.title
