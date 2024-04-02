@@ -6,7 +6,7 @@
 			class="LessonsTable"
 			ref="table"
 			v-model:expandedRowGroups="expandedRowGroups"
-			:class="{ isEmpty }"
+			:class="{ isEmpty, editMode: lessonsStore.editMode }"
 			:value="lessons"
 			:loading="lessonsStore.isLoadingLessons"
 			stripedRows
@@ -386,6 +386,10 @@ if (aupCode && idDiscipline) {
 		display: inline;
 	}
 
+	&__chip {
+		font-size: 14px;
+	}
+
 	.column-header {
 		&--center {
 			.p-column-header-content {
@@ -453,8 +457,10 @@ if (aupCode && idDiscipline) {
 		}
 	}
 
-	&__chip {
-		font-size: 14px;
+	&.editMode {
+		.p-editable-column:not(.p-cell-editing) {
+			cursor: pointer;
+		}
 	}
 }
 
