@@ -2,7 +2,7 @@
 	<div
 		class="LessonsLoadSelect__wrapper"
 		v-tooltip="{
-			value: selectedControl.name,
+			value: selectedControl?.name,
 		}"
 	>
 		<Dropdown
@@ -21,7 +21,7 @@
 		>
 			<template #value="{ value }">
 				<span class="LessonsLoadSelect__value">{{
-					getControlType(value).shortname
+					getControlType(value)?.shortname
 				}}</span>
 			</template>
 		</Dropdown>
