@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppHeader: typeof import('./src/components/common/AppHeader/AppHeader.vue')['default']
+    AttachLinkButton: typeof import('./src/components/Lessons/common/AttachLinkButton.vue')['default']
     AttachLinkDialog: typeof import('./src/components/Lessons/AttachLinkDialog.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     Button: typeof import('primevue/button')['default']

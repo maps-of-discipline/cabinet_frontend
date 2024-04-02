@@ -165,7 +165,7 @@
 			<!-- Задание -->
 			<Column field="task_link" header="Задание">
 				<template #body="{ data, field }">
-					<Button
+					<AttachLinkButton
 						v-if="data[field] || lessonsStore.editMode"
 						:label="getAttachLabel(data)"
 						@click="openAttachLink(data)"
@@ -176,7 +176,7 @@
 			<!-- Загрузка задания -->
 			<Column field="completed_task_link" header="Загрузка задания">
 				<template #body="{ data, field }">
-					<Button
+					<AttachLinkButton
 						v-if="data[field] || lessonsStore.editMode"
 						:label="getAttachLabel(data, true)"
 						@click="openAttachLink(data, true)"
@@ -217,6 +217,7 @@ import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
+import AttachLinkButton from '@components/Lessons/common/AttachLinkButton.vue'
 
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'
@@ -301,9 +302,7 @@ const getAttachLabel = (row, completed = false) => {
 		? row['completed_task_link_name']
 		: row['task_link_name']
 
-	if (linkName) return linkName
-
-	return 'Прикрепить'
+	return linkName || null
 }
 
 const onSaveLink = payload => {
