@@ -77,8 +77,11 @@
 				bodyClass="column-cell-index"
 				headerStyle="width: 45px"
 			>
-				<template #body="{ index }">
-					{{ index + 1 }}
+				<template #body="{ data, index }">
+					<span v-if="!lessonsStore.isLocalLesson(data.id)">
+						{{ index + 1 }}
+					</span>
+					<CloudIconNotSaved v-else />
 				</template>
 
 				<template v-if="lessonsStore.loadViewMode" #footer>{{
@@ -212,6 +215,7 @@
 import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
+import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
 
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'

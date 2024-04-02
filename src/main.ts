@@ -11,9 +11,11 @@ import router from './router'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple'
+import Tooltip from 'primevue/tooltip'
 
 const app = createApp(App)
 
+app.directive('tooltip', Tooltip)
 app.directive('ripple', Ripple)
 app.use(createPinia())
 app.use(router)

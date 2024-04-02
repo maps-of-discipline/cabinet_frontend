@@ -12,6 +12,7 @@ declare module 'vue' {
     Avatar: typeof import('primevue/avatar')['default']
     Button: typeof import('primevue/button')['default']
     CellEditor: typeof import('./src/components/Lessons/common/CellEditor.vue')['default']
+    CloudIconNotSaved: typeof import('./src/components/Lessons/common/CloudIconNotSaved.vue')['default']
     Column: typeof import('primevue/column')['default']
     ColumnGroup: typeof import('primevue/columngroup')['default']
     copy: typeof import('./src/components/Lessons/SemesterSelect copy.vue')['default']
