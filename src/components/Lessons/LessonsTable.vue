@@ -7,7 +7,7 @@
 			v-model:expandedRowGroups="expandedRowGroups"
 			:class="{ isEmpty }"
 			:value="lessons"
-			:loading="isLoadingLessons"
+			:loading="lessonsStore.isLoadingLessons"
 			stripedRows
 			scrollable
 			:rowGroupMode="nestedViewMode ? 'subheader' : null"
@@ -16,7 +16,7 @@
 			scrollHeight="flex"
 			:rowClass="() => 'LessonsTable__row'"
 			dataKey="id"
-			:editMode="editMode ? 'cell' : null"
+			:editMode="lessonsStore.editMode ? 'cell' : null"
 			@cell-edit-complete="onCellEditComplete"
 			@row-click="onRowClick"
 		>
@@ -43,8 +43,8 @@
 					/>
 
 					<Column
-						v-if="loadViewMode"
-						v-for="controlType in controlTypes"
+						v-if="lessonsStore.loadViewMode"
+						v-for="controlType in lessonsStore.controlTypesBySemester"
 						:header="controlType.shortname.toUpperCase()"
 						class="column-header--center"
 						headerStyle="width: 50px"
@@ -81,7 +81,9 @@
 					{{ index + 1 }}
 				</template>
 
-				<template v-if="loadViewMode" #footer>{{ rowsCount }}</template>
+				<template v-if="lessonsStore.loadViewMode" #footer>{{
+					lessonsStore.rowsCount
+				}}</template>
 			</Column>
 
 			<!-- Вид -->
@@ -93,21 +95,21 @@
 				<template #body="{ data, field }">
 					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
 					<LessonsLoadSelect
-						:editMode="editMode"
-						:controlTypes="controlTypes"
+						:editMode="lessonsStore.editMode"
+						:controlTypes="lessonsStore.controlTypesBySemester"
 						:item="data"
 						@change="id => onChangeControlType(data, id)"
 					/>
 				</template>
 
-				<template v-if="loadViewMode" #footer>
+				<template v-if="lessonsStore.loadViewMode" #footer>
 					<div>Сумма:</div>
 				</template>
 			</Column>
 
 			<Column
-				v-if="loadViewMode"
-				v-for="controlType in controlTypes"
+				v-if="lessonsStore.loadViewMode"
+				v-for="controlType in lessonsStore.controlTypesBySemester"
 				headerClass="column-header-index"
 				bodyClass="column-cell-index"
 				headerStyle="width: 65px"
@@ -119,7 +121,11 @@
 				</template>
 
 				<template #footer>
-					<div>{{ getSumLoadByControlType(controlType.id_type_control) }}</div>
+					<div>
+						{{
+							lessonsStore.getSumLoadByControlType(controlType.id_type_control)
+						}}
+					</div>
 				</template>
 			</Column>
 
@@ -156,7 +162,7 @@
 			<Column field="task_link" header="Задание">
 				<template #body="{ data, field }">
 					<Button
-						v-if="data[field] || editMode"
+						v-if="data[field] || lessonsStore.editMode"
 						:label="getAttachLabel(data)"
 						@click="openAttachLink(data)"
 					/>
@@ -167,7 +173,7 @@
 			<Column field="completed_task_link" header="Загрузка задания">
 				<template #body="{ data, field }">
 					<Button
-						v-if="data[field] || editMode"
+						v-if="data[field] || lessonsStore.editMode"
 						:label="getAttachLabel(data, true)"
 						@click="openAttachLink(data, true)"
 					/>
@@ -177,7 +183,7 @@
 			<!-- Удаление -->
 			<Column>
 				<template #body="{ data, field }">
-					<div v-if="editMode">
+					<div v-if="lessonsStore.editMode">
 						<Button
 							icon="mdi mdi-delete"
 							severity="danger"
@@ -190,7 +196,7 @@
 			</Column>
 
 			<template #empty>
-				<div v-if="!isLoadingLessons">Записи отсутствуют.</div>
+				<div v-if="!lessonsStore.isLoadingLessons">Записи отсутствуют.</div>
 			</template>
 		</DataTable>
 		<AttachLinkDialog
@@ -203,12 +209,10 @@
 </template>
 
 <script setup>
-import Stub from '@components/layouts/Stub.vue'
 import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 
-import ControlIdsEnum from '@models/lessons/ControlIdsEnum'
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'
 import { ref, computed, watch } from 'vue'
@@ -216,8 +220,6 @@ import { useRoute } from 'vue-router'
 
 const lessonsStore = useLessonsStore()
 
-const editMode = computed(() => lessonsStore.editMode)
-const loadViewMode = computed(() => lessonsStore.loadViewMode)
 const nestedViewMode = computed(
 	() => lessonsStore.viewMode === ViewModesEnum.Nested
 )
@@ -238,38 +240,21 @@ const onCellEditComplete = event => {
 const onChangeControlType = (data, id) => {
 	const newLesson = Object.assign({}, data)
 	newLesson.id_type_control = id
-
-	const res = lessonsStore.editLesson(newLesson)
-
-	if (res) {
-		data.id_type_control = id
-	}
+	lessonsStore.editLesson(newLesson)
 }
-
-const isLoadingLessons = ref(false)
 
 const route = useRoute()
 const aupCode = route.query?.aup
 const idDiscipline = route.query?.id
 
-const onAddRow = () =>
-	lessonsStore.createLocalLesson(
-		lessonsStore.selectedSemester,
-		lessonsStore.selectedGroup.id
-	)
-
+const onAddRow = () => lessonsStore.createLocalLesson()
 const onDeleteRow = id => lessonsStore.deleteLesson(id)
 const onRowClick = e => console.log({ ...e.data })
 
 const expandedRowGroups = ref()
 
-const lessons = computed(() =>
-	lessonsStore.lessons.filter(
-		lesson =>
-			lesson.semester === lessonsStore.selectedSemester &&
-			lesson.study_group_id === lessonsStore.selectedGroup?.id
-	)
-)
+const lessons = computed(() => lessonsStore.filteredLessons)
+const isEmpty = computed(() => lessonsStore.rowsCount === 0)
 
 const attachDialogModel = ref(false)
 const linkLessonId = ref()
@@ -285,7 +270,7 @@ const openAttachLink = (row, completed = false) => {
 		? row.completed_task_link_name
 		: row.task_link_name
 
-	if (!editMode.value) {
+	if (!lessonsStore.editMode) {
 		return window.open(strLink, '_blank')
 	}
 
@@ -327,20 +312,6 @@ const onSaveLink = payload => {
 	})
 }
 
-const rowsCount = computed(() => lessons.value.length)
-const isEmpty = computed(() => rowsCount.value === 0)
-
-const controlTypes = computed(
-	() => lessonsStore.controlTypes[lessonsStore.selectedSemester]
-)
-
-const getSumLoadByControlType = id => {
-	return lessonsStore.lessons.value.reduce((acc, value) => {
-		if (id === value.id_type_control) return acc + 2
-		return acc
-	}, 0)
-}
-
 /* FIX PRIMEVUE BUG
    https://github.com/primefaces/primevue/issues/3685
 */
@@ -355,7 +326,7 @@ const getSumLoadByControlType = id => {
 	}
 }
 
-watch([editMode, loadViewMode, nestedViewMode], () => {
+watch([lessonsStore.editMode, lessonsStore.loadViewMode, nestedViewMode], () => {
 	setTimeout(() => {
 		addColspanToHeader()
 	}, 0)
@@ -363,14 +334,7 @@ watch([editMode, loadViewMode, nestedViewMode], () => {
 /*  */
 
 if (aupCode && idDiscipline) {
-	isLoadingLessons.value = true
-
-	lessonsStore.fetchLessons(aupCode, idDiscipline).then(data => {
-		isLoadingLessons.value = false
-		lessonsStore.setSemester(lessonsStore.semesters.value)
-
-		lessonsStore.setGroup(lessonsStore.groups.value?.[0])
-	})
+	lessonsStore.fetchLessons(aupCode, idDiscipline)
 }
 </script>
 

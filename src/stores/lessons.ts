@@ -6,7 +6,6 @@ import type {
 	ILessonControls,
 } from '@models/lessons/IFetchLessonControls'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
-
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
 import type { Ref } from 'vue'
@@ -14,6 +13,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import Api from '@services/Api'
+import generateEmptyLesson from '@services/helpers/lessons/generateEmptyLesson'
 
 export const useLessonsStore = defineStore('lessons', () => {
 	const lessons: Ref<ILesson[]> = ref([])
@@ -27,11 +27,41 @@ export const useLessonsStore = defineStore('lessons', () => {
 	const rpdId: Ref<Key | null> = ref(null)
 	const title: Ref<string> = ref('')
 
+	const isLoadingLessons: Ref<boolean> = ref(false)
+	const isLoadingControlTypes: Ref<boolean> = ref(false)
+
 	const setLessonItems = (data: ILesson[]) => (lessons.value = data)
 	const setStudyGroups = (data: IStudyGroup[]) => (groups.value = data)
 	const setControlTypes = (data: ILessonControls) => (controlTypes.value = data)
 
 	const semesters = computed(() => Object.keys(controlTypes.value))
+
+	const filteredLessons = computed(() => {
+		if (selectedGroup.value === null || selectedSemester.value === null) return
+
+		const semester: number = selectedSemester.value
+		const group: IStudyGroup = selectedGroup.value
+
+		return lessons.value.filter(
+			lesson =>
+				lesson.semester === semester && lesson.study_group_id === group.id
+		)
+	})
+
+	const rowsCount = computed(() => filteredLessons.value?.length)
+
+	const controlTypesBySemester = computed(() => {
+		if (selectedSemester.value === null) return []
+
+		return controlTypes.value[selectedSemester.value]
+	})
+
+	const getSumLoadByControlType = id => {
+		return lessons.value.reduce((acc, value) => {
+			if (id === value.id_type_control) return acc + 2
+			return acc
+		}, 0)
+	}
 
 	/* Fetching */
 	const createLesson = async (lesson: ILesson) => {
@@ -66,22 +96,18 @@ export const useLessonsStore = defineStore('lessons', () => {
 	}
 
 	/* Local */
-	const createLocalLesson = (semester: number, study_group_id: number) => {
-		if (!rpdId.value) return
+	const createLocalLesson = () => {
+		if (!selectedSemester.value || !selectedGroup.value || rpdId.value === null)
+			return
 
-		lessons.value.push({
-			id: prefixLocalId + Date.now(),
-			id_rpd: rpdId.value,
-			id_type_control: null,
-			chapter: '',
-			task_link: '',
-			task_link_name: '',
-			completed_task_link: '',
-			completed_task_link_name: '',
-			topic: '',
-			semester,
-			study_group_id,
-		})
+		const lesson = generateEmptyLesson(
+			prefixLocalId,
+			selectedSemester.value,
+			selectedGroup.value.id,
+			rpdId.value
+		)
+
+		lessons.value.push(lesson)
 	}
 
 	const editLocalLesson = (id: Key, newLesson: ILesson) => {
@@ -99,18 +125,10 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 	const isLocalLesson = (id: Key) => `${id}`.startsWith(prefixLocalId)
 
-	const fetchControlTypes = async id => {
-		const data: IFetchLessonControls | null = await Api.fetchLessonControlTypes(
-			id
-		)
-
-		if (!data) return []
-
-		setControlTypes(data.control_types)
-	}
-
 	const fetchLessons = async (aupCode: Key, id: Key) => {
+		isLoadingLessons.value = true
 		const data: IFetchLessons | null = await Api.fetchLessons(aupCode, id)
+
 		if (!data) return []
 
 		setLessonItems(data.topics)
@@ -123,7 +141,24 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		await fetchControlTypes(data.rpd_id)
 
+		setGroup(groups.value[0])
+		setSemester(semesters.value[0])
+
+		isLoadingLessons.value = false
+
 		return data.topics
+	}
+
+	const fetchControlTypes = async id => {
+		isLoadingControlTypes.value = true
+		const data: IFetchLessonControls | null = await Api.fetchLessonControlTypes(
+			id
+		)
+		isLoadingControlTypes.value = false
+
+		if (!data) return []
+
+		setControlTypes(data.control_types)
 	}
 
 	// other
@@ -137,8 +172,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 		selectedSemester.value = +semestr
 	}
 
-	const selectedGroup: Ref<string | null> = ref(null)
-	function setGroup(group: string) {
+	const selectedGroup: Ref<IStudyGroup | null> = ref(null)
+	function setGroup(group: IStudyGroup) {
 		selectedGroup.value = group
 	}
 
@@ -161,11 +196,19 @@ export const useLessonsStore = defineStore('lessons', () => {
 		rpdId,
 		title,
 
+		isLoadingLessons,
+		isLoadingControlTypes,
+
 		setLessonItems,
 		setStudyGroups,
 		setControlTypes,
 
 		semesters,
+		filteredLessons,
+		rowsCount,
+		controlTypesBySemester,
+
+		getSumLoadByControlType,
 
 		createLesson,
 		editLesson,

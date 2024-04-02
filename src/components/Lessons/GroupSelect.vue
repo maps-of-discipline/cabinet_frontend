@@ -3,6 +3,7 @@
 		v-model="selectedGroup"
 		:options="lessonsStore.groups"
 		:optionLabel="getLabel"
+		:loading="lessonsStore.isLoadingLessons"
 		placeholder="Группа"
 	/>
 </template>

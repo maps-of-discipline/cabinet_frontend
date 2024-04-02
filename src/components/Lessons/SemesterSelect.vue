@@ -2,6 +2,7 @@
 	<Dropdown
 		v-model="selectedSemestr"
 		:options="lessonsStore.semesters"
+		:loading="lessonsStore.isLoadingControlTypes"
 		:optionLabel="getLabel"
 		placeholder="Семестр"
 	/>
