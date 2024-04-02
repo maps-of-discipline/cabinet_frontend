@@ -68,6 +68,12 @@
 						headerStyle="width: 200px"
 					/>
 
+					<Column
+						header="Срок выполнения"
+						:colspan="1"
+						headerStyle="width: 200px"
+					/>
+
 					<Column :colspan="1" headerStyle="width: 75px" />
 				</Row>
 			</ColumnGroup>
@@ -182,6 +188,10 @@
 						@click="openAttachLink(data, true)"
 					/>
 				</template>
+			</Column>
+
+			<Column field="deadline_date">
+				<template #body="{ data, field }"> </template>
 			</Column>
 
 			<!-- Удаление -->
