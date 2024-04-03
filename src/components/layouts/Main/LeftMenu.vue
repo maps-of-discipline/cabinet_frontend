@@ -1,24 +1,24 @@
 <template>
-	<header class="MainHeader">
-		<router-link class="MainHeader__logo-block" to="/">
-			<img class="MainHeader__logo" src="@assets/logo.png" alt="" />
-			<div class="MainHeader__logo-title">Успеваемость</div>
+	<div class="LeftMenu">
+		<router-link class="LeftMenu__logo-block" to="/">
+			<img class="LeftMenu__logo" src="@assets/logo.png" alt="" />
+			<div class="LeftMenu__logo-title">Успеваемость</div>
 		</router-link>
 
-		<HeaderNav class="MainHeader__nav" :data="items" />
+		<LeftMenuNav class="LeftMenu__nav" :data="items" />
 
-		<div class="MainHeader__footer">
-			<divider class="MainHeader__divider" />
-			<HeaderAccount />
+		<div class="LeftMenu__footer">
+			<divider class="LeftMenu__divider" />
+			<LeftMenuAccount />
 		</div>
-	</header>
+	</div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-import HeaderNav from '@components/layouts/Main/HeaderNav.vue'
-import HeaderAccount from '@components/layouts/Main/HeaderAccount.vue'
+import LeftMenuNav from '@components/layouts/Main/LeftMenuNav.vue'
+import LeftMenuAccount from '@components/layouts/Main/LeftMenuAccount.vue'
 
 const items = ref([
 	{
@@ -69,7 +69,7 @@ const items = ref([
 <style lang="scss">
 @import '@styles/_variables.scss';
 
-.MainHeader {
+.LeftMenu {
 	padding: 30px;
 	background-color: $menu-bg;
 	display: grid;

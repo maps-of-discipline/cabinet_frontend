@@ -1,11 +1,11 @@
 <template>
-	<div class="HeaderNav">
+	<div class="LeftMenuNav">
 		<div v-for="(block, i) in data" :key="i">
 			<divider v-if="i !== 0" />
 
-			<HeaderLink
+			<LeftMenuLink
 				v-for="(item, j) in block.items"
-				class="HeaderNav__link"
+				class="LeftMenuNav__link"
 				:key="j"
 				:item="item"
 			/>
@@ -15,7 +15,7 @@
 
 <script setup>
 import { defineProps } from 'vue'
-import HeaderLink from '@components/layouts/Main/HeaderLink.vue'
+import LeftMenuLink from '@components/layouts/Main/LeftMenuLink.vue'
 
 defineProps({
 	data: {
@@ -26,7 +26,7 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-.HeaderNav {
+.LeftMenuNav {
 	&__link {
 		&:not(:last-child) {
 			margin-bottom: 12px;

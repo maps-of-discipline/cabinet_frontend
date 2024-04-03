@@ -2,35 +2,27 @@
 	<div>
 		<router-link
 			v-if="item.route"
-			class="HeaderNavLink p-ripple"
+			class="LeftMenuLink p-ripple"
 			:to="item.route"
 			v-ripple
 		>
-			<i
-				v-if="item.icon"
-				class="HeaderNavLink__icon mdi"
-				:class="[item.icon]"
-			/>
+			<i v-if="item.icon" class="LeftMenuLink__icon mdi" :class="[item.icon]" />
 
-			<span class="HeaderNavLink__label">
+			<span class="LeftMenuLink__label">
 				{{ item.label }}
 			</span>
 		</router-link>
 
 		<a
 			v-else
-			class="HeaderNavLink p-ripple"
+			class="LeftMenuLink p-ripple"
 			:href="item.url"
 			v-ripple
 			target="_blank"
 		>
-			<i
-				v-if="item.icon"
-				class="HeaderNavLink__icon mdi"
-				:class="[item.icon]"
-			/>
+			<i v-if="item.icon" class="LeftMenuLink__icon mdi" :class="[item.icon]" />
 
-			<span class="HeaderNavLink__label">
+			<span class="LeftMenuLink__label">
 				{{ item.label }}
 			</span>
 		</a>
@@ -51,7 +43,7 @@ defineProps({
 <style lang="scss" scoped>
 @import '@styles/_variables.scss';
 
-.HeaderNavLink {
+.LeftMenuLink {
 	text-decoration: none;
 	color: $menu-link-color;
 	display: flex;

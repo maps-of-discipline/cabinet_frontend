@@ -1,6 +1,6 @@
 <template>
 	<div class="MainLayout">
-		<Header class="MainLayout__header" />
+		<LeftMenu class="MainLayout__menu" />
 
 		<main class="MainLayout__main">
 			<slot />
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import Header from '@components/layouts/Main/Header.vue'
+import LeftMenu from '@components/layouts/Main/LeftMenu.vue'
 </script>
 
 <style lang="scss">
@@ -17,7 +17,7 @@ import Header from '@components/layouts/Main/Header.vue'
 	display: grid;
 	grid-template-columns: 300px 1fr;
 
-	&__header {
+	&__menu {
 		height: 100vh;
 	}
 
