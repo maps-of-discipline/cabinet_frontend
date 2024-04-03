@@ -111,6 +111,22 @@ abstract class Api {
 
 		return data
 	}
+
+	static async fetchAupsBySearch(value: string) {
+		const { data, status } = await axios.get(`aup?search=${value}`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async fetchDisciplinesByAup(aup: string) {
+		const { data, status } = await axios.get(`disciplines?aup=${aup}`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

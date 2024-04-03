@@ -1,7 +1,7 @@
 <template>
 	<div class="LessonsTableHeader">
 		<div class="LessonsTableHeader__left">
-			<div class="LessonsTableHeader__title">{{ title }}</div>
+			<TableSelect />
 		</div>
 
 		<div class="LessonsTableHeader__right">
@@ -37,6 +37,7 @@
 import { computed, ref } from 'vue'
 import { useLessonsStore } from '@/stores/lessons'
 
+import TableSelect from '@components/layouts/TableSelect.vue'
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import GroupSelect from '@components/Lessons/GroupSelect.vue'
