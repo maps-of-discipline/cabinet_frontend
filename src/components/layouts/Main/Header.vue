@@ -5,11 +5,11 @@
 			<div class="MainHeader__logo-title">Успеваемость</div>
 		</router-link>
 
-		<MainHeaderNav class="MainHeader__nav" :data="items" />
+		<HeaderNav class="MainHeader__nav" :data="items" />
 
 		<div class="MainHeader__footer">
 			<divider class="MainHeader__divider" />
-			<MainHeaderAccount />
+			<HeaderAccount />
 		</div>
 	</header>
 </template>
@@ -17,8 +17,8 @@
 <script setup>
 import { ref } from 'vue'
 
-import MainHeaderNav from '@components/layouts/MainHeaderNav.vue'
-import MainHeaderAccount from '@components/layouts/MainHeaderAccount.vue'
+import HeaderNav from '@components/layouts/Main/HeaderNav.vue'
+import HeaderAccount from '@components/layouts/Main/HeaderAccount.vue'
 
 const items = ref([
 	{

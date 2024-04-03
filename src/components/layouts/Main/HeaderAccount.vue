@@ -1,10 +1,10 @@
 <template>
-	<div class="MainHeaderAccount">
+	<div class="HeaderAccount">
 		<Avatar icon="pi pi-user" shape="circle" />
 
-		<div class="MainHeaderAccount__detail">
-			<div class="MainHeaderAccount__name">Даниил Кириллов</div>
-			<div class="MainHeaderAccount__role">Преподаватель</div>
+		<div class="HeaderAccount__detail">
+			<div class="HeaderAccount__name">Даниил Кириллов</div>
+			<div class="HeaderAccount__role">Преподаватель</div>
 		</div>
 
 		<Button icon="mdi mdi-logout" text rounded @click="onClick" />
@@ -25,7 +25,7 @@ const onClick = () => {
 </script>
 
 <style lang="scss" scoped>
-.MainHeaderAccount {
+.HeaderAccount {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;

@@ -1,6 +1,6 @@
 <template>
 	<div class="MainLayout">
-		<MainHeader class="MainLayout__header" />
+		<Header class="MainLayout__header" />
 
 		<main class="MainLayout__main">
 			<slot />
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import MainHeader from '@components/layouts/MainHeader.vue'
+import Header from '@components/layouts/Main/Header.vue'
 </script>
 
 <style lang="scss">

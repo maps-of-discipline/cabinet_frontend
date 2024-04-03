@@ -3,7 +3,7 @@
 		<div v-for="(block, i) in data" :key="i">
 			<divider v-if="i !== 0" />
 
-			<MainHeaderLink
+			<HeaderLink
 				v-for="(item, j) in block.items"
 				class="HeaderNav__link"
 				:key="j"
@@ -15,7 +15,7 @@
 
 <script setup>
 import { defineProps } from 'vue'
-import MainHeaderLink from '@components/layouts/MainHeaderLink.vue'
+import HeaderLink from '@components/layouts/Main/HeaderLink.vue'
 
 defineProps({
 	data: {
