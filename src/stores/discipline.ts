@@ -1,24 +1,37 @@
 import type { Ref } from 'vue'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
+import debounce from '@services/helpers/debounce'
 import Api from '@services/Api'
 
 export const useDisciplineStore = defineStore('discipline', () => {
 	const search: Ref<string> = ref('')
 
 	const aups: Ref<Array<any>> = ref([])
+	const isLoadingAups: Ref<boolean> = ref(false)
 
 	const setSearch = async (value: string) => {
 		search.value = value
 
-		const data = await Api.fetchAupsBySearch(value)
+		if (value.length < 3) {
+			isLoadingAups.value = false
+			aups.value = []
+			return
+		}
 
-		aups.value = data
+		fetchAupsBySearch(value)
 	}
 
-	const aupsDialogModel = ref(null)
-	const setAupsDialogModel = value => (aupsDialogModel.value = value)
+	const fetchAupsBySearch = debounce(async value => {
+		isLoadingAups.value = true
+		const data = await Api.fetchAupsBySearch(value)
+		aups.value = data
+		isLoadingAups.value = false
+	}, 500)
+
+	const dialogModel = ref(null)
+	const setDialogModel = value => (dialogModel.value = value)
 
 	const selectedAup = ref(false)
 	const setSelectedAup = value => (selectedAup.value = value)
@@ -38,18 +51,18 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		search,
 		setSearch,
 
+		aups,
 		selectedAup,
 		setSelectedAup,
+		isLoadingAups,
 
-		aupsDialogModel,
-		setAupsDialogModel,
+		dialogModel,
+		setDialogModel,
 
 		disciplineDialogModel,
 		setDisciplineDialogModel,
 
 		disciplinesDialogItems,
 		fetchDisciplinesDialogItems,
-
-		aups,
 	}
 })
