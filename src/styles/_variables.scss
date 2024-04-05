@@ -1,10 +1,3 @@
-// project colors
-$temp1: #3a3a3a;
-$temp2: #363636;
-$temp3: #2e2e2e;
-$temp4: #252525;
-$temp5: #222222;
-$temp6: #1d1d1d;
 
 $blue000: #90b3e7;
 $blue100: #7c88f5;
@@ -14,20 +7,18 @@ $blue200: hsl(234, 86%, 69%);
 
 $shade000: #ffffff;
 $shade50: #fafafa;
-$shade100: #f0f0f0; /*  */
+$shade100: #f0f0f0;
 $shade200: #e4e4e4;
 $shade300: #d4d4d4;
 $shade400: #a1a1a1;
 $shade500: #717171;
 $shade600: #525252;
-
-
-$shade700: $temp1;
-$shade800: $temp2;
-$shade900: $temp3;
-$shade950: $temp4;
-$shade1000: $temp5;
-$shade1050: $temp6;
+$shade700: $3a3a3a;
+$shade800: $363636;
+$shade900: $2e2e2e;
+$shade950: $252525;
+$shade1000: $222222;
+$shade1050: $1d1d1d;
 
 //input field (e.g. inputtext, spinner, inputmask)
 $inputBorder: 1px solid transparent;
