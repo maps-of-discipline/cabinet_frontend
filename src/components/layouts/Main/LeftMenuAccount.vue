@@ -3,8 +3,8 @@
 		<Avatar icon="pi pi-user" shape="circle" />
 
 		<div class="LeftMenuAccount__detail">
-			<div class="LeftMenuAccount__name">Даниил Кириллов</div>
-			<div class="LeftMenuAccount__role">Преподаватель</div>
+			<div class="LeftMenuAccount__name">{{ userStore.name }}</div>
+			<div class="LeftMenuAccount__role">{{ userStore.status }}</div>
 		</div>
 
 		<Button icon="mdi mdi-logout" text rounded @click="onClick" />
@@ -13,6 +13,10 @@
 
 <script setup>
 import app from '@/main.ts'
+
+import { useUser } from '@stores/user'
+
+const userStore = useUser()
 
 const onClick = () => {
 	console.log('click')

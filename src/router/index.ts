@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import MainLayout from '@layouts/MainLayout.vue'
+import EmptyLayout from '@layouts/EmptyLayout.vue'
+import { useUser } from '@stores/user'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +13,7 @@ const router = createRouter({
 			component: HomeView,
 			meta: {
 				title: 'Кабинет преподавателя',
+				layout: MainLayout,
 			},
 		},
 		{
@@ -18,6 +22,7 @@ const router = createRouter({
 			component: () => import('../views/GradesView.vue'),
 			meta: {
 				title: 'Успеваемость | Кабинет преподавателя',
+				layout: MainLayout,
 			},
 		},
 		{
@@ -26,6 +31,7 @@ const router = createRouter({
 			component: () => import('../views/LessonsView.vue'),
 			meta: {
 				title: 'Темы занятий | Кабинет преподавателя',
+				layout: MainLayout,
 			},
 		},
 		{
@@ -33,7 +39,17 @@ const router = createRouter({
 			name: 'faq',
 			component: () => import('../views/FaqView.vue'),
 			meta: {
+				layout: MainLayout,
 				title: 'FAQ | Кабинет преподавателя',
+			},
+		},
+		{
+			path: '/auth',
+			name: 'auth',
+			component: () => import('../views/AuthView.vue'),
+			meta: {
+				title: 'Вход',
+				layout: EmptyLayout,
 			},
 		},
 	],
@@ -95,6 +111,20 @@ router.beforeEach((to, from, next) => {
 		.forEach(tag => document.head.appendChild(tag))
 
 	next()
+})
+
+router.beforeEach(async (to, from) => {
+	const userStore = useUser()
+
+	if (
+		// make sure the user is authenticated
+		!userStore.isAuth &&
+		// ❗️ Avoid an infinite redirect
+		to.name !== 'auth'
+	) {
+		// redirect the user to the login page
+		return { name: 'auth' }
+	}
 })
 
 export default router

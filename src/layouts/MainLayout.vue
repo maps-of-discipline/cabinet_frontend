@@ -8,7 +8,7 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import LeftMenu from '@components/layouts/Main/LeftMenu.vue'
 </script>
 

@@ -127,6 +127,22 @@ abstract class Api {
 
 		return data
 	}
+
+	static async login(payload: any) {
+		const { data, status } = await axios.post(`auth`, payload)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async getUser(token: string) {
+		const { data, status } = await axios.post(`getUser`, { token })
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

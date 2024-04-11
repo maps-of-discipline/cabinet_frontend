@@ -1,13 +1,13 @@
 <template>
-	<MainLayout>
+	<component :is="$route.meta.layout || EmptyLayout">
 		<RouterView />
-	</MainLayout>
+	</component>
 
 	<Toast />
 </template>
 
 <script setup>
-import MainLayout from '@layouts/MainLayout.vue'
+import EmptyLayout from '@layouts/EmptyLayout.vue'
 import Toast from 'primevue/toast'
 
 import { RouterView } from 'vue-router'
