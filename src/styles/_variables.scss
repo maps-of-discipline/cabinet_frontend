@@ -22,7 +22,8 @@ $shade1050: #1d1d1d;
 
 //input field (e.g. inputtext, spinner, inputmask)
 $inputBg: $shade800;
-$inputBorder: 1px solid transparent;
+
+$inputBorder: 0px solid transparent;
 $inputHoverBorderColor: transparent;
 $inputFocusBorderColor: transparent;
 
