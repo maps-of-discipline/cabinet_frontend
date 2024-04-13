@@ -18,3 +18,8 @@ a {
 	text-decoration: none;
 	color: inherit;
 }
+
+input:-webkit-autofill{
+    -webkit-box-shadow: 0 0 0 30px $shade950 inset !important;
+    border: none;
+}

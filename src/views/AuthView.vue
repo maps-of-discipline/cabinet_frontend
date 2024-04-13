@@ -23,7 +23,7 @@
 				/>
 			</div>
 
-			<Button label="Войти" @click="onLoginClick" />
+			<Button label="Войти" @click="onLoginClick" :loading="isLoadingSubmit" />
 		</form>
 	</div>
 </template>
@@ -37,9 +37,12 @@ const authStore = useAuth()
 
 const loginModel = ref('')
 const passwordModel = ref('')
+const isLoadingSubmit = ref(false)
 
 const onLoginClick = async () => {
+	isLoadingSubmit.value = true
 	const success = await authStore.login(loginModel.value, passwordModel.value)
+	isLoadingSubmit.value = false
 }
 </script>
 
