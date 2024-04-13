@@ -147,6 +147,7 @@ const onSelectDiscipline = idDiscipline => {
 	display: grid;
 	grid-template-rows: auto 1fr;
 	height: 60vh;
+	padding-top: 4px;
 
 	&__input {
 		width: 100%;

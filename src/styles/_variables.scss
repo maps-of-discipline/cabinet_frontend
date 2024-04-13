@@ -21,9 +21,14 @@ $shade1000: #222222;
 $shade1050: #1d1d1d;
 
 //input field (e.g. inputtext, spinner, inputmask)
+$inputBg: $shade800;
 $inputBorder: 1px solid transparent;
 $inputHoverBorderColor: transparent;
 $inputFocusBorderColor: transparent;
+
+$focusOutline: 4px solid hsla(0, 0%, 100%, 0.103);
+$focusOutlineOffset: 0px;
+$inputFocusOutlineOffset: 0px;
 
 // button
 
