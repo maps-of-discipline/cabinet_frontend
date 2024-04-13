@@ -7,25 +7,20 @@
 			<div class="LeftMenuAccount__role">{{ userStore.status }}</div>
 		</div>
 
-		<Button icon="mdi mdi-logout" text rounded @click="onClick" />
+		<Button icon="mdi mdi-logout" text rounded @click="onClickLogout" />
 	</div>
 </template>
 
 <script setup>
 import app from '@/main.ts'
 
+import { useAuth } from '@stores/auth'
 import { useUser } from '@stores/user'
 
+const authStore = useAuth()
 const userStore = useUser()
 
-const onClick = () => {
-	console.log('click')
-	app.config.globalProperties.$toast.add({
-		severity: 'info',
-		summary: 'Учетные записи в разработке.',
-		life: 2000,
-	})
-}
+const onClickLogout = () => authStore.logout()
 </script>
 
 <style lang="scss" scoped>

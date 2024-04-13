@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import MainLayout from '@layouts/MainLayout.vue'
 import EmptyLayout from '@layouts/EmptyLayout.vue'
-import { useUser } from '@stores/user'
+import { useAuth } from '@stores/auth'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,17 +114,10 @@ router.beforeEach((to, from, next) => {
 })
 
 router.beforeEach(async (to, from) => {
-	const userStore = useUser()
+	const authStore = useAuth()
 
-	if (
-		// make sure the user is authenticated
-		!userStore.isAuth &&
-		// ❗️ Avoid an infinite redirect
-		to.name !== 'auth'
-	) {
-		// redirect the user to the login page
-		return { name: 'auth' }
-	}
+	if (authStore.isAuth && to.name === 'auth') return { name: 'home' }
+	if (!authStore.isAuth && to.name !== 'auth') return { name: 'auth' }
 })
 
 export default router

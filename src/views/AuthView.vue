@@ -1,51 +1,45 @@
 <template>
 	<div class="AuthView">
-		<div class="AuthBlock">
-			<div class="AuthBlock__title">Успеваемость</div>
+		<form class="AuthForm">
+			<div class="AuthForm__title">Успеваемость</div>
 
-			<div class="AuthBlock__input-block">
-				<div class="AuthBlock__input-label">Логин</div>
+			<div class="AuthForm__input-block">
+				<div class="AuthForm__input-label">Логин</div>
 				<InputText
 					v-model="loginModel"
+					id="inputLogin"
 					type="text"
 					placeholder="Введите логин"
 				/>
 			</div>
 
-			<div class="AuthBlock__input-block">
-				<div class="AuthBlock__input-label">Пароль</div>
+			<div class="AuthForm__input-block">
+				<div class="AuthForm__input-label">Пароль</div>
 				<InputText
 					v-model="passwordModel"
+					id="inputPassword"
 					type="password"
 					placeholder="Введите пароль"
 				/>
 			</div>
 
 			<Button label="Войти" @click="onLoginClick" />
-		</div>
+		</form>
 	</div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-import { useUser } from '@stores/user'
-import { useRouter } from 'vue-router'
+import { useAuth } from '@stores/auth'
 
-const userStore = useUser()
-const router = useRouter()
+const authStore = useAuth()
 
 const loginModel = ref('')
 const passwordModel = ref('')
 
 const onLoginClick = async () => {
-	const success = await userStore.login(loginModel.value, passwordModel.value)
-
-	if (success) {
-		router.push({
-			path: '/',
-		})
-	}
+	const success = await authStore.login(loginModel.value, passwordModel.value)
 }
 </script>
 
@@ -59,7 +53,7 @@ const onLoginClick = async () => {
 	justify-content: center;
 }
 
-.AuthBlock {
+.AuthForm {
 	background-color: $shade900;
 	padding: 22px;
 	width: 400px;
