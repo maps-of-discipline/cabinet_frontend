@@ -1,5 +1,6 @@
 <template>
 	<Dropdown
+		class="SemesterSelect"
 		v-model="selectedSemestr"
 		:options="lessonsStore.semesters"
 		:loading="lessonsStore.isLoadingControlTypes"
@@ -30,4 +31,9 @@ const getLabel = value => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.SemesterSelect {
+	height: 37px;
+	align-items: center;
+}
+</style>

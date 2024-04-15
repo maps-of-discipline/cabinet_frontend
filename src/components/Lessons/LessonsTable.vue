@@ -1,6 +1,6 @@
 <template>
 	<div class="LessonsTableView">
-		<LessonsTableHeader :title="lessonsStore.title" @add="onAddRow" />
+		<HeaderTable :title="lessonsStore.title" @add="onAddRow" />
 
 		<DataTable
 			class="LessonsTable"
@@ -211,10 +211,6 @@
 					</div>
 				</template>
 			</Column>
-
-			<template #empty>
-				<div v-if="!lessonsStore.isLoadingLessons">Записи отсутствуют.</div>
-			</template>
 		</DataTable>
 		<AttachLinkDialog
 			v-model="attachDialogModel"
@@ -226,7 +222,7 @@
 </template>
 
 <script setup>
-import LessonsTableHeader from '@components/Lessons/LessonsTableHeader.vue'
+import HeaderTable from '@components/layouts/HeaderTable.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'

@@ -1,14 +1,17 @@
 <template>
-	<Button class="DisciplineSelectActivator" :label="label" @click="onClick" />
+	<Button class="DisciplineSelectActivator" :label="_label" @click="onClick" />
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
 	label: {
 		type: String,
-		default: '',
 	},
 })
+
+const _label = computed(() => props.label || 'Выбор дисциплины')
 
 const emit = defineEmits('open')
 

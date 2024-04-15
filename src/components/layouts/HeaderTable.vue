@@ -1,10 +1,12 @@
 <template>
-	<div class="LessonsTableHeader">
-		<div class="LessonsTableHeader__left">
+	<div class="HeaderTable">
+		<div class="HeaderTable__left">
 			<DisciplineSelect />
+			<GroupSelect />
+			<SemesterSelect />
 		</div>
 
-		<div class="LessonsTableHeader__right">
+		<div class="HeaderTable__right">
 			<Button
 				v-if="editMode"
 				style="height: 34px"
@@ -14,10 +16,7 @@
 				@click="onAddButton"
 			/>
 
-			<GroupSelect />
-			<SemesterSelect />
-
-			<div class="LessonsTableHeader__editMode">
+			<div class="HeaderTable__editMode">
 				<ViewSelect />
 				<LoadViewSelect />
 
@@ -71,7 +70,7 @@ const onAddButton = () => {
 <style lang="scss">
 @import '@styles/_variables.scss';
 
-.LessonsTableHeader {
+.HeaderTable {
 	padding: 0 16px;
 
 	background-color: $view-bg;

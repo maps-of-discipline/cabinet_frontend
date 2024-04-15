@@ -1,5 +1,6 @@
 <template>
 	<Dropdown
+		class="GroupSelect"
 		v-model="selectedGroup"
 		:options="lessonsStore.groups"
 		:optionLabel="getLabel"
@@ -30,4 +31,9 @@ const getLabel = value => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.GroupSelect {
+	height: 37px;
+	align-items: center;
+}
+</style>
