@@ -25,7 +25,7 @@ const selectedSemestr = computed({
 	},
 
 	set(val) {
-		disciplineStore.setSemester(+val)
+		disciplineStore.setSelectedSemester(+val)
 	},
 })
 

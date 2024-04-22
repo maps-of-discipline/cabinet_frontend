@@ -7,13 +7,18 @@ import Api from '@services/Api'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 
 export const useDisciplineStore = defineStore('discipline', () => {
-	const search: Ref<string> = ref('')
-
-	const groups: Ref<IStudyGroup[]> = ref([])
-
 	const aups: Ref<Array<any>> = ref([])
 	const isLoadingAups: Ref<boolean> = ref(false)
 
+	const selectedAup: Ref<string | null> = ref(null)
+	const setSelectedAup = (value: string) => (selectedAup.value = value)
+
+	const selectedDisciplineId: Ref<string | null> = ref('')
+	const setSelectedDisciplineId = (value: string) =>
+		(selectedDisciplineId.value = value)
+
+	/* Поиск */
+	const search: Ref<string> = ref('')
 	const setSearch = async (value: string) => {
 		search.value = value
 
@@ -32,12 +37,11 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		aups.value = data
 		isLoadingAups.value = false
 	}, 500)
+	/*  */
 
-	const dialogModel = ref(null)
-	const setDialogModel = value => (dialogModel.value = value)
-
-	const selectedAup = ref(false)
-	const setSelectedAup = value => (selectedAup.value = value)
+	/* Модалки */
+	const directionDialogModel = ref(false)
+	const setDirectionDialogModel = value => (directionDialogModel.value = value)
 
 	const disciplineDialogModel = ref(false)
 	const setDisciplineDialogModel = value =>
@@ -49,35 +53,40 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		const data = await Api.fetchDisciplinesByAup(aup)
 		disciplinesDialogItems.value = data
 	}
+	/*  */
 
+	/* Режим просмотра/редактирования */
 	const editMode = ref(false)
-	function switchMode() {
-		editMode.value = !editMode.value
-	}
+	const switchMode = () => (editMode.value = !editMode.value)
 
+	/* Выбор семестра */
 	const selectedSemester: Ref<number | null> = ref(null)
-	function setSemester(semestr: string) {
-		selectedSemester.value = +semestr
-	}
+	const setSelectedSemester = (semestr: string) =>
+		(selectedSemester.value = +semestr)
+	/*  */
 
+	/* Выбор группы */
 	const selectedGroup: Ref<IStudyGroup | null> = ref(null)
-	function setGroup(group: IStudyGroup) {
-		selectedGroup.value = group
-	}
+	const setSelectedGroup = (group: IStudyGroup) => (selectedGroup.value = group)
 
+	const groups: Ref<IStudyGroup[]> = ref([])
 	const setStudyGroups = (data: IStudyGroup[]) => (groups.value = data)
+	/*  */
 
 	return {
 		search,
 		setSearch,
+
+		selectedDisciplineId,
+		setSelectedDisciplineId,
 
 		aups,
 		selectedAup,
 		setSelectedAup,
 		isLoadingAups,
 
-		dialogModel,
-		setDialogModel,
+		directionDialogModel,
+		setDirectionDialogModel,
 
 		disciplineDialogModel,
 		setDisciplineDialogModel,
@@ -88,9 +97,9 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		editMode,
 		switchMode,
 		selectedSemester,
-		setSemester,
+		setSelectedSemester,
 		selectedGroup,
-		setGroup,
+		setSelectedGroup,
 
 		groups,
 		setStudyGroups,

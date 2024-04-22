@@ -16,7 +16,7 @@ import DisciplineSelectActivator from '@components/layouts/Main/DisciplineSelect
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
 
-const openPopup = () => disciplineStore.setDialogModel(true)
+const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 </script>
 
 <style lang="scss"></style>

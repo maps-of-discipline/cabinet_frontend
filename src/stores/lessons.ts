@@ -150,8 +150,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		await fetchControlTypes(data.rpd_id)
 
-		disciplineStore.setGroup(disciplineStore.groups[0])
-		disciplineStore.setSemester(semesters.value[0])
+		disciplineStore.setSelectedGroup(disciplineStore.groups[0])
+		disciplineStore.setSelectedSemester(semesters.value[0])
 
 		isLoadingLessons.value = false
 

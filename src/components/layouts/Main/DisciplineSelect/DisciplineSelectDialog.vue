@@ -1,6 +1,6 @@
 <template>
 	<Dialog
-		v-model:visible="dialogModel"
+		v-model:visible="directionDialogModel"
 		contentClass="DisciplineSelectDialog"
 		:draggable="false"
 		modal
@@ -88,13 +88,23 @@ const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
 const router = useRouter()
 
-const dialogModel = computed({
+const directionDialogModel = computed({
 	get() {
-		return disciplineStore.dialogModel
+		return disciplineStore.directionDialogModel
 	},
 
 	set(val) {
-		disciplineStore.setDialogModel(val)
+		disciplineStore.setDirectionDialogModel(val)
+	},
+})
+
+const disciplineDialogModel = computed({
+	get() {
+		return disciplineStore.disciplineDialogModel
+	},
+
+	set(val) {
+		disciplineStore.setDisciplineDialogModel(val)
 	},
 })
 
@@ -109,6 +119,7 @@ const searchModel = computed({
 })
 
 const isLoadingDisciplines = ref(false)
+
 const openDisciplineDialog = async aup => {
 	isLoadingDisciplines.value = true
 	disciplineDialogModel.value = true
@@ -117,26 +128,21 @@ const openDisciplineDialog = async aup => {
 	isLoadingDisciplines.value = false
 }
 
-const disciplineDialogModel = computed({
-	get() {
-		return disciplineStore.disciplineDialogModel
-	},
-
-	set(val) {
-		disciplineStore.setDisciplineDialogModel(val)
-	},
-})
-
 const onSelectDiscipline = idDiscipline => {
 	disciplineDialogModel.value = false
-	dialogModel.value = false
+	directionDialogModel.value = false
 
 	router.push({
 		path: '/lessons/',
 		query: { aup: disciplineStore.selectedAup, id: idDiscipline },
 	})
 
-	lessonsStore.fetchLessons(disciplineStore.selectedAup, idDiscipline)
+	disciplineStore.setSelectedDisciplineId(idDiscipline)
+
+	lessonsStore.fetchLessons(
+		disciplineStore.selectedAup,
+		disciplineStore.selectedDisciplineId
+	)
 }
 </script>
 

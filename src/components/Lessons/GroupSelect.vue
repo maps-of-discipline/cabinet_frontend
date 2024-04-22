@@ -24,7 +24,7 @@ const selectedGroup = computed({
 	},
 
 	set(val) {
-		disciplineStore.setGroup(val)
+		disciplineStore.setSelectedGroup(val)
 	},
 })
 
