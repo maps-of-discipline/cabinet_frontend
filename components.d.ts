@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AddTask: typeof import('./src/components/Lessons/AddTask.vue')['default']
     AttachLinkButton: typeof import('./src/components/Lessons/common/AttachLinkButton.vue')['default']
     AttachLinkDialog: typeof import('./src/components/Lessons/AttachLinkDialog.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
@@ -25,6 +26,7 @@ declare module 'vue' {
     DisciplineSelectStub: typeof import('./src/components/layouts/Main/DisciplineSelect/DisciplineSelectStub.vue')['default']
     Divider: typeof import('primevue/divider')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
+    EditModeSwitcher: typeof import('./src/components/layouts/EditModeSwitcher.vue')['default']
     GradeSelect: typeof import('./src/components/Grades/GradeSelect.vue')['default']
     GradesTable: typeof import('./src/components/Grades/GradesTable.vue')['default']
     GroupSelect: typeof import('./src/components/Lessons/GroupSelect.vue')['default']

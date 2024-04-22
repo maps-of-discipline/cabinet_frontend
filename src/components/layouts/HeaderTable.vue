@@ -4,29 +4,15 @@
 			<DisciplineSelect />
 			<GroupSelect />
 			<SemesterSelect />
+			<EditModeSwitcher />
 		</div>
 
-		<div class="HeaderTable__right">
-			<Button
-				v-if="editMode"
-				style="height: 34px"
-				icon="mdi mdi-plus"
-				severity="success"
-				label="Добавить задание"
-				@click="onAddButton"
-			/>
+		<div class="HeaderTable__right" id="headerTableTarget">
+			<AddTask @add="emit('add')" />
 
 			<div class="HeaderTable__editMode">
 				<ViewSelect />
 				<LoadViewSelect />
-
-				<ToggleButton
-					v-model="editMode"
-					onLabel="Редактирование"
-					offLabel="Просмотр"
-					onIcon="mdi mdi-pen"
-					offIcon="mdi mdi-eye"
-				/>
 			</div>
 		</div>
 	</div>
@@ -41,8 +27,8 @@ import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import GroupSelect from '@components/Lessons/GroupSelect.vue'
 import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
-
-const emit = defineEmits(['add'])
+import AddTask from '@components/Lessons/AddTask.vue'
+import EditModeSwitcher from '@components/layouts/EditModeSwitcher.vue'
 
 defineProps({
 	title: {
@@ -51,20 +37,7 @@ defineProps({
 	},
 })
 
-const disciplineStore = useDisciplineStore()
-
-const editMode = computed({
-	get() {
-		return disciplineStore.editMode
-	},
-	set(val) {
-		disciplineStore.switchMode(val)
-	},
-})
-
-const onAddButton = () => {
-	emit('add')
-}
+const emit = defineEmits(['add'])
 </script>
 
 <style lang="scss">
