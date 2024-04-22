@@ -6,6 +6,7 @@
 		:loading="lessonsStore.isLoadingControlTypes"
 		:optionLabel="getLabel"
 		placeholder="Семестр"
+		emptyMessage="Выберите дисциплину"
 	/>
 </template>
 

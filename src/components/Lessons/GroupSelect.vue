@@ -6,6 +6,7 @@
 		:optionLabel="getLabel"
 		:loading="lessonsStore.isLoadingLessons"
 		placeholder="Группа"
+		emptyMessage="Выберите дисциплину"
 	/>
 </template>
 
