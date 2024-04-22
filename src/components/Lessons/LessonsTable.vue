@@ -274,10 +274,6 @@ const onChangeControlType = (data, id) => {
 	lessonsStore.editLesson(newLesson)
 }
 
-const route = useRoute()
-const aupCode = route.query?.aup
-const idDiscipline = route.query?.id
-
 const table = ref()
 const onAddRow = async () => {
 	lessonsStore.createLocalLesson()
@@ -372,6 +368,9 @@ watch([disciplineStore.editMode, lessonsStore.loadViewMode, nestedViewMode], () 
 	}, 0)
 }) */
 /*  */
+
+const aupCode = disciplineStore.selectedAup
+const idDiscipline = disciplineStore.selectedDisciplineId
 
 if (aupCode && idDiscipline) {
 	lessonsStore.fetchLessons(aupCode, idDiscipline)

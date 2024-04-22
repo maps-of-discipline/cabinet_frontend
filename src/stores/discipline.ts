@@ -10,12 +10,24 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	const aups: Ref<Array<any>> = ref([])
 	const isLoadingAups: Ref<boolean> = ref(false)
 
-	const selectedAup: Ref<string | null> = ref(null)
-	const setSelectedAup = (value: string) => (selectedAup.value = value)
+	/* Выбранный АУП */
+	const selectedAup: Ref<string | null> = ref(
+		sessionStorage.getItem('selectedAup')
+	)
+	const setSelectedAup = (value: string) => {
+		selectedAup.value = value
+		sessionStorage.setItem('selectedAup', value)
+	}
 
-	const selectedDisciplineId: Ref<string | null> = ref('')
-	const setSelectedDisciplineId = (value: string) =>
-		(selectedDisciplineId.value = value)
+	/* Выбранная дисциплина */
+	const selectedDisciplineId: Ref<string | null> = ref(
+		sessionStorage.getItem('selectedDisciplineId')
+	)
+	const setSelectedDisciplineId = (value: string) => {
+		selectedDisciplineId.value = value
+		sessionStorage.setItem('selectedDisciplineId', value)
+	}
+	/*  */
 
 	/* Поиск */
 	const search: Ref<string> = ref('')

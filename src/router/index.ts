@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import MainLayout from '@layouts/MainLayout.vue'
 import EmptyLayout from '@layouts/EmptyLayout.vue'
 import { useAuth } from '@stores/auth'
+import { useDisciplineStore } from '@stores/discipline'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -118,6 +119,21 @@ router.beforeEach(async (to, from) => {
 
 	if (authStore.isAuth && to.name === 'auth') return { name: 'home' }
 	if (!authStore.isAuth && to.name !== 'auth') return { name: 'auth' }
+})
+
+router.beforeEach(async (to, from) => {
+	console.log(to)
+
+	if (to.query.aup && to.query.id) {
+		const disciplineStore = useDisciplineStore()
+
+		disciplineStore.setSelectedAup(to.query.aup as string)
+		disciplineStore.setSelectedDisciplineId(to.query.id as string)
+
+		return { name: to.name }
+
+		/* TODO Проверить существование такой дисциплины и аупа, а также доступ к ней */
+	}
 })
 
 export default router
