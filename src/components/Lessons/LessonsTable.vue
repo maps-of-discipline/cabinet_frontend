@@ -6,7 +6,7 @@
 			class="LessonsTable"
 			ref="table"
 			v-model:expandedRowGroups="expandedRowGroups"
-			:class="{ isEmpty, editMode: lessonsStore.editMode }"
+			:class="{ isEmpty, editMode: disciplineStore.editMode }"
 			:value="lessons"
 			:loading="lessonsStore.isLoadingLessons"
 			stripedRows
@@ -17,7 +17,7 @@
 			scrollHeight="flex"
 			:rowClass="() => 'LessonsTable__row'"
 			dataKey="id"
-			:editMode="lessonsStore.editMode ? 'cell' : null"
+			:editMode="disciplineStore.editMode ? 'cell' : null"
 			@cell-edit-complete="onCellEditComplete"
 			@row-click="onRowClick"
 		>
@@ -108,7 +108,7 @@
 				<template #body="{ data, field }">
 					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
 					<LessonsLoadSelect
-						:editMode="lessonsStore.editMode"
+						:editMode="disciplineStore.editMode"
 						:controlTypes="lessonsStore.controlTypesBySemester"
 						:item="data"
 						@change="id => onChangeControlType(data, id)"
@@ -175,7 +175,7 @@
 			<Column field="task_link" header="Задание">
 				<template #body="{ data, field }">
 					<AttachLinkButton
-						v-if="data[field] || lessonsStore.editMode"
+						v-if="data[field] || disciplineStore.editMode"
 						:label="getAttachLabel(data)"
 						@click="openAttachLink(data)"
 					/>
@@ -186,7 +186,7 @@
 			<Column field="completed_task_link" header="Загрузка задания">
 				<template #body="{ data, field }">
 					<AttachLinkButton
-						v-if="data[field] || lessonsStore.editMode"
+						v-if="data[field] || disciplineStore.editMode"
 						:label="getAttachLabel(data, true)"
 						@click="openAttachLink(data, true)"
 					/>
@@ -200,7 +200,7 @@
 			<!-- Удаление -->
 			<Column>
 				<template #body="{ data, field }">
-					<div v-if="lessonsStore.editMode">
+					<div v-if="disciplineStore.editMode">
 						<Button
 							icon="mdi mdi-delete"
 							severity="danger"
@@ -222,18 +222,22 @@
 </template>
 
 <script setup>
+import ViewModesEnum from '@models/lessons/ViewModesEnum'
+
 import HeaderTable from '@components/layouts/HeaderTable.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
 import AttachLinkButton from '@components/Lessons/common/AttachLinkButton.vue'
 
-import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import { useLessonsStore } from '@/stores/lessons'
+import { useDisciplineStore } from '@/stores/discipline'
+
 import { ref, computed, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const lessonsStore = useLessonsStore()
+const disciplineStore = useDisciplineStore()
 
 const nestedViewMode = computed(
 	() => lessonsStore.viewMode === ViewModesEnum.Nested
@@ -296,7 +300,7 @@ const openAttachLink = (row, completed = false) => {
 		? row.completed_task_link_name
 		: row.task_link_name
 
-	if (!lessonsStore.editMode) {
+	if (!disciplineStore.editMode) {
 		return window.open(strLink, '_blank')
 	}
 
@@ -350,7 +354,7 @@ const onSaveLink = payload => {
 	}
 }
 
-watch([lessonsStore.editMode, lessonsStore.loadViewMode, nestedViewMode], () => {
+watch([disciplineStore.editMode, lessonsStore.loadViewMode, nestedViewMode], () => {
 	setTimeout(() => {
 		addColspanToHeader()
 	}, 0)

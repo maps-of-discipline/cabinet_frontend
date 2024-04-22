@@ -11,18 +11,20 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useLessonsStore } from '@/stores/lessons'
+import { useDisciplineStore } from '@/stores/discipline'
 import semesterNamesByNum from '@services/helpers/semesterNamesByNum'
+import { useLessonsStore } from '@stores/lessons'
 
+const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
 
 const selectedSemestr = computed({
 	get() {
-		return `${lessonsStore.selectedSemester}`
+		return `${disciplineStore.selectedSemester}`
 	},
 
 	set(val) {
-		lessonsStore.setSemester(+val)
+		disciplineStore.setSemester(+val)
 	},
 })
 

@@ -34,7 +34,7 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useLessonsStore } from '@/stores/lessons'
+import { useDisciplineStore } from '@/stores/discipline'
 
 import DisciplineSelect from '@components/layouts/Main/DisciplineSelect/DisciplineSelect.vue'
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
@@ -51,14 +51,14 @@ defineProps({
 	},
 })
 
-const lessonsStore = useLessonsStore()
+const disciplineStore = useDisciplineStore()
 
 const editMode = computed({
 	get() {
-		return lessonsStore.editMode
+		return disciplineStore.editMode
 	},
 	set(val) {
-		lessonsStore.switchMode(val)
+		disciplineStore.switchMode(val)
 	},
 })
 

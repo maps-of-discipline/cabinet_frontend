@@ -2,7 +2,7 @@
 	<Dropdown
 		class="GroupSelect"
 		v-model="selectedGroup"
-		:options="lessonsStore.groups"
+		:options="disciplineStore.groups"
 		:optionLabel="getLabel"
 		:loading="lessonsStore.isLoadingLessons"
 		placeholder="Группа"
@@ -11,18 +11,19 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useLessonsStore } from '@/stores/lessons'
+import { useDisciplineStore } from '@/stores/discipline'
+import { useLessonsStore } from '@stores/lessons'
 
+const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
 
 const selectedGroup = computed({
 	get() {
-		return lessonsStore.selectedGroup
+		return disciplineStore.selectedGroup
 	},
 
 	set(val) {
-		console.log(val)
-		lessonsStore.setGroup(val)
+		disciplineStore.setGroup(val)
 	},
 })
 

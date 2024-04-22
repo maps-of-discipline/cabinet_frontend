@@ -11,13 +11,15 @@ import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useDisciplineStore } from './discipline'
 
 import Api from '@services/Api'
 import generateEmptyLesson from '@services/helpers/lessons/generateEmptyLesson'
 
 export const useLessonsStore = defineStore('lessons', () => {
+	const disciplineStore = useDisciplineStore()
+
 	const lessons: Ref<ILesson[]> = ref([])
-	const groups: Ref<IStudyGroup[]> = ref([])
 	const controlTypes: Ref<ILessonControls> = ref([])
 
 	const prefixLocalId = 'local_'
@@ -31,16 +33,19 @@ export const useLessonsStore = defineStore('lessons', () => {
 	const isLoadingControlTypes: Ref<boolean> = ref(false)
 
 	const setLessonItems = (data: ILesson[]) => (lessons.value = data)
-	const setStudyGroups = (data: IStudyGroup[]) => (groups.value = data)
 	const setControlTypes = (data: ILessonControls) => (controlTypes.value = data)
 
 	const semesters = computed(() => Object.keys(controlTypes.value))
 
 	const filteredLessons = computed(() => {
-		if (selectedGroup.value === null || selectedSemester.value === null) return
+		if (
+			disciplineStore.selectedGroup === null ||
+			disciplineStore.selectedSemester === null
+		)
+			return
 
-		const semester: number = selectedSemester.value
-		const group: IStudyGroup = selectedGroup.value
+		const semester: number = disciplineStore.selectedSemester
+		const group: IStudyGroup = disciplineStore.selectedGroup
 
 		return lessons.value.filter(
 			lesson =>
@@ -51,9 +56,9 @@ export const useLessonsStore = defineStore('lessons', () => {
 	const rowsCount = computed(() => filteredLessons.value?.length)
 
 	const controlTypesBySemester = computed(() => {
-		if (selectedSemester.value === null) return []
+		if (disciplineStore.selectedSemester === null) return []
 
-		return controlTypes.value[selectedSemester.value]
+		return controlTypes.value[disciplineStore.selectedSemester]
 	})
 
 	const getSumLoadByControlType = id => {
@@ -97,13 +102,17 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 	/* Local */
 	const createLocalLesson = () => {
-		if (!selectedSemester.value || !selectedGroup.value || rpdId.value === null)
+		if (
+			!disciplineStore.selectedSemester ||
+			!disciplineStore.selectedGroup ||
+			rpdId.value === null
+		)
 			return
 
 		const lesson = generateEmptyLesson(
 			prefixLocalId,
-			selectedSemester.value,
-			selectedGroup.value.id,
+			disciplineStore.selectedSemester,
+			disciplineStore.selectedGroup.id,
 			rpdId.value
 		)
 
@@ -132,7 +141,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 		if (!data) return []
 
 		setLessonItems(data.topics)
-		setStudyGroups(data.groups)
+		disciplineStore.setStudyGroups(data.groups)
 
 		aup.value = aupCode
 		disciplineId.value = id
@@ -141,8 +150,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		await fetchControlTypes(data.rpd_id)
 
-		setGroup(groups.value[0])
-		setSemester(semesters.value[0])
+		disciplineStore.setGroup(disciplineStore.groups[0])
+		disciplineStore.setSemester(semesters.value[0])
 
 		isLoadingLessons.value = false
 
@@ -161,22 +170,6 @@ export const useLessonsStore = defineStore('lessons', () => {
 		setControlTypes(data.control_types)
 	}
 
-	// other
-	const editMode = ref(false)
-	function switchMode() {
-		editMode.value = !editMode.value
-	}
-
-	const selectedSemester: Ref<number | null> = ref(null)
-	function setSemester(semestr: string) {
-		selectedSemester.value = +semestr
-	}
-
-	const selectedGroup: Ref<IStudyGroup | null> = ref(null)
-	function setGroup(group: IStudyGroup) {
-		selectedGroup.value = group
-	}
-
 	const viewMode: Ref<ViewModesEnum> = ref(ViewModesEnum.Simple)
 	const setViewMode = (mode: ViewModesEnum) => {
 		viewMode.value = mode
@@ -189,7 +182,6 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 	return {
 		lessons,
-		groups,
 		controlTypes,
 		aup,
 		disciplineId,
@@ -200,7 +192,6 @@ export const useLessonsStore = defineStore('lessons', () => {
 		isLoadingControlTypes,
 
 		setLessonItems,
-		setStudyGroups,
 		setControlTypes,
 
 		semesters,
@@ -224,15 +215,10 @@ export const useLessonsStore = defineStore('lessons', () => {
 		fetchLessons,
 
 		/*  */
-		editMode,
-		switchMode,
-		selectedSemester,
-		setSemester,
+
 		viewMode,
 		setViewMode,
 		loadViewMode,
 		switchLoadViewMode,
-		selectedGroup,
-		setGroup,
 	}
 })

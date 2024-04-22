@@ -4,9 +4,12 @@ import { defineStore } from 'pinia'
 
 import debounce from '@services/helpers/debounce'
 import Api from '@services/Api'
+import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 
 export const useDisciplineStore = defineStore('discipline', () => {
 	const search: Ref<string> = ref('')
+
+	const groups: Ref<IStudyGroup[]> = ref([])
 
 	const aups: Ref<Array<any>> = ref([])
 	const isLoadingAups: Ref<boolean> = ref(false)
@@ -47,6 +50,23 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		disciplinesDialogItems.value = data
 	}
 
+	const editMode = ref(false)
+	function switchMode() {
+		editMode.value = !editMode.value
+	}
+
+	const selectedSemester: Ref<number | null> = ref(null)
+	function setSemester(semestr: string) {
+		selectedSemester.value = +semestr
+	}
+
+	const selectedGroup: Ref<IStudyGroup | null> = ref(null)
+	function setGroup(group: IStudyGroup) {
+		selectedGroup.value = group
+	}
+
+	const setStudyGroups = (data: IStudyGroup[]) => (groups.value = data)
+
 	return {
 		search,
 		setSearch,
@@ -64,5 +84,15 @@ export const useDisciplineStore = defineStore('discipline', () => {
 
 		disciplinesDialogItems,
 		fetchDisciplinesDialogItems,
+
+		editMode,
+		switchMode,
+		selectedSemester,
+		setSemester,
+		selectedGroup,
+		setGroup,
+
+		groups,
+		setStudyGroups,
 	}
 })
