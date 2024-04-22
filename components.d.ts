@@ -25,6 +25,7 @@ declare module 'vue' {
     DisciplineSelectStub: typeof import('./src/components/layouts/Main/DisciplineSelect/DisciplineSelectStub.vue')['default']
     Divider: typeof import('primevue/divider')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
+    GradeSelect: typeof import('./src/components/Grades/GradeSelect.vue')['default']
     GradesTable: typeof import('./src/components/Grades/GradesTable.vue')['default']
     GroupSelect: typeof import('./src/components/Lessons/GroupSelect.vue')['default']
     HeaderTable: typeof import('./src/components/layouts/HeaderTable.vue')['default']
