@@ -18,6 +18,7 @@
 					class="column-header--center"
 					headerStyle="width: 45px"
 					:colspan="1"
+					frozen
 				/>
 
 				<Column header="Имя" frozen style="min-width: 450px" :colspan="1" />
