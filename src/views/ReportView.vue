@@ -1,5 +1,5 @@
 <template>
-	<div class="Home">
+	<div class="ReportView">
 		<HeaderTable />
 
 		<DevelopingStub />
@@ -7,11 +7,12 @@
 </template>
 
 <script setup>
+import HeaderTable from '@components/layouts/HeaderTable.vue'
 import DevelopingStub from '@components/layouts/DevelopingStub.vue'
 </script>
 
 <style lang="scss">
-.Home {
+.ReportView {
 	height: 100%;
 	display: grid;
 	grid-template-rows: 70px calc(100vh - 70px - 12px - 16px - 16px);

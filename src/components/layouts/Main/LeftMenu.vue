@@ -39,9 +39,9 @@ const items = ref([
 				icon: 'mdi-table',
 			},
 			{
-				label: 'FAQ',
-				route: '/faq',
-				icon: 'mdi-frequently-asked-questions',
+				label: 'Отчеты',
+				route: '/report',
+				icon: 'mdi-chart-bar',
 			},
 		],
 	},

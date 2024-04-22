@@ -13,7 +13,7 @@ const router = createRouter({
 			name: 'home',
 			component: HomeView,
 			meta: {
-				title: 'Кабинет преподавателя',
+				title: 'Успеваемость',
 				layout: MainLayout,
 			},
 		},
@@ -22,7 +22,7 @@ const router = createRouter({
 			name: 'grades',
 			component: () => import('../views/GradesView.vue'),
 			meta: {
-				title: 'Успеваемость | Кабинет преподавателя',
+				title: 'Успеваемость | Успеваемость',
 				layout: MainLayout,
 			},
 		},
@@ -31,17 +31,17 @@ const router = createRouter({
 			name: 'lessons',
 			component: () => import('../views/LessonsView.vue'),
 			meta: {
-				title: 'Темы занятий | Кабинет преподавателя',
+				title: 'Темы занятий | Успеваемость',
 				layout: MainLayout,
 			},
 		},
 		{
-			path: '/faq',
-			name: 'faq',
-			component: () => import('../views/FaqView.vue'),
+			path: '/report',
+			name: 'report',
+			component: () => import('../views/ReportView.vue'),
 			meta: {
 				layout: MainLayout,
-				title: 'FAQ | Кабинет преподавателя',
+				title: 'Отчеты | Успеваемость',
 			},
 		},
 		{
