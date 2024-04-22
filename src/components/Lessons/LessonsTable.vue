@@ -1,6 +1,13 @@
 <template>
 	<div class="LessonsTableView">
-		<HeaderTable :title="lessonsStore.title" @add="onAddRow" />
+		<HeaderTable :title="lessonsStore.title">
+			<AddTask @add="onAddRow" />
+
+			<div class="HeaderTable__editMode">
+				<ViewSelect />
+				<LoadViewSelect />
+			</div>
+		</HeaderTable>
 
 		<DataTable
 			class="LessonsTable"
@@ -212,6 +219,7 @@
 				</template>
 			</Column>
 		</DataTable>
+
 		<AttachLinkDialog
 			v-model="attachDialogModel"
 			:link="link"
@@ -225,6 +233,10 @@
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
 import HeaderTable from '@components/layouts/HeaderTable.vue'
+
+import ViewSelect from '@components/Lessons/ViewSelect.vue'
+import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
+import AddTask from '@components/Lessons/AddTask.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'

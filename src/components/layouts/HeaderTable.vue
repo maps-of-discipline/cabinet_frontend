@@ -8,26 +8,16 @@
 		</div>
 
 		<div class="HeaderTable__right" id="headerTableTarget">
-			<AddTask @add="emit('add')" />
-
-			<div class="HeaderTable__editMode">
-				<ViewSelect />
-				<LoadViewSelect />
-			</div>
+			<slot></slot>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { useDisciplineStore } from '@/stores/discipline'
-
 import DisciplineSelect from '@components/layouts/Main/DisciplineSelect/DisciplineSelect.vue'
-import ViewSelect from '@components/Lessons/ViewSelect.vue'
-import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
+
 import GroupSelect from '@components/Lessons/GroupSelect.vue'
 import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
-import AddTask from '@components/Lessons/AddTask.vue'
 import EditModeSwitcher from '@components/layouts/EditModeSwitcher.vue'
 
 defineProps({

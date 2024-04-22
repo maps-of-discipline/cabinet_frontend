@@ -1,6 +1,6 @@
 <template>
 	<div class="Grades">
-		<HeaderTable />
+		<HeaderTable>1</HeaderTable>
 
 		<GradesTable />
 	</div>
