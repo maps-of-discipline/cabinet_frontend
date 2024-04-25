@@ -1,6 +1,8 @@
 import { ref, computed, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 
+import { RolesEnum } from '@models/auth/RolesEnum'
+
 import Api from '@services/Api'
 import { useAuth } from './auth'
 
@@ -15,7 +17,7 @@ export const useUser = defineStore('user', () => {
 		() => userData.value?.name + ' ' + userData.value?.surname
 	)
 
-	const status = computed(() => userData.value?.user_status)
+	const status = computed(() => RolesEnum[userData.value?.user_status])
 
 	const fetchUser = async () => {
 		if (!authStore.tokens.token) return null

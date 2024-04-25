@@ -1,5 +1,5 @@
-enum RoleNamesEnum {
-	Student = 'Студент',
+enum RolesEnum {
+	stud = 'Студент',
 	Teacher = 'Куратор',
 	Tutor = 'Тьютор',
 	Faculty = 'Администратор',
@@ -7,4 +7,4 @@ enum RoleNamesEnum {
 	Admin = 'Администратор',
 }
 
-export { RoleNamesEnum }
+export { RolesEnum }
