@@ -24,13 +24,23 @@
 				<Column header="Имя" frozen style="min-width: 450px" :colspan="1" />
 
 				<Column
-					v-for="(col, index) of values"
+					v-for="(col, index) of topics"
 					style="min-width: 50px; width: 50px; max-width: 50px"
-					:header="1"
 					headerStyle="min-width: 25px; width: 25px; max-width: 25px"
 					headerClass="column-header-index"
 					bodyClass="column-cell-index"
-				/>
+				>
+					<template #header="{ column }">
+						<span
+							class="GradesTable__topic-header"
+							v-tooltip.right="{
+								value: col.topic,
+							}"
+						>
+							{{ index + 1 }}
+						</span>
+					</template>
+				</Column>
 
 				<Column style="width: 100%" />
 			</Row>
@@ -61,17 +71,12 @@
 		</Column>
 
 		<Column
-			v-for="(col, index) of values"
+			v-for="(col, index) of topics"
 			style="min-width: 50px; width: 50px; max-width: 50px"
-			header="1"
 			headerStyle="min-width: 25px; width: 25px; max-width: 25px"
 			headerClass="column-header-index"
 			bodyClass="column-cell-index"
 		>
-			<template #header="{ column }">
-				<span>1</span>
-			</template>
-
 			<template #body="{ data, field }">
 				<span>
 					{{ data.values[index] }}
@@ -92,19 +97,31 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
+import { useLessonsStore } from '@stores/lessons'
 
 import GradeSelect from '@components/Grades/GradeSelect.vue'
 
 const gradesStore = useGradesStore()
+const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
 
-const values = Array(20)
+const topics = computed(() => lessonsStore.filteredLessons)
 
-const grades = computed(() => Array(30).fill(gradesStore.grades[0]))
+const grades = computed(() => gradesStore.grades)
+
+const aupCode = disciplineStore.selectedAup
+const idDiscipline = disciplineStore.selectedDisciplineId
+
+onMounted(async () => {
+	if (aupCode && idDiscipline) {
+		await lessonsStore.fetchLessons(aupCode, idDiscipline)
+		await gradesStore.fetchGrades()
+	}
+})
 </script>
 
 <style lang="scss">
@@ -116,6 +133,10 @@ const grades = computed(() => Array(30).fill(gradesStore.grades[0]))
 	overflow: hidden;
 
 	$row-height: 60px;
+
+	&__topic-header {
+		cursor: pointer;
+	}
 
 	tr {
 		height: $row-height;

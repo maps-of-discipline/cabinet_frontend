@@ -11,40 +11,47 @@ import ViewModesEnum from '@models/lessons/ViewModesEnum'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useDisciplineStore } from '@stores/discipline'
 
 import Api from '@services/Api'
 
-export const useGradesStore = defineStore('grades', () => {
-	const grades = ref([
-		{
-			name: 'Кириллов Даниил Павлович',
+interface IGradeRow {
+	name: string
+	values: (number | null)[]
+}
 
-			values: [
-				3,
-				4,
-				4,
-				5,
-				4,
-				2,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-			],
-		},
-	])
+export const useGradesStore = defineStore('grades', () => {
+	const disciplineStore = useDisciplineStore()
+
+	const grades: Ref<IGradeRow[]> = ref([])
+
+	const setGrades = (data: IGradeRow[]) => {
+		grades.value = data
+	}
+
+	const fetchGrades = async () => {
+		console.log(disciplineStore.selectedAup)
+		console.log(disciplineStore.selectedDisciplineId)
+		console.log(disciplineStore.selectedGroup?.title)
+
+		if (
+			!disciplineStore.selectedAup ||
+			!disciplineStore.selectedDisciplineId ||
+			!disciplineStore.selectedGroup?.title
+		)
+			return
+
+		const data: IGradeRow[] = await Api.getGrades(
+			disciplineStore.selectedAup,
+			disciplineStore.selectedDisciplineId,
+			disciplineStore.selectedGroup.title
+		)
+
+		setGrades(data)
+	}
 
 	return {
 		grades,
+		fetchGrades,
 	}
 })

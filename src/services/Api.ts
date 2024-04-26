@@ -152,6 +152,20 @@ abstract class Api {
 		return data
 	}
 
+	static async getGrades(aup: Key, id: Key, group: string) {
+		const { data, status } = await axios.get(`getGrades`, {
+			params: {
+				aup,
+				id,
+				group,
+			},
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
 	static async uploadGroups(formdata) {
 		const { data, status } = await axios.post(`uploadGroups`, formdata)
 
