@@ -9,7 +9,7 @@ import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
 import type { Ref } from 'vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useDisciplineStore } from '@stores/discipline'
 
@@ -25,21 +25,21 @@ export const useGradesStore = defineStore('grades', () => {
 
 	const grades: Ref<IGradeRow[]> = ref([])
 
+	const isLoading = ref(false)
+
 	const setGrades = (data: IGradeRow[]) => {
 		grades.value = data
 	}
 
 	const fetchGrades = async () => {
-		console.log(disciplineStore.selectedAup)
-		console.log(disciplineStore.selectedDisciplineId)
-		console.log(disciplineStore.selectedGroup?.title)
-
 		if (
 			!disciplineStore.selectedAup ||
 			!disciplineStore.selectedDisciplineId ||
 			!disciplineStore.selectedGroup?.title
 		)
 			return
+
+		isLoading.value = true
 
 		const data: IGradeRow[] = await Api.getGrades(
 			disciplineStore.selectedAup,
@@ -48,10 +48,19 @@ export const useGradesStore = defineStore('grades', () => {
 		)
 
 		setGrades(data)
+
+		isLoading.value = false
 	}
 
+	watch(
+		() => disciplineStore.selectedGroup,
+		(count, prevCount) => {
+			fetchGrades()
+		}
+	)
 	return {
 		grades,
 		fetchGrades,
+		isLoading,
 	}
 })

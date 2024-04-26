@@ -3,6 +3,7 @@
 		class="GradesTable"
 		ref="table"
 		:value="grades"
+		:loading="isLoadingTable"
 		showGridlines
 		scrollable
 		scrollHeight="flex"
@@ -112,6 +113,7 @@ const disciplineStore = useDisciplineStore()
 const topics = computed(() => lessonsStore.filteredLessons)
 
 const grades = computed(() => gradesStore.grades)
+const isLoadingTable = computed(() => gradesStore.isLoading)
 
 const aupCode = disciplineStore.selectedAup
 const idDiscipline = disciplineStore.selectedDisciplineId
