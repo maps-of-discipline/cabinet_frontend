@@ -38,6 +38,10 @@ const selectedGrade = computed({
 
 const gradesOptions = [
 	{
+		title: 'Не указано',
+		value: null,
+	},
+	{
 		title: 'Неудовлетворительно',
 		value: 2,
 	},
