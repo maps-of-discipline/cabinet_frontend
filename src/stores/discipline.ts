@@ -29,6 +29,25 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	}
 	/*  */
 
+	/* Выбор группы */
+	const selectedGroup: Ref<IStudyGroup | null> = ref(null)
+	const setSelectedGroup = (group: IStudyGroup) => {
+		selectedGroup.value = group
+	}
+
+	const groups: Ref<IStudyGroup[]> = ref([])
+	const setStudyGroups = (data: IStudyGroup[]) => {
+		groups.value = data
+	}
+	/*  */
+
+	/* Выбор семестра */
+	const selectedSemester: Ref<number | null> = ref(null)
+	const setSelectedSemester = (semestr: string) => {
+		selectedSemester.value = +semestr
+	}
+	/*  */
+
 	/* Поиск */
 	const search: Ref<string> = ref('')
 	const setSearch = async (value: string) => {
@@ -70,20 +89,6 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	/* Режим просмотра/редактирования */
 	const editMode = ref(false)
 	const switchMode = () => (editMode.value = !editMode.value)
-
-	/* Выбор семестра */
-	const selectedSemester: Ref<number | null> = ref(null)
-	const setSelectedSemester = (semestr: string) =>
-		(selectedSemester.value = +semestr)
-	/*  */
-
-	/* Выбор группы */
-	const selectedGroup: Ref<IStudyGroup | null> = ref(null)
-	const setSelectedGroup = (group: IStudyGroup) => (selectedGroup.value = group)
-
-	const groups: Ref<IStudyGroup[]> = ref([])
-	const setStudyGroups = (data: IStudyGroup[]) => (groups.value = data)
-	/*  */
 
 	return {
 		search,
