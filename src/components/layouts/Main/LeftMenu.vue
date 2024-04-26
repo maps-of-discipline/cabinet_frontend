@@ -43,6 +43,11 @@ const items = ref([
 				route: '/report',
 				icon: 'mdi-chart-bar',
 			},
+			{
+				label: 'Управление',
+				route: '/admin',
+				icon: 'mdi-cog',
+			},
 		],
 	},
 

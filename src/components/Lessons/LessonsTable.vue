@@ -108,8 +108,8 @@
 
 			<!-- Вид -->
 			<Column
-				headerClass="column-header_center"
-				bodyClass="column-cell_center"
+				headerClass="column-header-center"
+				bodyClass="column-cell-center"
 				field="id_type_control"
 			>
 				<template #body="{ data, field }">
@@ -404,6 +404,10 @@ if (aupCode && idDiscipline) {
 
 	$row-height: 60px;
 
+	tr {
+		height: $row-height;
+	}
+
 	&__subheader {
 		padding: 0 25px;
 		font-weight: bold;
@@ -416,56 +420,6 @@ if (aupCode && idDiscipline) {
 
 	&__chip {
 		font-size: 14px;
-	}
-
-	.column-header {
-		&--center {
-			.p-column-header-content {
-				justify-content: center;
-			}
-		}
-	}
-
-	table {
-		table-layout: fixed;
-	}
-
-	tr {
-		height: $row-height;
-	}
-
-	/* .p-datatable-tbody td,
-	th {
-		padding: 0.5rem;
-	} */
-
-	.p-rowgroup-header {
-		padding: 0;
-
-		/* td {
-			display: flex;
-			align-items: center;
-			gap: 12px;
-		} */
-	}
-
-	.p-cell-editing {
-		/* Непонятно почему, но это единственное решение, чтобы растянуть элемент внутри клетки */
-		/* https://stackoverflow.com/questions/22220698/height-100-for-div-inside-div-with-display-table-cell#answer-32112698 */
-		height: 1px;
-		padding: 0 !important;
-	}
-
-	.column-header-index,
-	.column-cell-index {
-		padding: 0;
-		text-align: center;
-	}
-
-	.column-header-index {
-		.p-column-header-content {
-			justify-content: center;
-		}
 	}
 
 	&.isEmpty {
@@ -490,15 +444,5 @@ if (aupCode && idDiscipline) {
 			cursor: pointer;
 		}
 	}
-}
-
-.column-header_center {
-	.p-column-header-content {
-		justify-content: center;
-	}
-}
-
-.column-cell_center {
-	text-align: center;
 }
 </style>

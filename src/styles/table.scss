@@ -1,0 +1,59 @@
+.p-datatable {
+    .column-header--center {
+		.p-column-header-content {
+			justify-content: center;
+		}
+	}
+
+	.column-header {
+		&--center {
+			.p-column-header-content {
+				justify-content: center;
+			}
+		}
+	}
+
+	/* .p-datatable-tbody td,
+	th {
+		padding: 0.5rem;
+	} */
+
+	.p-rowgroup-header {
+		padding: 0;
+
+		/* td {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		} */
+	}
+
+	.p-cell-editing {
+		/* Непонятно почему, но это единственное решение, чтобы растянуть элемент внутри клетки */
+		/* https://stackoverflow.com/questions/22220698/height-100-for-div-inside-div-with-display-table-cell#answer-32112698 */
+		height: 1px;
+		padding: 0 !important;
+	}
+
+	.column-header-index,
+	.column-cell-index {
+		padding: 0;
+		text-align: center;
+	}
+
+	.column-header-index {
+		.p-column-header-content {
+			justify-content: center;
+		}
+	}
+
+    .column-header-center {
+        .p-column-header-content {
+            justify-content: center;
+        }
+    }
+    
+    .column-cell-center {
+        text-align: center;
+    }
+}

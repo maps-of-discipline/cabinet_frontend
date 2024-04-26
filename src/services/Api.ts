@@ -143,6 +143,22 @@ abstract class Api {
 
 		return data
 	}
+
+	static async getGroups() {
+		const { data, status } = await axios.get(`getGroups`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async uploadGroups(formdata) {
+		const { data, status } = await axios.post(`uploadGroups`, formdata)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

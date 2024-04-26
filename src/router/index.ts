@@ -53,6 +53,15 @@ const router = createRouter({
 				layout: EmptyLayout,
 			},
 		},
+		{
+			path: '/admin',
+			name: 'admin',
+			component: () => import('../views/AdminView.vue'),
+			meta: {
+				title: 'Панель администратора',
+				layout: MainLayout,
+			},
+		},
 	],
 })
 
