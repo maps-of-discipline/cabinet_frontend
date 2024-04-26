@@ -13,10 +13,10 @@
 <script setup>
 import { ref, defineProps, defineEmits, computed } from 'vue'
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['input'])
 
 const props = defineProps({
-	modelValue: {
+	value: {
 		type: Number,
 		default: null,
 	},
@@ -24,11 +24,15 @@ const props = defineProps({
 
 const selectedGrade = computed({
 	get() {
-		return gradesOptions.find(grade => grade.value === props.modelValue)
+		return (
+			gradesOptions.find(grade => grade.value === props.value) || {
+				value: null,
+			}
+		)
 	},
 
 	set(grade) {
-		emit('update:modelValue', grade.value)
+		emit('input', grade.value)
 	},
 })
 

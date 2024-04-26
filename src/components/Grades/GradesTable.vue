@@ -78,14 +78,17 @@
 			headerClass="column-header-index"
 			bodyClass="column-cell-index"
 		>
-			<template #body="{ data, field }">
+			<template #body="{ data }">
 				<span>
-					{{ data.values[index] }}
+					{{ data.values[col.id] }}
 				</span>
 			</template>
 
 			<template #editor="{ data, field }">
-				<GradeSelect v-model="data.values[index]" />
+				<GradeSelect
+					:value="data.values[col.id]"
+					@input="onInputGrade($event, col, data)"
+				/>
 			</template>
 		</Column>
 
@@ -114,6 +117,14 @@ const topics = computed(() => lessonsStore.filteredLessons)
 
 const grades = computed(() => gradesStore.grades)
 const isLoadingTable = computed(() => gradesStore.isLoading)
+
+const onInputGrade = (value, topic, row) => {
+	const grade = value
+	const topicId = topic.id
+	const studentId = row.id
+
+	gradesStore.updateGrade(grade, topicId, studentId)
+}
 
 const aupCode = disciplineStore.selectedAup
 const idDiscipline = disciplineStore.selectedDisciplineId

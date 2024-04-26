@@ -16,8 +16,11 @@ import { useDisciplineStore } from '@stores/discipline'
 import Api from '@services/Api'
 
 interface IGradeRow {
+	id: Key
 	name: string
-	values: (number | null)[]
+	values: {
+		[key: string]: number
+	}
 }
 
 export const useGradesStore = defineStore('grades', () => {
@@ -52,6 +55,13 @@ export const useGradesStore = defineStore('grades', () => {
 		isLoading.value = false
 	}
 
+	const updateGrade = async (value: number, topicId: Key, studentId: Key) => {
+		const data = await Api.updateGrade(value, topicId, studentId)
+
+		const neededIndex = grades.value.findIndex(row => row.id === studentId)
+		grades.value[neededIndex].values[topicId] = value
+	}
+
 	watch(
 		() => disciplineStore.selectedGroup,
 		(count, prevCount) => {
@@ -61,6 +71,7 @@ export const useGradesStore = defineStore('grades', () => {
 	return {
 		grades,
 		fetchGrades,
+		updateGrade,
 		isLoading,
 	}
 })
