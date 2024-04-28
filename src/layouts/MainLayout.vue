@@ -2,6 +2,8 @@
 	<div class="MainLayout">
 		<LeftMenu class="MainLayout__menu" />
 
+		<BubbleBg />
+
 		<main class="MainLayout__main">
 			<slot />
 		</main>
@@ -9,6 +11,7 @@
 </template>
 
 <script lang="ts" setup>
+import BubbleBg from '@components/layouts/Main/BubbleBg.vue'
 import LeftMenu from '@components/layouts/Main/LeftMenu.vue'
 </script>
 
@@ -22,7 +25,7 @@ import LeftMenu from '@components/layouts/Main/LeftMenu.vue'
 	}
 
 	&__main {
-		margin: 16px 30px;
+		margin: 16px 30px 16px 30px;
 	}
 }
 </style>

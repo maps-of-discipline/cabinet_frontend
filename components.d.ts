@@ -11,6 +11,8 @@ declare module 'vue' {
     AttachLinkButton: typeof import('./src/components/Lessons/common/AttachLinkButton.vue')['default']
     AttachLinkDialog: typeof import('./src/components/Lessons/AttachLinkDialog.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
+    BgSvg: typeof import('./src/components/layouts/Main/BgSvg.vue')['default']
+    BubbleBg: typeof import('./src/components/layouts/Main/BubbleBg.vue')['default']
     Button: typeof import('primevue/button')['default']
     CellEditor: typeof import('./src/components/Lessons/common/CellEditor.vue')['default']
     CloudIconNotSaved: typeof import('./src/components/Lessons/common/CloudIconNotSaved.vue')['default']
