@@ -1,8 +1,9 @@
 <template>
-	<div>
+	<div v-tooltip.right="tooltip">
 		<router-link
 			v-if="item.route"
 			class="LeftMenuLink p-ripple"
+			:class="{ mini: props.mini }"
 			:to="item.route"
 			v-ripple
 		>
@@ -30,13 +31,27 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 
-defineProps({
+const props = defineProps({
 	item: {
 		type: Object,
 		default: () => ({}),
 	},
+
+	mini: {
+		type: Boolean,
+		default: false,
+	},
+})
+
+const tooltip = computed(() => {
+	return props.mini
+		? {
+				value: props.item.label,
+				showDelay: 500,
+		  }
+		: null
 })
 </script>
 
@@ -46,11 +61,13 @@ defineProps({
 .LeftMenuLink {
 	text-decoration: none;
 	color: $menu-link-color;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	border-radius: $borderRadius;
 	padding: 12px 16px;
 	transition: all 0.25s ease;
+	width: 100%;
+	white-space: nowrap;
 
 	&:hover,
 	&.router-link-active {
@@ -59,13 +76,22 @@ defineProps({
 	}
 
 	&__icon {
-		margin-right: 16px;
 		font-size: 1.2rem;
-		width: 24px;
+		min-width: 24px;
 	}
 
 	&__label {
+		margin-left: 16px;
 		font-size: 1rem;
+		transition: opacity 0.25s ease;
+	}
+
+	&.mini {
+		.LeftMenuLink {
+			&__label {
+				opacity: 0;
+			}
+		}
 	}
 }
 </style>

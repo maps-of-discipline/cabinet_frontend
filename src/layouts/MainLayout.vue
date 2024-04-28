@@ -15,7 +15,7 @@ import LeftMenu from '@components/layouts/Main/LeftMenu.vue'
 <style lang="scss">
 .MainLayout {
 	display: grid;
-	grid-template-columns: 300px 1fr;
+	grid-template-columns: auto 1fr;
 
 	&__menu {
 		height: 100vh;

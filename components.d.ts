@@ -39,6 +39,7 @@ declare module 'vue' {
     LeftMenuAccount: typeof import('./src/components/layouts/Main/LeftMenuAccount.vue')['default']
     LeftMenuLink: typeof import('./src/components/layouts/Main/LeftMenuLink.vue')['default']
     LeftMenuNav: typeof import('./src/components/layouts/Main/LeftMenuNav.vue')['default']
+    LeftMenuSwitcher: typeof import('./src/components/layouts/Main/LeftMenuSwitcher.vue')['default']
     LessonsLoadSelect: typeof import('./src/components/Lessons/common/LessonsLoadSelect.vue')['default']
     LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
     LoadViewSelect: typeof import('./src/components/Lessons/LoadViewSelect.vue')['default']
