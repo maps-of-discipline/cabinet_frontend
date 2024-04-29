@@ -47,6 +47,8 @@ const getLabel = value => {
 .SemesterSelect {
 	height: 37px;
 	align-items: center;
+	transition: outline 0.2s;
+	outline: $focusOutlineTransparent;
 
 	&.p-inputwrapper-focus,
 	&:hover {
