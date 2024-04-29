@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import MainLayout from '@layouts/MainLayout.vue'
 import EmptyLayout from '@layouts/EmptyLayout.vue'
 import { useAuth } from '@stores/auth'
@@ -9,20 +8,11 @@ const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
 		{
-			path: '/',
-			name: 'home',
-			component: HomeView,
-			meta: {
-				title: 'Успеваемость',
-				layout: MainLayout,
-			},
-		},
-		{
 			path: '/grades',
 			name: 'grades',
 			component: () => import('../views/GradesView.vue'),
 			meta: {
-				title: 'Успеваемость | Успеваемость',
+				title: 'Успеваемость · Успеваемость',
 				layout: MainLayout,
 			},
 		},
@@ -31,7 +21,7 @@ const router = createRouter({
 			name: 'lessons',
 			component: () => import('../views/LessonsView.vue'),
 			meta: {
-				title: 'Темы занятий | Успеваемость',
+				title: 'Темы занятий · Успеваемость',
 				layout: MainLayout,
 			},
 		},
@@ -41,7 +31,7 @@ const router = createRouter({
 			component: () => import('../views/ReportView.vue'),
 			meta: {
 				layout: MainLayout,
-				title: 'Отчеты | Успеваемость',
+				title: 'Отчеты · Успеваемость',
 			},
 		},
 		{
@@ -49,7 +39,7 @@ const router = createRouter({
 			name: 'auth',
 			component: () => import('../views/AuthView.vue'),
 			meta: {
-				title: 'Вход',
+				title: 'Вход · Успеваемость',
 				layout: EmptyLayout,
 			},
 		},
@@ -58,7 +48,16 @@ const router = createRouter({
 			name: 'admin',
 			component: () => import('../views/AdminView.vue'),
 			meta: {
-				title: 'Панель администратора',
+				title: 'Панель администратора · Успеваемость',
+				layout: MainLayout,
+			},
+		},
+		{
+			path: '/:pathMatch(.*)*',
+			name: 'NotFound',
+			component: () => import('../views/NotFoundView.vue'),
+			meta: {
+				title: '404 · Успеваемость',
 				layout: MainLayout,
 			},
 		},
@@ -126,13 +125,15 @@ router.beforeEach((to, from, next) => {
 router.beforeEach(async (to, from) => {
 	const authStore = useAuth()
 
-	if (authStore.isAuth && to.name === 'auth') return { name: 'home' }
+	if (authStore.isAuth && to.name === 'auth') return { name: 'grades' }
 	if (!authStore.isAuth && to.name !== 'auth') return { name: 'auth' }
 })
 
 router.beforeEach(async (to, from) => {
-	console.log(to)
+	if (to.path === '/') return { name: 'grades' }
+})
 
+router.beforeEach(async (to, from) => {
 	if (to.query.aup && to.query.id) {
 		const disciplineStore = useDisciplineStore()
 

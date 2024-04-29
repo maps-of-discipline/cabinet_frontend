@@ -9,7 +9,7 @@
 
 		<LeftMenuNav
 			class="LeftMenu__nav"
-			:data="items"
+			:data="uiStore.leftMenuNavItems"
 			:mini="uiStore.leftMenuMiniMode"
 		/>
 
@@ -30,58 +30,6 @@ import LeftMenuSwitcher from '@components/layouts/Main/LeftMenuSwitcher.vue'
 import { useUi } from '@stores/ui'
 
 const uiStore = useUi()
-
-const items = ref([
-	{
-		hideInMini: false,
-		items: [
-			{
-				label: 'Главная',
-				route: '/',
-				icon: 'mdi-home',
-			},
-			{
-				label: 'Успеваемость',
-				route: '/grades',
-				icon: 'mdi-book-open-page-variant',
-			},
-			{
-				label: 'Задания',
-				route: '/lessons',
-				icon: 'mdi-table',
-			},
-			{
-				label: 'Отчеты',
-				route: '/report',
-				icon: 'mdi-chart-bar',
-			},
-			{
-				label: 'Управление',
-				route: '/admin',
-				icon: 'mdi-cog',
-			},
-		],
-	},
-
-	{
-		hideInMini: true,
-		items: [
-			{
-				label: 'Карты дисциплин',
-				url: 'https://kd.mospolytech.ru',
-			},
-
-			{
-				label: 'Личный кабинет',
-				url: 'https://e.mospolytech.ru',
-			},
-			{
-				label: 'СДО',
-				url: 'https://online.mospolytech.ru/',
-			},
-		],
-	},
-])
 </script>
 
 <style lang="scss">
