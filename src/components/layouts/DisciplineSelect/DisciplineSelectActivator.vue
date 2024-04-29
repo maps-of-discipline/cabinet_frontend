@@ -1,5 +1,13 @@
 <template>
-	<Button class="DisciplineSelectActivator" :label="_label" @click="onClick" />
+	<Button
+		class="DisciplineSelectActivator"
+		:label="_label"
+		v-tooltip.bottom="{
+			value: 'Выбор дисциплины',
+			showDelay: 500,
+		}"
+		@click="onClick"
+	/>
 </template>
 
 <script setup>
