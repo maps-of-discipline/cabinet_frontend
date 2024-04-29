@@ -26,6 +26,7 @@ const gradeClass = computed(() => {
 	font-size: 0.9rem;
 	color: #222;
 	font-weight: 600;
+	border-radius: 4px;
 
 	&.two {
 		background-color: #f87171;
