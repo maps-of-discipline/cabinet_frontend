@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-tooltip.left="{
+		v-tooltip.bottom="{
 			value: 'Вид оценивания',
 			showDelay: 500,
 		}"
