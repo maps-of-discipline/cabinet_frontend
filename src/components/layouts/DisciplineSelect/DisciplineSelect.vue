@@ -10,8 +10,8 @@
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
 
-import DisciplineSelectDialog from '@components/layouts/Main/DisciplineSelect/DisciplineSelectDialog.vue'
-import DisciplineSelectActivator from '@components/layouts/Main/DisciplineSelect/DisciplineSelectActivator.vue'
+import DisciplineSelectDialog from '@components/layouts/DisciplineSelect/DisciplineSelectDialog.vue'
+import DisciplineSelectActivator from '@components/layouts/DisciplineSelect/DisciplineSelectActivator.vue'
 
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()

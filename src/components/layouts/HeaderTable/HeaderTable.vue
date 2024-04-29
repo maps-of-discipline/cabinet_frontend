@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import DisciplineSelect from '@components/layouts/Main/DisciplineSelect/DisciplineSelect.vue'
+import DisciplineSelect from '@components/layouts/DisciplineSelect/DisciplineSelect.vue'
 
 import GroupSelect from '@components/layouts/HeaderTable/GroupSelect.vue'
 import SemesterSelect from '@components/layouts/HeaderTable/SemesterSelect.vue'

@@ -81,8 +81,8 @@ import { useRouter } from 'vue-router'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
 
-import DisciplineSelectListItem from '@components/layouts/Main/DisciplineSelect/DisciplineSelectListItem.vue'
-import DisciplineSelectStub from '@components/layouts/Main/DisciplineSelect/DisciplineSelectStub.vue'
+import DisciplineSelectListItem from '@components/layouts/DisciplineSelect/DisciplineSelectListItem.vue'
+import DisciplineSelectStub from '@components/layouts/DisciplineSelect/DisciplineSelectStub.vue'
 
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
