@@ -6,6 +6,10 @@
 		offLabel="Просмотр"
 		onIcon="mdi mdi-pen"
 		offIcon="mdi mdi-eye"
+		v-tooltip.bottom="{
+			value: 'Режим редактирования таблицы',
+			showDelay: 500,
+		}"
 	/>
 </template>
 
@@ -19,6 +23,7 @@ const editMode = computed({
 	get() {
 		return disciplineStore.editMode
 	},
+
 	set(val) {
 		disciplineStore.switchMode(val)
 	},

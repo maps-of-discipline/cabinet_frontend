@@ -1,13 +1,20 @@
 <template>
-	<Dropdown
-		class="SemesterSelect"
-		v-model="selectedSemestr"
-		:options="lessonsStore.semesters"
-		:loading="lessonsStore.isLoadingControlTypes"
-		:optionLabel="getLabel"
-		placeholder="Семестр"
-		emptyMessage="Выберите дисциплину"
-	/>
+	<div
+		v-tooltip.bottom="{
+			value: 'Выбор семестра',
+			showDelay: 500,
+		}"
+	>
+		<Dropdown
+			class="SemesterSelect"
+			v-model="selectedSemestr"
+			:options="lessonsStore.semesters"
+			:loading="lessonsStore.isLoadingControlTypes"
+			:optionLabel="getLabel"
+			placeholder="Семестр"
+			emptyMessage="Выберите дисциплину"
+		/>
+	</div>
 </template>
 
 <script setup>

@@ -1,13 +1,20 @@
 <template>
-	<Dropdown
-		class="GroupSelect"
-		v-model="selectedGroup"
-		:options="disciplineStore.groups"
-		:optionLabel="getLabel"
-		:loading="lessonsStore.isLoadingLessons"
-		placeholder="Группа"
-		emptyMessage="Выберите дисциплину"
-	/>
+	<div
+		v-tooltip.bottom="{
+			value: 'Выбор учебной группы',
+			showDelay: 500,
+		}"
+	>
+		<Dropdown
+			class="GroupSelect"
+			v-model="selectedGroup"
+			:options="disciplineStore.groups"
+			:optionLabel="getLabel"
+			:loading="lessonsStore.isLoadingLessons"
+			placeholder="Группа"
+			emptyMessage="Выберите дисциплину"
+		/>
+	</div>
 </template>
 
 <script setup>
