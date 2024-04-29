@@ -3,7 +3,8 @@
 		<div class="LeftMenuAccount__avatar-wrapper">
 			<Avatar
 				class="LeftMenuAccount__avatar"
-				icon="pi pi-user"
+				:icon="!imageUrl ? 'pi pi-user' : ''"
+				:image="imageUrl"
 				shape="circle"
 			/>
 		</div>
@@ -36,9 +37,11 @@ const uiStore = useUi()
 
 const onClickLogout = () => authStore.logout()
 const isMini = computed(() => uiStore.leftMenuMiniMode)
+
+const imageUrl = computed(() => userStore.userData?.avatar || '')
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .LeftMenuAccount {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
@@ -50,6 +53,10 @@ const isMini = computed(() => uiStore.leftMenuMiniMode)
 		display: flex;
 		justify-content: center;
 		width: 52px;
+
+		img {
+			object-fit: cover;
+		}
 	}
 
 	&__detail {
