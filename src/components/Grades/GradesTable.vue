@@ -26,7 +26,7 @@
 					headerClass="GradesTable__name-cell"
 					header="Имя"
 					frozen
-					style="min-width: 450px"
+					style="min-width: 450px; max-width: 450px"
 					:colspan="1"
 				/>
 
@@ -48,7 +48,7 @@
 					</template>
 				</Column>
 
-				<!-- <Column style="width: 100%" /> -->
+				<Column style="width: 100%" />
 
 				<Column
 					class="column-header--center"
@@ -92,7 +92,7 @@
 			header="Имя"
 			field="name"
 			frozen
-			style="min-width: 450px"
+			style="min-width: 450px; max-width: 450px"
 		>
 			<template #body="{ data, field }">
 				<span>
@@ -123,11 +123,11 @@
 		</Column>
 
 		<!-- Пустой столбец -->
-		<!-- <Column style="width: 100%">
+		<Column style="width: 100%">
 			<template #body="{ data, field }">
 				<span> </span>
 			</template>
-		</Column> -->
+		</Column>
 
 		<!-- Средний балл -->
 		<Column
