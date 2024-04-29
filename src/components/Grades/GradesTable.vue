@@ -1,6 +1,7 @@
 <template>
 	<DataTable
 		class="GradesTable"
+		:class="{ editMode: disciplineStore.editMode }"
 		ref="table"
 		:value="grades"
 		:loading="isLoadingTable"
