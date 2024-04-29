@@ -232,7 +232,7 @@
 <script setup>
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
-import HeaderTable from '@components/layouts/HeaderTable.vue'
+import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'

@@ -5,6 +5,7 @@
 			<GroupSelect />
 			<SemesterSelect />
 			<EditModeSwitcher />
+			<OpenPlanButton />
 		</div>
 
 		<div class="HeaderTable__right" id="headerTableTarget">
@@ -16,9 +17,10 @@
 <script setup>
 import DisciplineSelect from '@components/layouts/Main/DisciplineSelect/DisciplineSelect.vue'
 
-import GroupSelect from '@components/Lessons/GroupSelect.vue'
-import SemesterSelect from '@components/Lessons/SemesterSelect.vue'
-import EditModeSwitcher from '@components/layouts/EditModeSwitcher.vue'
+import GroupSelect from '@components/layouts/HeaderTable/GroupSelect.vue'
+import SemesterSelect from '@components/layouts/HeaderTable/SemesterSelect.vue'
+import EditModeSwitcher from '@components/layouts/HeaderTable/EditModeSwitcher.vue'
+import OpenPlanButton from '@components/layouts/HeaderTable/OpenPlanButton.vue'
 
 defineProps({
 	title: {

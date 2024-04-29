@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import HeaderTable from '@components/layouts/HeaderTable.vue'
+import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 import DevelopingStub from '@components/layouts/DevelopingStub.vue'
 </script>
 
