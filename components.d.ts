@@ -54,6 +54,7 @@ declare module 'vue' {
     Stub: typeof import('./src/components/layouts/Stub.vue')['default']
     Tag: typeof import('primevue/tag')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
+    TypeGradeSelect: typeof import('./src/components/Grades/TypeGradeSelect.vue')['default']
     ViewSelect: typeof import('./src/components/Lessons/ViewSelect.vue')['default']
   }
 }

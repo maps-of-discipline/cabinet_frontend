@@ -1,6 +1,8 @@
 <template>
 	<div class="Grades">
-		<HeaderTable></HeaderTable>
+		<HeaderTable>
+			<TypeGradeSelect />
+		</HeaderTable>
 
 		<GradesTable />
 	</div>
@@ -8,7 +10,9 @@
 
 <script setup>
 import HeaderTable from '@components/layouts/HeaderTable.vue'
+
 import GradesTable from '@components/Grades/GradesTable.vue'
+import TypeGradeSelect from '@components/Grades/TypeGradeSelect.vue'
 </script>
 
 <style lang="scss">
