@@ -71,6 +71,7 @@ const getLabel = grade => {
 	width: 100%;
 	height: 100%;
 	border-radius: 0;
+	box-shadow: 0px 0px 0px 1px $blue000;
 	position: relative;
 	z-index: 2;
 
