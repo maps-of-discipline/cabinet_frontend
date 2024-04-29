@@ -1,12 +1,19 @@
 <template>
-	<Dropdown
-		class="TypeGradeSelect"
-		v-model="selectedType"
-		:options="options"
-		:optionLabel="getLabel"
-		placeholder="Тип оценивания"
-		emptyMessage="Выберите дисциплину"
-	/>
+	<div
+		v-tooltip.left="{
+			value: 'Выбор вида оценивания',
+			showDelay: 500,
+		}"
+	>
+		<Dropdown
+			class="TypeGradeSelect"
+			v-model="selectedType"
+			:options="options"
+			:optionLabel="getLabel"
+			placeholder="Вид оценивания"
+			emptyMessage="Выберите дисциплину"
+		/>
+	</div>
 </template>
 
 <script setup>
