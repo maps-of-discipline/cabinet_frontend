@@ -6,11 +6,15 @@
 		:options="gradesOptions"
 		:optionLabel="getLabel"
 	>
-		<template #value>{{ selectedGrade.value }}</template>
+		<template #value>
+			<GradeTag :value="selectedGrade.value" />
+		</template>
 	</Dropdown>
 </template>
 
 <script setup>
+import GradeTag from '@components/Grades/GradeTag.vue'
+
 import { ref, defineProps, defineEmits, computed } from 'vue'
 
 const emit = defineEmits(['input'])

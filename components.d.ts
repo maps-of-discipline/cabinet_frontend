@@ -32,6 +32,7 @@ declare module 'vue' {
     FileUpload: typeof import('primevue/fileupload')['default']
     GradeSelect: typeof import('./src/components/Grades/GradeSelect.vue')['default']
     GradesTable: typeof import('./src/components/Grades/GradesTable.vue')['default']
+    GradeTag: typeof import('./src/components/Grades/GradeTag.vue')['default']
     GroupSelect: typeof import('./src/components/layouts/HeaderTable/GroupSelect.vue')['default']
     GroupsTable: typeof import('./src/components/admin/Groups/GroupsTable.vue')['default']
     HeaderAdmin: typeof import('./src/components/admin/HeaderAdmin.vue')['default']

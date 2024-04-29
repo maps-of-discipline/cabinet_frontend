@@ -22,12 +22,17 @@
 					frozen
 				/>
 
-				<Column header="Имя" frozen style="min-width: 450px" :colspan="1" />
+				<Column
+					headerClass="GradesTable__name-cell"
+					header="Имя"
+					frozen
+					style="min-width: 450px"
+					:colspan="1"
+				/>
 
 				<Column
 					v-for="(col, index) of topics"
 					style="min-width: 50px; width: 50px; max-width: 50px"
-					headerStyle="min-width: 25px; width: 25px; max-width: 25px"
 					headerClass="column-header-index"
 					bodyClass="column-cell-index"
 				>
@@ -43,7 +48,25 @@
 					</template>
 				</Column>
 
-				<Column style="width: 100%" />
+				<!-- <Column style="width: 100%" /> -->
+
+				<Column
+					class="column-header--center"
+					style="min-width: 50px; width: 50px; max-width: 50px"
+					headerClass="GradesTable__avg-cell"
+					:colspan="1"
+					alignFrozen="right"
+					frozen
+				>
+					<template #header>
+						<div
+							class="column-header--pointer"
+							v-tooltip.bottom="{ value: 'Средний балл' }"
+						>
+							СБ
+						</div>
+					</template>
+				</Column>
 			</Row>
 		</ColumnGroup>
 
@@ -63,7 +86,14 @@
 			</template>
 		</Column>
 
-		<Column header="Имя" field="name" frozen style="min-width: 450px">
+		<!-- Имя -->
+		<Column
+			bodyClass="GradesTable__name-cell"
+			header="Имя"
+			field="name"
+			frozen
+			style="min-width: 450px"
+		>
 			<template #body="{ data, field }">
 				<span>
 					{{ data[field] }}
@@ -71,16 +101,16 @@
 			</template>
 		</Column>
 
+		<!-- Топики -->
 		<Column
 			v-for="(col, index) of topics"
 			style="min-width: 50px; width: 50px; max-width: 50px"
-			headerStyle="min-width: 25px; width: 25px; max-width: 25px"
 			headerClass="column-header-index"
 			bodyClass="column-cell-index"
 		>
 			<template #body="{ data }">
 				<span>
-					{{ data.values[col.id] }}
+					<GradeTag v-if="data.values[col.id]" :value="data.values[col.id]" />
 				</span>
 			</template>
 
@@ -92,9 +122,23 @@
 			</template>
 		</Column>
 
-		<Column style="width: 100%">
+		<!-- Пустой столбец -->
+		<!-- <Column style="width: 100%">
 			<template #body="{ data, field }">
 				<span> </span>
+			</template>
+		</Column> -->
+
+		<!-- Средний балл -->
+		<Column
+			bodyClass="column-cell-center GradesTable__avg-cell"
+			headerStyle="width: 45px"
+			:colspan="1"
+			alignFrozen="right"
+			frozen
+		>
+			<template #body="{ data, index }">
+				<GradeTag :value="getAvgGrade(data.values)" />
 			</template>
 		</Column>
 	</DataTable>
@@ -108,6 +152,7 @@ import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@stores/lessons'
 
 import GradeSelect from '@components/Grades/GradeSelect.vue'
+import GradeTag from '@components/Grades/GradeTag.vue'
 
 const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()
@@ -124,6 +169,19 @@ const onInputGrade = (value, topic, row) => {
 	const studentId = row.id
 
 	gradesStore.updateGrade(grade, topicId, studentId)
+}
+
+const getAvgGrade = values => {
+	const valuesArr = Object.values(values)
+
+	const value =
+		valuesArr.reduce((sum, current) => {
+			return sum + current
+		}, 0) / valuesArr.length
+
+	const roundedValue = Math.ceil(value * 100) / 100
+
+	return roundedValue
 }
 
 const aupCode = disciplineStore.selectedAup
@@ -149,6 +207,14 @@ onMounted(async () => {
 
 	&__topic-header {
 		cursor: pointer;
+	}
+
+	&__name-cell {
+		box-shadow: 5px 1px 10px 0px rgba(0, 0, 0, 0.1);
+	}
+
+	&__avg-cell {
+		box-shadow: -5px 1px 10px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	tr {
