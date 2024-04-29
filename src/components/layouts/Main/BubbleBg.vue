@@ -77,19 +77,19 @@
 }
 
 .BubbleBg svg:nth-child(1) {
-	transform: scale(4) rotate(287deg) translate(390px, 190px);
+	transform: scale(4) rotate(287deg) translate(490px, 190px);
 }
 
 .BubbleBg svg:nth-child(2) {
-	transform: scale(2) rotate(15deg) translate(522px, -410px);
+	transform: scale(2) rotate(15deg) translate(622px, -410px);
 }
 
 .BubbleBg svg:nth-child(3) {
-	transform: scale(3) rotate(30deg) translate(75.9px, 179px);
+	transform: scale(3) rotate(30deg) translate(175.9px, 179px);
 }
 
 .BubbleBg svg:nth-child(4) {
-	transform: scale(2) rotate(60deg) translate(75.9px, 159px);
+	transform: scale(2) rotate(60deg) translate(175.9px, 159px);
 }
 
 .BubbleBg .circle {
@@ -102,20 +102,20 @@
 }
 
 .BubbleBg .circle.c2 {
-	transform: translate(814px, 110px) scale(1.4);
+	transform: translate(914px, 110px) scale(1.4);
 }
 
 .BubbleBg .circle.c3 {
-	transform: translate(203px, -70px) scale(3);
+	transform: translate(303px, -70px) scale(3);
 }
 
 .BubbleBg .circle.c4 {
-	transform: translate(353px, 3px) scale(1);
+	transform: translate(453px, 3px) scale(1);
 	z-index: -1;
 }
 
 .BubbleBg .circle.c5 {
-	transform: translate(1236px, 10px) scale(0.8);
+	transform: translate(1336px, 10px) scale(0.8);
 }
 
 .BubbleBg svg {
