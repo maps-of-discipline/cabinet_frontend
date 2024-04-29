@@ -42,8 +42,15 @@ const getLabel = value => {
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .SemesterSelect {
 	height: 37px;
 	align-items: center;
+
+	&.p-inputwrapper-focus,
+	&:hover {
+		outline: $focusOutline;
+	}
 }
 </style>

@@ -50,8 +50,15 @@ const getLabel = value => value.label
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .TypeGradeSelect {
 	height: 37px;
 	align-items: center;
+
+	&.p-inputwrapper-focus,
+	&:hover {
+		outline: $focusOutline;
+	}
 }
 </style>

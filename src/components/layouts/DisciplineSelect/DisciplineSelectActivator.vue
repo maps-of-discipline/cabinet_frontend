@@ -23,7 +23,16 @@ const onClick = () => emit('open')
 
 .DisciplineSelectActivator {
 	background-color: $shade950;
-	border: none;
 	height: 37px;
+
+	outline: $focusOutlineTransparent;
+	border: none;
+	transition: outline 0.2s;
+
+	&:hover,
+	&:focus {
+		border: none;
+		outline: $focusOutline;
+	}
 }
 </style>

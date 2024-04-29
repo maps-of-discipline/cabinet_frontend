@@ -30,4 +30,19 @@ const editMode = computed({
 })
 </script>
 
-<style scoped></style>
+<style lang="scss">
+@import '@styles/_variables.scss';
+
+.EditModeSwitcher {
+	outline: $focusOutlineTransparent;
+	border: none;
+	border-radius: $borderRadius;
+	transition: outline 0.2s;
+
+	&:hover,
+	&:focus {
+		border: none;
+		outline: $focusOutline;
+	}
+}
+</style>

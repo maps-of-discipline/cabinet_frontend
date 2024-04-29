@@ -41,8 +41,15 @@ const getLabel = value => {
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .GroupSelect {
 	height: 37px;
 	align-items: center;
+
+	&.p-inputwrapper-focus,
+	&:hover {
+		outline: $focusOutline;
+	}
 }
 </style>
