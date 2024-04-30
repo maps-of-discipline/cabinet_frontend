@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import BubbleBg from '@components/layouts/Main/BubbleBg.vue'
-import LeftMenu from '@components/layouts/Main/LeftMenu.vue'
+import LeftMenu from '@components/layouts/Main/LeftMenu/LeftMenu.vue'
 </script>
 
 <style lang="scss">
