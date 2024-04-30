@@ -23,9 +23,9 @@
 <script setup>
 import { ref } from 'vue'
 
-import LeftMenuNav from '@components/layouts/Main/LeftMenuNav.vue'
-import LeftMenuAccount from '@components/layouts/Main/LeftMenuAccount.vue'
-import LeftMenuSwitcher from '@components/layouts/Main/LeftMenuSwitcher.vue'
+import LeftMenuNav from '@components/layouts/Main/LeftMenu/LeftMenuNav.vue'
+import LeftMenuAccount from '@components/layouts/Main/LeftMenu/LeftMenuAccount.vue'
+import LeftMenuSwitcher from '@components/layouts/Main/LeftMenu/LeftMenuSwitcher.vue'
 
 import { useUi } from '@stores/ui'
 
@@ -51,6 +51,7 @@ const uiStore = useUi()
 		right: calc(0% - 4px);
 		top: 51px;
 		transform: translate(50%, -50%);
+		z-index: 2;
 	}
 
 	&__logo-block {
