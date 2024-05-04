@@ -134,10 +134,12 @@ abstract class Api {
 
 			return { data }
 		} catch (e) {
-			if (e.code === AxiosError.ERR_NETWORK)
+			const error = e as AxiosError<{ message: string }>
+
+			if (error.code === AxiosError.ERR_NETWORK)
 				return { error: 'Отсутствует подключение к интернету' }
 
-			return { error: e.response.data.message }
+			return { error: error.response?.data.message }
 		}
 	}
 
