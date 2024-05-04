@@ -3,12 +3,12 @@ import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
 
 import Api from '@services/Api'
-import { useRouter } from 'vue-router'
+
 import { useUser } from './user'
+import { HttpStatusCode } from 'axios'
 
 export const useAuth = defineStore('auth', () => {
 	const userStore = useUser()
-	const router = useRouter()
 
 	const tokens = ref({
 		access: localStorage.getItem('access'),
@@ -36,15 +36,17 @@ export const useAuth = defineStore('auth', () => {
 		localStorage.setItem('token', payload.token)
 	}
 
-	const login = async (login, password) => {
-		const resTokens = await Api.login({ login, password })
-		if (!resTokens) return null
-		setTokens(resTokens)
+	const login = async (login: string, password: string) => {
+		const res = await Api.login({ login, password })
+
+		if (res.error) return { error: res.error }
+
+		setTokens(res.data)
 
 		await userStore.fetchUser()
 		isAuth.value = true
 
-		router.push({ name: 'home' })
+		return true
 	}
 
 	const logout = () => {

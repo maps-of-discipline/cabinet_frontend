@@ -1,29 +1,54 @@
 <template>
 	<div class="AuthView">
 		<form class="AuthForm">
-			<div class="AuthForm__title">Успеваемость</div>
+			<div class="AuthForm__logo">Успеваемость</div>
 
-			<div class="AuthForm__input-block">
-				<div class="AuthForm__input-label">Логин</div>
-				<InputText
-					v-model="loginModel"
-					id="inputLogin"
-					type="text"
-					placeholder="Введите логин"
-				/>
+			<div class="AuthForm__main">
+				<div class="AuthForm__title">Вход</div>
+				<div class="AuthForm__subtitle">
+					Вход в личный кабинет происходит через единую учетную запись (ЕУЗ)
+				</div>
+
+				<div class="AuthForm__input-block">
+					<div class="AuthForm__input-label">Логин</div>
+					<InputText
+						v-model="loginModel"
+						id="inputLogin"
+						type="text"
+						placeholder="Введите логин"
+					/>
+				</div>
+
+				<div class="AuthForm__input-block">
+					<div class="AuthForm__input-label">Пароль</div>
+					<InputText
+						v-model="passwordModel"
+						id="inputPassword"
+						type="password"
+						placeholder="Введите пароль"
+					/>
+				</div>
+
+				<div class="AuthForm__checkbox-block">
+					<Checkbox
+						v-model="keepAuthModel"
+						inputId="keep_auth"
+						name="pizza"
+						value="Cheese"
+					/>
+
+					<label for="keep_auth" style="user-select: none; cursor: pointer"
+						>Оставаться в системе</label
+					>
+				</div>
 			</div>
 
-			<div class="AuthForm__input-block">
-				<div class="AuthForm__input-label">Пароль</div>
-				<InputText
-					v-model="passwordModel"
-					id="inputPassword"
-					type="password"
-					placeholder="Введите пароль"
-				/>
-			</div>
-
-			<Button label="Войти" @click="onLoginClick" :loading="isLoadingSubmit" />
+			<Button
+				class="AuthForm__submit"
+				label="Вход"
+				@click="onLoginClick"
+				:loading="isLoadingSubmit"
+			/>
 		</form>
 	</div>
 </template>
@@ -31,17 +56,33 @@
 <script setup>
 import { ref } from 'vue'
 
+import app from '@/main.ts'
+
 import { useAuth } from '@stores/auth'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuth()
+const router = useRouter()
 
 const loginModel = ref('')
 const passwordModel = ref('')
 const isLoadingSubmit = ref(false)
+const keepAuthModel = ref(false)
 
 const onLoginClick = async () => {
 	isLoadingSubmit.value = true
-	const success = await authStore.login(loginModel.value, passwordModel.value)
+	const res = await authStore.login(loginModel.value, passwordModel.value)
+
+	if (res.error) {
+		app.config.globalProperties.$toast.add({
+			severity: 'error',
+			summary: res.error,
+			life: 2000,
+		})
+	} else {
+		router.push({ name: 'lessons' })
+	}
+
 	isLoadingSubmit.value = false
 }
 </script>
@@ -62,11 +103,32 @@ const onLoginClick = async () => {
 	width: 400px;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	gap: 16px;
+	border-radius: $borderRadius;
+	min-height: 420px;
+
+	&__main {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	&__logo {
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
 
 	&__title {
-		font-size: 1.2rem;
+		font-size: 1rem;
+		font-weight: 600;
+	}
+
+	&__subtitle {
+		font-size: 0.8rem;
 		font-weight: 500;
+		color: $shade100;
+		opacity: 0.7;
 	}
 
 	&__input-block {
@@ -74,10 +136,41 @@ const onLoginClick = async () => {
 		flex-direction: column;
 	}
 
+	&__checkbox-block {
+		display: flex;
+		gap: 12px;
+	}
+
 	&__input-label {
 		font-weight: 500;
 		font-size: 0.9rem;
 		margin-bottom: 5px;
+	}
+
+	&__submit {
+		background-color: $blue000;
+		font-weight: 600;
+		font-size: 0.9rem;
+		border-radius: 10px;
+		height: 40px;
+		border: none;
+		display: flex;
+		justify-content: center;
+
+		&:hover {
+			border: none;
+		}
+
+		&.p-button-loading {
+			.p-button-label {
+				display: none;
+			}
+
+			svg {
+				width: 20px;
+				height: 20px;
+			}
+		}
 	}
 }
 </style>

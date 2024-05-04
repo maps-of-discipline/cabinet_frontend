@@ -1,7 +1,7 @@
 import type { Key } from '@models/Key'
 import type { ILesson } from '@models/lessons/ILesson'
 
-import { isAxiosError } from 'axios'
+import { AxiosError, isAxiosError } from 'axios'
 import axios from './axios'
 import { HttpStatusCode } from 'axios'
 
@@ -129,11 +129,16 @@ abstract class Api {
 	}
 
 	static async login(payload: any) {
-		const { data, status } = await axios.post(`auth`, payload)
+		try {
+			const { data } = await axios.post(`auth`, payload)
 
-		if (status !== HttpStatusCode.Ok) return []
+			return { data }
+		} catch (e) {
+			if (e.code === AxiosError.ERR_NETWORK)
+				return { error: 'Отсутствует подключение к интернету' }
 
-		return data
+			return { error: e.response.data.message }
+		}
 	}
 
 	static async getUser(token: string) {
