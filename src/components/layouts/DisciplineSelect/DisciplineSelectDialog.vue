@@ -132,11 +132,6 @@ const onSelectDiscipline = idDiscipline => {
 	disciplineDialogModel.value = false
 	directionDialogModel.value = false
 
-	router.push({
-		path: '/lessons/',
-		query: { aup: disciplineStore.selectedAup, id: idDiscipline },
-	})
-
 	disciplineStore.setSelectedDisciplineId(idDiscipline)
 
 	lessonsStore.fetchLessons(

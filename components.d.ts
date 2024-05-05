@@ -51,6 +51,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Row: typeof import('primevue/row')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']
+    SelectDisciplineStub: typeof import('./src/components/layouts/SelectDisciplineStub.vue')['default']
     SemesterSelect: typeof import('./src/components/layouts/HeaderTable/SemesterSelect.vue')['default']
     Skeleton: typeof import('primevue/skeleton')['default']
     Stub: typeof import('./src/components/layouts/Stub.vue')['default']

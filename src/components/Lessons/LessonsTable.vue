@@ -9,216 +9,225 @@
 			</div>
 		</HeaderTable>
 
-		<DataTable
-			class="LessonsTable"
-			ref="table"
-			v-model:expandedRowGroups="expandedRowGroups"
-			:class="{ isEmpty, editMode: disciplineStore.editMode }"
-			:value="lessons"
-			:loading="lessonsStore.isLoadingLessons"
-			stripedRows
-			scrollable
-			:rowGroupMode="nestedViewMode ? 'subheader' : null"
-			:groupRowsBy="nestedViewMode ? 'chapter' : null"
-			:expandableRowGroups="nestedViewMode"
-			scrollHeight="flex"
-			:rowClass="() => 'LessonsTable__row'"
-			dataKey="id"
-			:editMode="disciplineStore.editMode ? 'cell' : null"
-			@cell-edit-complete="onCellEditComplete"
-			@row-click="onRowClick"
-		>
-			<template v-if="nestedViewMode" #groupheader="slotProps">
-				<div class="LessonsTable__subheader flex align-items-center gap-2">
-					<span>{{ slotProps.data.chapter }}</span>
-				</div>
-			</template>
-
-			<ColumnGroup type="header">
-				<Row>
-					<Column
-						header="#"
-						class="column-header--center"
-						headerStyle="width: 45px"
-						:colspan="1"
-					/>
-
-					<Column
-						header="Вид"
-						class="column-header--center"
-						headerStyle="width: 120px"
-						:colspan="1"
-					/>
-
-					<Column
-						v-if="lessonsStore.loadViewMode"
-						v-for="controlType in lessonsStore.controlTypesBySemester"
-						:header="controlType.shortname.toUpperCase()"
-						class="column-header--center"
-						headerStyle="width: 50px"
-						:colspan="1"
-					/>
-
-					<Column
-						v-if="!nestedViewMode"
-						field="chapter"
-						header="Глава"
-						:colspan="1"
-					/>
-
-					<Column header="Тема" :colspan="1" />
-
-					<Column header="Задание" :colspan="1" headerStyle="width: 200px" />
-					<Column
-						header="Загрузка задания"
-						:colspan="1"
-						headerStyle="width: 200px"
-					/>
-
-					<Column
-						header="Срок выполнения"
-						:colspan="1"
-						headerStyle="width: 200px"
-					/>
-
-					<Column :colspan="1" headerStyle="width: 75px" />
-				</Row>
-			</ColumnGroup>
-
-			<!-- # -->
-			<Column
-				headerClass="column-header-index"
-				bodyClass="column-cell-index"
-				headerStyle="width: 45px"
+		<div class="LessonsTable__wrapper">
+			<DataTable
+				class="LessonsTable"
+				ref="table"
+				v-model:expandedRowGroups="expandedRowGroups"
+				:class="{ isEmpty, editMode: disciplineStore.editMode }"
+				:value="lessons"
+				:loading="lessonsStore.isLoadingLessons"
+				stripedRows
+				scrollable
+				:rowGroupMode="nestedViewMode ? 'subheader' : null"
+				:groupRowsBy="nestedViewMode ? 'chapter' : null"
+				:expandableRowGroups="nestedViewMode"
+				scrollHeight="flex"
+				:rowClass="() => 'LessonsTable__row'"
+				dataKey="id"
+				:editMode="disciplineStore.editMode ? 'cell' : null"
+				@cell-edit-complete="onCellEditComplete"
+				@row-click="onRowClick"
 			>
-				<template #body="{ data, index }">
-					<span
-						v-if="!lessonsStore.isLocalLesson(data.id)"
-						class="LessonsTable__index"
-					>
-						{{ index + 1 }}
-					</span>
-					<CloudIconNotSaved v-else />
-				</template>
-
-				<template v-if="lessonsStore.loadViewMode" #footer>{{
-					lessonsStore.rowsCount
-				}}</template>
-			</Column>
-
-			<!-- Вид -->
-			<Column
-				headerClass="column-header-center"
-				bodyClass="column-cell-center"
-				field="id_type_control"
-			>
-				<template #body="{ data, field }">
-					<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
-					<LessonsLoadSelect
-						:editMode="disciplineStore.editMode"
-						:controlTypes="lessonsStore.controlTypesBySemester"
-						:item="data"
-						@change="id => onChangeControlType(data, id)"
-					/>
-				</template>
-
-				<template v-if="lessonsStore.loadViewMode" #footer>
-					<div>Сумма:</div>
-				</template>
-			</Column>
-
-			<Column
-				v-if="lessonsStore.loadViewMode"
-				v-for="controlType in lessonsStore.controlTypesBySemester"
-				headerClass="column-header-index"
-				bodyClass="column-cell-index"
-				headerStyle="width: 65px"
-			>
-				<template #body="{ data, index }">
-					<span v-if="data.id_type_control === controlType.id_type_control">
-						2
-					</span>
-				</template>
-
-				<template #footer>
-					<div>
-						{{
-							lessonsStore.getSumLoadByControlType(controlType.id_type_control)
-						}}
+				<template v-if="nestedViewMode" #groupheader="slotProps">
+					<div class="LessonsTable__subheader flex align-items-center gap-2">
+						<span>{{ slotProps.data.chapter }}</span>
 					</div>
 				</template>
-			</Column>
 
-			<!-- Глава -->
-			<Column
-				v-if="!nestedViewMode"
-				field="chapter"
-				header="Глава"
-				headerStyle="width: 50%"
-			>
-				<template #body="{ data, field }">
-					<span>
-						{{ data[field] }}
-					</span>
-				</template>
-				<template #editor="{ data, field }">
-					<CellEditor v-model="data[field]" />
-				</template>
-			</Column>
-
-			<!-- Тема -->
-			<Column field="topic" header="Тема" headerStyle="width: 50%">
-				<template #body="{ data, field }">
-					<span>
-						{{ data[field] }}
-					</span>
-				</template>
-				<template #editor="{ data, field }">
-					<CellEditor v-model="data[field]" />
-				</template>
-			</Column>
-
-			<!-- Задание -->
-			<Column field="task_link" header="Задание">
-				<template #body="{ data, field }">
-					<AttachLinkButton
-						v-if="data[field] || disciplineStore.editMode"
-						:label="getAttachLabel(data)"
-						@click="openAttachLink(data)"
-					/>
-				</template>
-			</Column>
-
-			<!-- Загрузка задания -->
-			<Column field="completed_task_link" header="Загрузка задания">
-				<template #body="{ data, field }">
-					<AttachLinkButton
-						v-if="data[field] || disciplineStore.editMode"
-						:label="getAttachLabel(data, true)"
-						@click="openAttachLink(data, true)"
-					/>
-				</template>
-			</Column>
-
-			<Column field="deadline_date">
-				<template #body="{ data, field }"> </template>
-			</Column>
-
-			<!-- Удаление -->
-			<Column>
-				<template #body="{ data, field }">
-					<div v-if="disciplineStore.editMode">
-						<Button
-							icon="mdi mdi-delete"
-							severity="danger"
-							text
-							rounded
-							@click="onDeleteRow(data.id)"
+				<ColumnGroup type="header">
+					<Row>
+						<Column
+							header="#"
+							class="column-header--center"
+							headerStyle="width: 45px"
+							:colspan="1"
 						/>
-					</div>
-				</template>
-			</Column>
-		</DataTable>
+
+						<Column
+							header="Вид"
+							class="column-header--center"
+							headerStyle="width: 120px"
+							:colspan="1"
+						/>
+
+						<Column
+							v-if="lessonsStore.loadViewMode"
+							v-for="controlType in lessonsStore.controlTypesBySemester"
+							:header="controlType.shortname.toUpperCase()"
+							class="column-header--center"
+							headerStyle="width: 50px"
+							:colspan="1"
+						/>
+
+						<Column
+							v-if="!nestedViewMode"
+							field="chapter"
+							header="Глава"
+							:colspan="1"
+						/>
+
+						<Column header="Тема" :colspan="1" />
+
+						<Column header="Задание" :colspan="1" headerStyle="width: 200px" />
+						<Column
+							header="Загрузка задания"
+							:colspan="1"
+							headerStyle="width: 200px"
+						/>
+
+						<Column
+							header="Срок выполнения"
+							:colspan="1"
+							headerStyle="width: 200px"
+						/>
+
+						<Column :colspan="1" headerStyle="width: 75px" />
+					</Row>
+				</ColumnGroup>
+
+				<!-- # -->
+				<Column
+					headerClass="column-header-index"
+					bodyClass="column-cell-index"
+					headerStyle="width: 45px"
+				>
+					<template #body="{ data, index }">
+						<span
+							v-if="!lessonsStore.isLocalLesson(data.id)"
+							class="LessonsTable__index"
+						>
+							{{ index + 1 }}
+						</span>
+						<CloudIconNotSaved v-else />
+					</template>
+
+					<template v-if="lessonsStore.loadViewMode" #footer>{{
+						lessonsStore.rowsCount
+					}}</template>
+				</Column>
+
+				<!-- Вид -->
+				<Column
+					headerClass="column-header-center"
+					bodyClass="column-cell-center"
+					field="id_type_control"
+				>
+					<template #body="{ data, field }">
+						<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
+						<LessonsLoadSelect
+							:editMode="disciplineStore.editMode"
+							:controlTypes="lessonsStore.controlTypesBySemester"
+							:item="data"
+							@change="id => onChangeControlType(data, id)"
+						/>
+					</template>
+
+					<template v-if="lessonsStore.loadViewMode" #footer>
+						<div>Сумма:</div>
+					</template>
+				</Column>
+
+				<Column
+					v-if="lessonsStore.loadViewMode"
+					v-for="controlType in lessonsStore.controlTypesBySemester"
+					headerClass="column-header-index"
+					bodyClass="column-cell-index"
+					headerStyle="width: 65px"
+				>
+					<template #body="{ data, index }">
+						<span v-if="data.id_type_control === controlType.id_type_control">
+							2
+						</span>
+					</template>
+
+					<template #footer>
+						<div>
+							{{
+								lessonsStore.getSumLoadByControlType(
+									controlType.id_type_control
+								)
+							}}
+						</div>
+					</template>
+				</Column>
+
+				<!-- Глава -->
+				<Column
+					v-if="!nestedViewMode"
+					field="chapter"
+					header="Глава"
+					headerStyle="width: 50%"
+				>
+					<template #body="{ data, field }">
+						<span>
+							{{ data[field] }}
+						</span>
+					</template>
+					<template #editor="{ data, field }">
+						<CellEditor v-model="data[field]" />
+					</template>
+				</Column>
+
+				<!-- Тема -->
+				<Column field="topic" header="Тема" headerStyle="width: 50%">
+					<template #body="{ data, field }">
+						<span>
+							{{ data[field] }}
+						</span>
+					</template>
+					<template #editor="{ data, field }">
+						<CellEditor v-model="data[field]" />
+					</template>
+				</Column>
+
+				<!-- Задание -->
+				<Column field="task_link" header="Задание">
+					<template #body="{ data, field }">
+						<AttachLinkButton
+							v-if="data[field] || disciplineStore.editMode"
+							:label="getAttachLabel(data)"
+							@click="openAttachLink(data)"
+						/>
+					</template>
+				</Column>
+
+				<!-- Загрузка задания -->
+				<Column field="completed_task_link" header="Загрузка задания">
+					<template #body="{ data, field }">
+						<AttachLinkButton
+							v-if="data[field] || disciplineStore.editMode"
+							:label="getAttachLabel(data, true)"
+							@click="openAttachLink(data, true)"
+						/>
+					</template>
+				</Column>
+
+				<Column field="deadline_date">
+					<template #body="{ data, field }"> </template>
+				</Column>
+
+				<!-- Удаление -->
+				<Column>
+					<template #body="{ data, field }">
+						<div v-if="disciplineStore.editMode">
+							<Button
+								icon="mdi mdi-delete"
+								severity="danger"
+								text
+								rounded
+								@click="onDeleteRow(data.id)"
+							/>
+						</div>
+					</template>
+				</Column>
+			</DataTable>
+
+			<SelectDisciplineStub
+				v-if="!disciplineStore.hasSelectedDiscipline"
+				class="LessonsTable__stub"
+			/>
+		</div>
 
 		<AttachLinkDialog
 			v-model="attachDialogModel"
@@ -233,6 +242,7 @@
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
 import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
+import SelectDisciplineStub from '@components/layouts/SelectDisciplineStub.vue'
 
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
@@ -406,6 +416,17 @@ if (aupCode && idDiscipline) {
 
 	tr {
 		height: $row-height;
+	}
+
+	&__wrapper {
+		position: relative;
+	}
+
+	&__stub {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
 	}
 
 	&__subheader {

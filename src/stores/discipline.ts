@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import debounce from '@services/helpers/debounce'
@@ -27,6 +27,9 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		selectedDisciplineId.value = value
 		sessionStorage.setItem('selectedDisciplineId', value)
 	}
+
+	const hasSelectedDiscipline = computed(() => !!selectedDisciplineId.value)
+
 	/*  */
 
 	/* Выбор группы */
@@ -96,6 +99,7 @@ export const useDisciplineStore = defineStore('discipline', () => {
 
 		selectedDisciplineId,
 		setSelectedDisciplineId,
+		hasSelectedDiscipline,
 
 		aups,
 		selectedAup,
