@@ -10,6 +10,7 @@
 			v-model="selectedType"
 			:options="options"
 			:optionLabel="getLabel"
+			:disabled="!disciplineStore.hasSelectedDiscipline"
 			placeholder="Вид оценивания"
 			emptyMessage="Выберите дисциплину"
 		/>
@@ -18,6 +19,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useDisciplineStore } from '@stores/discipline'
+
+const disciplineStore = useDisciplineStore()
 
 const options = [
 	{

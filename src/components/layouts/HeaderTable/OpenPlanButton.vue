@@ -25,7 +25,7 @@ const onClick = () => {
 	window.open(url, '_blank').focus()
 }
 
-const disabled = computed(() => !disciplineStore.selectedAup)
+const disabled = computed(() => !disciplineStore.hasSelectedDiscipline)
 </script>
 
 <style lang="scss">

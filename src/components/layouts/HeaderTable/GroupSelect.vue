@@ -12,6 +12,7 @@
 			:optionLabel="getLabel"
 			:loading="lessonsStore.isLoadingLessons"
 			placeholder="Группа"
+			:disabled="!disciplineStore.hasSelectedDiscipline"
 			emptyMessage="Выберите дисциплину"
 		/>
 	</div>

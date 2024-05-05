@@ -6,6 +6,7 @@
 		offLabel="Просмотр"
 		onIcon="mdi mdi-pen"
 		offIcon="mdi mdi-eye"
+		:disabled="!disciplineStore.hasSelectedDiscipline"
 		v-tooltip.bottom="{
 			value: 'Режим редактирования таблицы',
 			showDelay: 500,
