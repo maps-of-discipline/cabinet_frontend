@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useUi = defineStore('ui', () => {
 	const leftMenuMiniMode = ref(
-		JSON.parse(localStorage.getItem('leftMenuMiniMode') || '')
+		localStorage.getItem('leftMenuMiniMode') === 'true'
 	)
 
 	const setLeftMenuMiniMode = value => {
