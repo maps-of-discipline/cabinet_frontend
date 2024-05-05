@@ -2,13 +2,43 @@
 	<div class="ReportView">
 		<HeaderTable />
 
-		<DevelopingStub />
+		<Stub>
+			<VueApexCharts
+				width="500"
+				type="bar"
+				:options="chartOptions"
+				:series="series"
+			/>
+		</Stub>
 	</div>
 </template>
 
 <script setup>
 import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
-import DevelopingStub from '@components/layouts/DevelopingStub.vue'
+import Stub from '@components/layouts/Stub.vue'
+
+import VueApexCharts from 'vue3-apexcharts'
+
+const chartOptions = {
+	chart: {
+		id: 'vuechart-example',
+	},
+	xaxis: {
+		categories: [
+			'Неудовлетворительно',
+			'Удовлетворительно',
+			'Хорошо',
+			'Отлично',
+		],
+	},
+}
+
+const series = [
+	{
+		name: 'series-1',
+		data: [30, 40, 35, 50],
+	},
+]
 </script>
 
 <style lang="scss">

@@ -12,6 +12,7 @@ import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
+import VueApexCharts from 'vue3-apexcharts'
 
 const app = createApp(App)
 
@@ -21,6 +22,7 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, { ripple: true })
 app.use(ToastService)
+app.use(VueApexCharts)
 
 app.mount('#app')
 
