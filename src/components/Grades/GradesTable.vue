@@ -12,7 +12,9 @@
 			stripedRows
 			:rowClass="() => 'GradesTable__row'"
 			:editMode="disciplineStore.editMode ? 'cell' : null"
+			@cell-edit-complete="onCellEditComplete"
 			dataKey="id"
+			@row-click="onRowClick"
 		>
 			<ColumnGroup type="header">
 				<Row>
@@ -107,19 +109,23 @@
 			<Column
 				v-for="(col, index) of topics"
 				style="min-width: 50px; width: 50px; max-width: 50px"
+				:field="`${col.id}`"
 				headerClass="column-header-index"
 				bodyClass="column-cell-index"
 			>
 				<template #body="{ data }">
-					<span>
-						<GradeTag v-if="data.values[col.id]" :value="data.values[col.id]" />
-					</span>
+					<span>{{ data.values[col.id] }}</span>
 				</template>
 
-				<template #editor="{ data, field }">
-					<GradeSelect
+				<template #editor="{ data }">
+					<!-- <GradeSelect
 						:value="data.values[col.id]"
 						@input="onInputGrade($event, col, data)"
+					/> -->
+
+					<CellEditor
+						v-model="data.values[col.id]"
+						style="justify-content: center"
 					/>
 				</template>
 			</Column>
@@ -175,10 +181,12 @@ const showSelectDisciplineStub = computed(
 const grades = computed(() => gradesStore.grades)
 const isLoadingTable = computed(() => gradesStore.isLoading)
 
-const onInputGrade = (value, topic, row) => {
-	const grade = value
-	const topicId = topic.id
-	const studentId = row.id
+const onCellEditComplete = event => {
+	let { newData, field } = event
+
+	const grade = +newData.values[field]
+	const topicId = field
+	const studentId = newData.id
 
 	gradesStore.updateGrade(grade, topicId, studentId)
 }
@@ -195,6 +203,8 @@ const getAvgGrade = values => {
 
 	return roundedValue
 }
+
+const onRowClick = e => console.log({ ...e.data })
 
 const aupCode = disciplineStore.selectedAup
 const idDiscipline = disciplineStore.selectedDisciplineId

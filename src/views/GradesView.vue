@@ -2,6 +2,8 @@
 	<div class="Grades">
 		<HeaderTable>
 			<TypeGradeSelect />
+
+			<GradeSettingsButton />
 		</HeaderTable>
 
 		<GradesTable />
@@ -13,6 +15,7 @@ import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 
 import GradesTable from '@components/Grades/GradesTable.vue'
 import TypeGradeSelect from '@components/Grades/TypeGradeSelect.vue'
+import GradeSettingsButton from '@components/Grades/GradeSettingsButton.vue'
 </script>
 
 <style lang="scss">
