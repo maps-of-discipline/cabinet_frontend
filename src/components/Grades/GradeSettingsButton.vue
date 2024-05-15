@@ -6,10 +6,21 @@
 			value: 'Настройки учета успеваемости',
 			showDelay: 500,
 		}"
+		@click="onClick"
 	/>
+
+	{{ gradesStore.isShowSettings }}
 </template>
 
-<script setup></script>
+<script setup>
+import { useGradesStore } from '@/stores/grades'
+
+const gradesStore = useGradesStore()
+
+const onClick = () => {
+	gradesStore.setIsShowSettings(!gradesStore.isShowSettings)
+}
+</script>
 
 <style lang="scss">
 @import '@styles/_variables.scss';

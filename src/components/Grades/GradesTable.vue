@@ -29,9 +29,9 @@
 					<Column
 						headerClass="GradesTable__name-cell"
 						header="Имя"
-						frozen
 						style="min-width: 450px; max-width: 450px"
 						:colspan="1"
+						frozen
 					/>
 
 					<Column
@@ -95,8 +95,8 @@
 				bodyClass="GradesTable__name-cell"
 				header="Имя"
 				field="name"
-				frozen
 				style="min-width: 450px; max-width: 450px"
+				frozen
 			>
 				<template #body="{ data, field }">
 					<span>
@@ -131,7 +131,7 @@
 			</Column>
 
 			<!-- Пустой столбец -->
-			<Column style="width: 100%">
+			<Column>
 				<template #body="{ data, field }">
 					<span> </span>
 				</template>
@@ -229,6 +229,7 @@ onMounted(async () => {
 
 	&__wrapper {
 		position: relative;
+		overflow: auto;
 	}
 
 	&__stub {

@@ -420,6 +420,7 @@ if (aupCode && idDiscipline) {
 
 	&__wrapper {
 		position: relative;
+		overflow: auto;
 	}
 
 	&__stub {

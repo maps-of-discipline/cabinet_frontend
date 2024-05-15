@@ -29,6 +29,8 @@ export const useGradesStore = defineStore('grades', () => {
 	const grades: Ref<IGradeRow[]> = ref([])
 
 	const isLoading = ref(false)
+	const isShowSettings = ref(false)
+	const setIsShowSettings = value => (isShowSettings.value = value)
 
 	const setGrades = (data: IGradeRow[]) => {
 		grades.value = data
@@ -69,6 +71,9 @@ export const useGradesStore = defineStore('grades', () => {
 		}
 	)
 	return {
+		isShowSettings,
+		setIsShowSettings,
+
 		grades,
 		fetchGrades,
 		updateGrade,
