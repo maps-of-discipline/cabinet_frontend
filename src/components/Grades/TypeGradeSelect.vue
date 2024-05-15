@@ -12,33 +12,30 @@
 			:optionLabel="getLabel"
 			:disabled="!disciplineStore.hasSelectedDiscipline"
 			placeholder="Вид оценивания"
-			emptyMessage="Выберите дисциплину"
+			emptyMessage="Отутствуют виды оценивания"
 		/>
 	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useDisciplineStore } from '@stores/discipline'
+import { useGradesStore } from '@/stores/grades'
 
 const disciplineStore = useDisciplineStore()
+const gradesStore = useGradesStore()
 
-const options = [
-	{
-		type: 'activity',
-		label: 'Активность',
-	},
-	{
-		type: 'activity',
-		label: 'Посещаемость',
-	},
-	{
-		type: 'activity',
-		label: 'Задания',
-	},
-]
+const options = computed(() => gradesStore.typesGrade)
 
-const selectedType = ref(options[0])
+const selectedType = computed({
+	get() {
+		return gradesStore.selectedTypeGrade
+	},
+
+	set(type) {
+		return gradesStore.setSelectedTypeGrade(type)
+	},
+})
 
 /* const selectedGroup = computed({
 	get() {
@@ -50,7 +47,7 @@ const selectedType = ref(options[0])
 	},
 }) */
 
-const getLabel = value => value.label
+const getLabel = value => value.name
 </script>
 
 <style lang="scss">

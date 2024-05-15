@@ -29,16 +29,33 @@ export const useGradesStore = defineStore('grades', () => {
 	const gradeTableId: Ref<Key | null> = ref(null)
 	const gradeTableIsNotExist = ref(false)
 
-	const typesGrades = ref([])
+	// Виды оценивания
+	const typesGrade = ref([])
+	const setTypesGrade = data => (typesGrade.value = data)
+
+	// Выбранный вид оценивания
+	const selectedTypeGrade = ref(null)
+	const setSelectedTypeGrade = value => (selectedTypeGrade.value = value)
+
+	// Оценки
 	const grades: Ref<IGradeRow[]> = ref([])
+	const setGrades = (data: IGradeRow[]) => (grades.value = data)
+
+	const columns = ref([])
+	const setColumns = data => (columns.value = data)
+
+	const filteredColumnsBySelectedType = computed(() => {
+		return columns.value.filter(
+			column => column.grade_type_id === selectedTypeGrade.value.id
+		)
+	})
+
+	const showFullname = ref(true)
+	const setShowFullname = data => (showFullname.value = data)
 
 	const isLoading = ref(false)
 	const isShowSettings = ref(false)
 	const setIsShowSettings = value => (isShowSettings.value = value)
-
-	const setGrades = (data: IGradeRow[]) => {
-		grades.value = data
-	}
 
 	const fetchGrades = async () => {
 		if (
@@ -61,6 +78,11 @@ export const useGradesStore = defineStore('grades', () => {
 			isLoading.value = false
 		} else {
 			setGrades(data.rows)
+			setColumns(data.columns)
+
+			setTypesGrade(data.gradeTypes)
+			setSelectedTypeGrade(data.gradeTypes[0])
+
 			gradeTableId.value = data.gradeTableId
 
 			gradeTableIsNotExist.value = false
@@ -68,18 +90,18 @@ export const useGradesStore = defineStore('grades', () => {
 		}
 	}
 
-	const updateGrade = async (value: number, topicId: Key, studentId: Key) => {
+	const updateGrade = async (value: number, colId: Key, studentId: Key) => {
 		if (gradeTableId.value === null) return
 
 		const data = await Api.updateGrade(
 			gradeTableId.value,
 			value,
-			topicId,
+			colId,
 			studentId
 		)
 
 		const neededIndex = grades.value.findIndex(row => row.id === studentId)
-		grades.value[neededIndex].values[topicId] = value
+		grades.value[neededIndex].values[colId] = value
 	}
 
 	const createGradeTable = async () => {
@@ -113,7 +135,22 @@ export const useGradesStore = defineStore('grades', () => {
 
 		gradeTableId,
 		gradeTableIsNotExist,
+
 		grades,
+		setGrades,
+
+		columns,
+		setColumns,
+		filteredColumnsBySelectedType,
+
+		typesGrade,
+
+		selectedTypeGrade,
+		setSelectedTypeGrade,
+
+		showFullname,
+		setShowFullname,
+
 		fetchGrades,
 		createGradeTable,
 		updateGrade,

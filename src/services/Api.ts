@@ -168,7 +168,8 @@ abstract class Api {
 			},
 		})
 
-		if (status !== HttpStatusCode.Ok) return { grade_tabl_id: null, rows: [] }
+		if (status !== HttpStatusCode.Ok)
+			return { gradeTypes: [], gradeTableId: null, rows: [], columns: [] }
 
 		return data
 	}
@@ -196,7 +197,7 @@ abstract class Api {
 		const { data, status } = await axios.post(`updateGrade`, {
 			grade_table_id: gradeTableId,
 			value,
-			col_id: colId,
+			grade_column_id: colId,
 			student_id: studentId,
 		})
 

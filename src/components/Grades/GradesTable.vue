@@ -28,14 +28,17 @@
 
 					<Column
 						headerClass="GradesTable__name-cell"
-						header="Имя"
-						style="min-width: 450px; max-width: 450px"
+						style="min-width: 400px; max-width: 400px"
 						:colspan="1"
 						frozen
-					/>
+					>
+						<template #header="{ column }">
+							<GradeNameHeaderColumn />
+						</template>
+					</Column>
 
 					<Column
-						v-for="(col, index) of topics"
+						v-for="(col, index) of columns"
 						style="min-width: 50px; width: 50px; max-width: 50px"
 						headerClass="column-header-index"
 						bodyClass="column-cell-index"
@@ -44,7 +47,7 @@
 							<span
 								class="GradesTable__topic-header"
 								v-tooltip.right="{
-									value: col.topic,
+									value: col.name,
 								}"
 							>
 								{{ index + 1 }}
@@ -90,24 +93,25 @@
 				</template>
 			</Column>
 
-			<!-- Имя -->
+			<!-- ФИО -->
 			<Column
 				bodyClass="GradesTable__name-cell"
-				header="Имя"
 				field="name"
-				style="min-width: 450px; max-width: 450px"
+				style="min-width: 400px; max-width: 400px"
 				frozen
 			>
 				<template #body="{ data, field }">
 					<span>
-						{{ data[field] }}
+						{{
+							gradesStore.showFullname ? data[field] : getSurname(data[field])
+						}}
 					</span>
 				</template>
 			</Column>
 
-			<!-- Топики -->
+			<!-- Столбцы -->
 			<Column
-				v-for="(col, index) of topics"
+				v-for="(col, index) of columns"
 				style="min-width: 50px; width: 50px; max-width: 50px"
 				:field="`${col.id}`"
 				headerClass="column-header-index"
@@ -118,11 +122,6 @@
 				</template>
 
 				<template #editor="{ data }">
-					<!-- <GradeSelect
-						:value="data.values[col.id]"
-						@input="onInputGrade($event, col, data)"
-					/> -->
-
 					<CellEditor
 						v-model="data.values[col.id]"
 						style="justify-content: center"
@@ -174,12 +173,15 @@ import SelectDisciplineStub from '@components/layouts/SelectDisciplineStub.vue'
 import GradeSelect from '@components/Grades/GradeSelect.vue'
 import GradeTag from '@components/Grades/GradeTag.vue'
 import NotExistGradeTableStub from '@components/Grades/NotExistGradeTableStub.vue'
+import GradeNameHeaderColumn from '@components/Grades/columns/GradeNameHeaderColumn.vue'
+
+import getSurname from '@services/helpers/getSurname'
 
 const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
 
-const topics = computed(() => lessonsStore.filteredLessons)
+const columns = computed(() => gradesStore.filteredColumnsBySelectedType)
 const showSelectDisciplineStub = computed(
 	() => !disciplineStore.hasSelectedDiscipline
 )
@@ -190,11 +192,13 @@ const isLoadingTable = computed(() => gradesStore.isLoading)
 const onCellEditComplete = event => {
 	let { newData, field } = event
 
+	console.log(event)
+
 	const grade = +newData.values[field]
-	const topicId = field
+	const colId = field
 	const studentId = newData.id
 
-	gradesStore.updateGrade(grade, topicId, studentId)
+	gradesStore.updateGrade(grade, colId, studentId)
 }
 
 const getAvgGrade = values => {
@@ -249,12 +253,19 @@ onMounted(async () => {
 		cursor: pointer;
 	}
 
-	&__name-cell {
+	/* 	&__name-cell {
 		box-shadow: 5px 1px 10px 0px rgba(0, 0, 0, 0.1);
 	}
 
 	&__avg-cell {
 		box-shadow: -5px 1px 10px 0px rgba(0, 0, 0, 0.1);
+	} */
+
+	&__name-header {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	tr {
