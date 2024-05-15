@@ -41,6 +41,7 @@ declare module 'vue' {
     GroupsTable: typeof import('./src/components/admin/Groups/GroupsTable.vue')['default']
     HeaderAdmin: typeof import('./src/components/admin/HeaderAdmin.vue')['default']
     HeaderTable: typeof import('./src/components/layouts/HeaderTable/HeaderTable.vue')['default']
+    InputNumber: typeof import('primevue/inputnumber')['default']
     InputText: typeof import('primevue/inputtext')['default']
     LeftMenu: typeof import('./src/components/layouts/Main/LeftMenu/LeftMenu.vue')['default']
     LeftMenuAccount: typeof import('./src/components/layouts/Main/LeftMenu/LeftMenuAccount.vue')['default']
