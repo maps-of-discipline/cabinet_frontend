@@ -26,6 +26,10 @@ interface IGradeRow {
 export const useGradesStore = defineStore('grades', () => {
 	const disciplineStore = useDisciplineStore()
 
+	const gradeTableId: Ref<Key | null> = ref(null)
+	const gradeTableIsNotExist = ref(false)
+
+	const typesGrades = ref([])
 	const grades: Ref<IGradeRow[]> = ref([])
 
 	const isLoading = ref(false)
@@ -46,22 +50,54 @@ export const useGradesStore = defineStore('grades', () => {
 
 		isLoading.value = true
 
-		const data: IGradeRow[] = await Api.getGrades(
+		const data = await Api.getGrades(
 			disciplineStore.selectedAup,
 			disciplineStore.selectedDisciplineId,
 			disciplineStore.selectedGroup.title
 		)
 
-		setGrades(data)
+		if (data.is_not_exist) {
+			gradeTableIsNotExist.value = true
+			isLoading.value = false
+		} else {
+			setGrades(data.rows)
+			gradeTableId.value = data.gradeTableId
 
-		isLoading.value = false
+			gradeTableIsNotExist.value = false
+			isLoading.value = false
+		}
 	}
 
 	const updateGrade = async (value: number, topicId: Key, studentId: Key) => {
-		const data = await Api.updateGrade(value, topicId, studentId)
+		if (gradeTableId.value === null) return
+
+		const data = await Api.updateGrade(
+			gradeTableId.value,
+			value,
+			topicId,
+			studentId
+		)
 
 		const neededIndex = grades.value.findIndex(row => row.id === studentId)
 		grades.value[neededIndex].values[topicId] = value
+	}
+
+	const createGradeTable = async () => {
+		if (
+			!disciplineStore.selectedAup ||
+			!disciplineStore.selectedDisciplineId ||
+			!disciplineStore.selectedGroup?.title
+		)
+			return
+
+		const data = await Api.createGradeTable(
+			disciplineStore.selectedAup,
+			disciplineStore.selectedDisciplineId,
+			disciplineStore.selectedGroup.title
+		)
+
+		gradeTableIsNotExist.value = false
+		fetchGrades()
 	}
 
 	watch(
@@ -73,10 +109,13 @@ export const useGradesStore = defineStore('grades', () => {
 	return {
 		isShowSettings,
 		setIsShowSettings,
+		isLoading,
 
+		gradeTableId,
+		gradeTableIsNotExist,
 		grades,
 		fetchGrades,
+		createGradeTable,
 		updateGrade,
-		isLoading,
 	}
 })

@@ -8,8 +8,6 @@
 		}"
 		@click="onClick"
 	/>
-
-	{{ gradesStore.isShowSettings }}
 </template>
 
 <script setup>
@@ -31,6 +29,9 @@ const onClick = () => {
 	border: none;
 	transition: outline 0.2s, color 0.2s;
 	color: $shade400;
+	height: 37px;
+	display: flex;
+	align-items: center;
 
 	.p-button-label {
 		transition-duration: 0s;

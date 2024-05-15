@@ -155,6 +155,11 @@
 			v-if="showSelectDisciplineStub"
 			class="GradesTable__stub"
 		/>
+
+		<NotExistGradeTableStub
+			v-if="gradesStore.gradeTableIsNotExist"
+			class="GradesTable__stub"
+		/>
 	</div>
 </template>
 
@@ -168,6 +173,7 @@ import { useLessonsStore } from '@stores/lessons'
 import SelectDisciplineStub from '@components/layouts/SelectDisciplineStub.vue'
 import GradeSelect from '@components/Grades/GradeSelect.vue'
 import GradeTag from '@components/Grades/GradeTag.vue'
+import NotExistGradeTableStub from '@components/Grades/NotExistGradeTableStub.vue'
 
 const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()

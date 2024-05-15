@@ -160,7 +160,7 @@ abstract class Api {
 	}
 
 	static async getGrades(aup: Key, id: Key, group: string) {
-		const { data, status } = await axios.get(`getGrades`, {
+		const { data, status } = await axios.get(`get-grades`, {
 			params: {
 				aup,
 				id,
@@ -168,15 +168,35 @@ abstract class Api {
 			},
 		})
 
-		if (status !== HttpStatusCode.Ok) return []
+		if (status !== HttpStatusCode.Ok) return { grade_tabl_id: null, rows: [] }
 
 		return data
 	}
 
-	static async updateGrade(value: number, topicId: Key, studentId: Key) {
+	static async createGradeTable(aup: Key, id: Key, group: string) {
+		const { data, status } = await axios.get(`create-grade-table`, {
+			params: {
+				aup,
+				id,
+				group,
+			},
+		})
+
+		if (status !== HttpStatusCode.Ok) return false
+
+		return true
+	}
+
+	static async updateGrade(
+		gradeTableId: Key,
+		value: number,
+		colId: Key,
+		studentId: Key
+	) {
 		const { data, status } = await axios.post(`updateGrade`, {
+			grade_table_id: gradeTableId,
 			value,
-			topic_id: topicId,
+			col_id: colId,
 			student_id: studentId,
 		})
 

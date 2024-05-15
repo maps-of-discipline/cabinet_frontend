@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Accordion: typeof import('primevue/accordion')['default']
+    AccordionTab: typeof import('primevue/accordiontab')['default']
     AddTask: typeof import('./src/components/Lessons/AddTask.vue')['default']
     AttachLinkButton: typeof import('./src/components/Lessons/common/AttachLinkButton.vue')['default']
     AttachLinkDialog: typeof import('./src/components/Lessons/AttachLinkDialog.vue')['default']
@@ -30,6 +32,7 @@ declare module 'vue' {
     Dropdown: typeof import('primevue/dropdown')['default']
     EditModeSwitcher: typeof import('./src/components/layouts/HeaderTable/EditModeSwitcher.vue')['default']
     GradeSelect: typeof import('./src/components/Grades/GradeSelect.vue')['default']
+    GradeSettings: typeof import('./src/components/Grades/GradeSettings.vue')['default']
     GradeSettingsButton: typeof import('./src/components/Grades/GradeSettingsButton.vue')['default']
     GradesTable: typeof import('./src/components/Grades/GradesTable.vue')['default']
     GradeTag: typeof import('./src/components/Grades/GradeTag.vue')['default']
@@ -47,6 +50,7 @@ declare module 'vue' {
     LessonsLoadSelect: typeof import('./src/components/Lessons/common/LessonsLoadSelect.vue')['default']
     LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
     LoadViewSelect: typeof import('./src/components/Lessons/LoadViewSelect.vue')['default']
+    NotExistGradeTableStub: typeof import('./src/components/Grades/NotExistGradeTableStub.vue')['default']
     OpenPlanButton: typeof import('./src/components/layouts/HeaderTable/OpenPlanButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -55,6 +59,8 @@ declare module 'vue' {
     SelectDisciplineStub: typeof import('./src/components/layouts/SelectDisciplineStub.vue')['default']
     SemesterSelect: typeof import('./src/components/layouts/HeaderTable/SemesterSelect.vue')['default']
     Skeleton: typeof import('primevue/skeleton')['default']
+    Splitter: typeof import('primevue/splitter')['default']
+    SplitterPanel: typeof import('primevue/splitterpanel')['default']
     Stub: typeof import('./src/components/layouts/Stub.vue')['default']
     Tag: typeof import('primevue/tag')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
