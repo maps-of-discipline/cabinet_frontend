@@ -94,7 +94,9 @@ import GradeSettingsAddType from '@components/Grades/GradeSettingsAddType.vue'
 
 const gradesStore = useGradesStore()
 
-const gradeTypes = computed(() => gradesStore.typesGrade)
+const gradeTypes = computed(() =>
+	gradesStore.typesGrade.sort((a, b) => a.name.localeCompare(b.name))
+)
 
 const onClickShowSwitch = gradeType => {
 	const newGradeType = { ...gradeType, archived: !gradeType.archived }

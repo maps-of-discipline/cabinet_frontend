@@ -25,7 +25,9 @@ import { useGradesStore } from '@/stores/grades'
 const disciplineStore = useDisciplineStore()
 const gradesStore = useGradesStore()
 
-const options = computed(() => gradesStore.availableTypesGrade)
+const options = computed(() =>
+	gradesStore.availableTypesGrade.sort((a, b) => a.name.localeCompare(b.name))
+)
 
 const selectedType = computed({
 	get() {
