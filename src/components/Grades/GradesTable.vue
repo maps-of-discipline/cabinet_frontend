@@ -62,19 +62,14 @@
 
 					<Column
 						class="column-header--center"
-						style="min-width: 50px; width: 50px; max-width: 50px"
+						style="min-width: 70px; width: 70px; max-width: 70px"
 						headerClass="GradesTable__avg-cell"
 						:colspan="1"
 						alignFrozen="right"
 						frozen
 					>
 						<template #header>
-							<div
-								class="column-header--pointer"
-								v-tooltip.bottom="{ value: 'Средний балл' }"
-							>
-								СБ
-							</div>
+							<div class="column-header--pointer">Итого</div>
 						</template>
 					</Column>
 				</Row>
@@ -149,7 +144,7 @@
 				</template>
 			</Column>
 
-			<!-- Средний балл -->
+			<!-- Итого-->
 			<Column
 				bodyClass="column-cell-center GradesTable__avg-cell"
 				headerStyle="width: 45px"
@@ -158,7 +153,7 @@
 				frozen
 			>
 				<template #body="{ data, index }">
-					<GradeTag :value="getAvgGrade(data.values)" />
+					{{ getSummaryGrade(data.values) || '' }}
 				</template>
 			</Column>
 		</DataTable>
@@ -176,7 +171,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, toRaw, onMounted } from 'vue'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -220,17 +215,14 @@ const onCellEditComplete = event => {
 	gradesStore.updateGrade(grade, colId, studentId)
 }
 
-const getAvgGrade = values => {
-	const valuesArr = Object.values(values)
+const getSummaryGrade = values => {
+	let sum = 0
 
-	const value =
-		valuesArr.reduce((sum, current) => {
-			return sum + current
-		}, 0) / valuesArr.length
+	gradesStore.setColumnsIdsBySelectedType.forEach(colId => {
+		if (values[colId]) sum += values[colId]
+	})
 
-	const roundedValue = Math.ceil(value * 100) / 100
-
-	return roundedValue
+	return sum
 }
 
 const onRowClick = e => console.log({ ...e.data })

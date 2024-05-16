@@ -76,6 +76,16 @@ export const useGradesStore = defineStore('grades', () => {
 	const columns = ref([])
 	const setColumns = data => (columns.value = data)
 
+	const setColumnsIdsBySelectedType = computed(() => {
+		const set = new Set()
+
+		columns.value.forEach(col => {
+			if (selectedTypeGrade.value.id === col.grade_type_id) set.add(col.id)
+		})
+
+		return set
+	})
+
 	const filteredColumnsBySelectedType = computed(() => {
 		return columns.value.filter(
 			column => column.grade_type_id === selectedTypeGrade.value.id
@@ -174,6 +184,7 @@ export const useGradesStore = defineStore('grades', () => {
 
 		columns,
 		setColumns,
+		setColumnsIdsBySelectedType,
 		filteredColumnsBySelectedType,
 
 		typesGrade,
