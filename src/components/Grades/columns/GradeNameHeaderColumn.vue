@@ -7,6 +7,7 @@
 				class="GradeNameHeaderColumn__name-search"
 				placeholder="Поиск по ФИО"
 				type="text"
+				v-model="searchNameModel"
 			/>
 
 			<!-- <Button
@@ -25,13 +26,33 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useGradesStore } from '@/stores/grades'
+
+const emit = defineEmits(['update:modelValue'])
+
+const props = defineProps({
+	modelValue: {
+		type: String,
+		default: '',
+	},
+})
 
 const gradesStore = useGradesStore()
 
 const onClick = () => {
 	gradesStore.setShowFullname(!gradesStore.showFullname)
 }
+
+const searchNameModel = computed({
+	get() {
+		return props.modelValue
+	},
+
+	set(val) {
+		emit('update:modelValue', val)
+	},
+})
 </script>
 
 <style lang="scss">

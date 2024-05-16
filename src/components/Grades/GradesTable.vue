@@ -12,6 +12,8 @@
 			stripedRows
 			:rowClass="() => 'GradesTable__row'"
 			:editMode="disciplineStore.editMode ? 'cell' : null"
+			v-model:filters="filters"
+			:globalFilterFields="['name']"
 			@cell-edit-complete="onCellEditComplete"
 			dataKey="id"
 			@row-click="onRowClick"
@@ -30,10 +32,11 @@
 						headerClass="GradesTable__name-cell"
 						style="min-width: 400px; max-width: 400px"
 						:colspan="1"
+						field="name"
 						frozen
 					>
 						<template #header="{ column }">
-							<GradeNameHeaderColumn />
+							<GradeNameHeaderColumn v-model="filters['name'].value" />
 						</template>
 					</Column>
 
@@ -107,6 +110,16 @@
 						}}
 					</span>
 				</template>
+
+				<template #filter="{ filterModel, filterCallback }">
+					<InputText
+						v-model="filterModel.value"
+						type="text"
+						@input="filterCallback()"
+						class="p-column-filter"
+						placeholder="Search by name"
+					/>
+				</template>
 			</Column>
 
 			<!-- Столбцы -->
@@ -177,6 +190,8 @@ import GradeNameHeaderColumn from '@components/Grades/columns/GradeNameHeaderCol
 
 import getSurname from '@services/helpers/getSurname'
 
+import { FilterMatchMode } from 'primevue/api'
+
 const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
@@ -186,6 +201,10 @@ const showSelectDisciplineStub = computed(
 	() => !disciplineStore.hasSelectedDiscipline
 )
 
+const filters = ref({
+	global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+	name: { value: '', matchMode: FilterMatchMode.STARTS_WITH },
+})
 const grades = computed(() => gradesStore.grades)
 const isLoadingTable = computed(() => gradesStore.isLoading)
 

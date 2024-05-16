@@ -64,14 +64,6 @@
 								/>
 							</div>
 						</div>
-
-						<div>
-							<label class="GradeTypeTab__label" for="integeronly">
-								Кратность оценки (опционально)
-							</label>
-
-							<InputNumber inputId="integeronly" />
-						</div>
 					</div>
 				</AccordionTab>
 			</Accordion>

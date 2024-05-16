@@ -28,6 +28,7 @@ declare module 'vue' {
     DisciplineSelectActivator: typeof import('./src/components/layouts/DisciplineSelect/DisciplineSelectActivator.vue')['default']
     DisciplineSelectControl: typeof import('./src/components/layouts/DisciplineSelect/DisciplineSelectControl.vue')['default']
     DisciplineSelectDialog: typeof import('./src/components/layouts/DisciplineSelect/DisciplineSelectDialog.vue')['default']
+    DisciplineSelectLeftMenu: typeof import('./src/components/layouts/DisciplineSelect/DisciplineSelectLeftMenu.vue')['default']
     DisciplineSelectListItem: typeof import('./src/components/layouts/DisciplineSelect/DisciplineSelectListItem.vue')['default']
     DisciplineSelectStub: typeof import('./src/components/layouts/DisciplineSelect/DisciplineSelectStub.vue')['default']
     Divider: typeof import('primevue/divider')['default']
