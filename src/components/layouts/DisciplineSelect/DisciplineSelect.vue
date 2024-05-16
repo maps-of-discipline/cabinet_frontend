@@ -2,6 +2,7 @@
 	<div class="DisciplineSelect">
 		<!-- <DisciplineSelectActivator @open="openPopup" :label="lessonsStore.title" /> -->
 		<DisciplineSelectActivator @open="test" :label="lessonsStore.title" />
+		<DisciplineSelectActivator @open="openPopup" label="123" />
 
 		<DisciplineSelectDialog />
 	</div>

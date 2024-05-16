@@ -1,35 +1,43 @@
 <template>
 	<Transition name="fade">
-		<div v-if="isOpenLeftMenu" class="DisciplineSelectLeftMenu">
-			<DisciplineSelectControl />
+		<div v-if="isOpenLeftMenu" class="DisciplineSelectLeftMenu__wrapper">
+			<div v-if="!isLoading" class="DisciplineSelectLeftMenu">
+				<DisciplineSelectControl />
 
-			<div class="DisciplineSelectLeftMenu__list-wrapper">
-				<div class="DisciplineSelectLeftMenu__list">
-					<div
-						v-for="discipline in disciplines"
-						class="DisciplineSelectLeftMenu__block"
-						:class="{
-							isActive:
-								`${discipline.id}` === disciplineStore.selectedDisciplineId,
-						}"
-						:style="{
-							backgroundColor: discipline.color,
-							'--shade-color': shadeColor(discipline.color, -35),
-						}"
-						@click="onSelectDiscipline(discipline)"
-					>
-						{{ discipline.name }}
+				<div class="DisciplineSelectLeftMenu__list-wrapper">
+					<div class="DisciplineSelectLeftMenu__list">
+						<div
+							v-for="discipline in disciplines"
+							class="DisciplineSelectLeftMenu__block"
+							:class="{
+								isActive:
+									`${discipline.id}` === disciplineStore.selectedDisciplineId,
+							}"
+							:style="{
+								backgroundColor: discipline.color,
+								'--shade-color': shadeColor(discipline.color, -35),
+							}"
+							@click="onSelectDiscipline(discipline)"
+						>
+							{{ discipline.name }}
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<Stub v-else>
+				<ApLoadingSpinner />
+			</Stub>
 		</div>
 	</Transition>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 
 import DisciplineSelectControl from '@components/layouts/DisciplineSelect/DisciplineSelectControl.vue'
+import Stub from '@components/layouts/Stub.vue'
+import ApLoadingSpinner from '@components/ui/ApLoadingSpinner.vue'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -40,6 +48,8 @@ import shadeColor from '@services/helpers/shadeColor'
 const gradesStore = useGradesStore()
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
+
+const isLoading = computed(() => disciplineStore.isLoadingDisciplineLeftMenu)
 
 const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
 const disciplines = computed(() => disciplineStore.disciplinesBySemester)
@@ -63,8 +73,13 @@ const onSelectDiscipline = discipline => {
 	padding: 16px;
 	display: grid;
 	grid-template-rows: auto 1fr;
-	min-width: 300px;
+	width: 100%;
+	height: 100%;
 	transition: 0.25s ease;
+
+	&__wrapper {
+		min-width: 300px;
+	}
 
 	&__semester {
 		text-align: center;
