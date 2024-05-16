@@ -1,6 +1,7 @@
 <template>
 	<div class="DisciplineSelect">
-		<DisciplineSelectActivator @open="openPopup" :label="lessonsStore.title" />
+		<!-- <DisciplineSelectActivator @open="openPopup" :label="lessonsStore.title" /> -->
+		<DisciplineSelectActivator @open="test" :label="lessonsStore.title" />
 
 		<DisciplineSelectDialog />
 	</div>
@@ -17,6 +18,11 @@ const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
 
 const openPopup = () => disciplineStore.setDirectionDialogModel(true)
+
+const test = () =>
+	disciplineStore.setIsOpenDisciplineColumn(
+		!disciplineStore.isOpenDisciplineColumn
+	)
 </script>
 
 <style lang="scss"></style>

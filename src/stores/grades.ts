@@ -31,7 +31,28 @@ export const useGradesStore = defineStore('grades', () => {
 
 	// Виды оценивания
 	const typesGrade = ref([])
+	const availableTypesGrade = computed(() =>
+		typesGrade.value.filter(typeGrade => !typeGrade.archived)
+	)
 	const setTypesGrade = data => (typesGrade.value = data)
+
+	const updateGradeType = async gradeType => {
+		if (!gradeType) return
+
+		const data = await Api.updateGradeType(gradeType)
+
+		const indexToUpdate = typesGrade.value.findIndex(
+			item => item.id === data.id
+		)
+
+		if (indexToUpdate === -1) return null
+
+		typesGrade.value[indexToUpdate] = data
+
+		if (gradeType.id === selectedTypeGrade.value.id) {
+			setSelectedTypeGrade(availableTypesGrade.value[0])
+		}
+	}
 
 	// Выбранный вид оценивания
 	const selectedTypeGrade = ref(null)
@@ -53,9 +74,10 @@ export const useGradesStore = defineStore('grades', () => {
 	const showFullname = ref(true)
 	const setShowFullname = data => (showFullname.value = data)
 
-	const isLoading = ref(false)
 	const isShowSettings = ref(false)
 	const setIsShowSettings = value => (isShowSettings.value = value)
+
+	const isLoading = ref(false)
 
 	const fetchGrades = async () => {
 		if (
@@ -81,7 +103,7 @@ export const useGradesStore = defineStore('grades', () => {
 			setColumns(data.columns)
 
 			setTypesGrade(data.gradeTypes)
-			setSelectedTypeGrade(data.gradeTypes[0])
+			setSelectedTypeGrade(availableTypesGrade.value[0])
 
 			gradeTableId.value = data.gradeTableId
 
@@ -144,6 +166,8 @@ export const useGradesStore = defineStore('grades', () => {
 		filteredColumnsBySelectedType,
 
 		typesGrade,
+		availableTypesGrade,
+		updateGradeType,
 
 		selectedTypeGrade,
 		setSelectedTypeGrade,

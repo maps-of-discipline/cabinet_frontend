@@ -1,14 +1,37 @@
 <template>
 	<Transition name="fade">
 		<div class="GradeSettings" v-if="gradesStore.isShowSettings">
-			<div>Виды оценивания</div>
+			<div class="GradeSettings__title">Настройки оценивания</div>
 
-			<Accordion multiple>
-				<AccordionTab
-					v-for="typeGrade in typesGrade"
-					:key="typeGrade.id"
-					:header="typeGrade.name"
-				>
+			<Accordion class="GradeTypeAccordion" multiple>
+				<AccordionTab v-for="gradeType in gradeTypes" :key="gradeType.id">
+					<template #headericon="{ index, active }">
+						<i
+							class="mdi mdi-chevron-down"
+							style="font-size: 1.5rem; margin-right: 12px"
+						></i>
+					</template>
+
+					<template #header>
+						<div class="GradeTypeTab__header">
+							<span>{{ gradeType.name }}</span>
+
+							<Button
+								class="GradeTypeTab__show-switcher"
+								:class="{ isActive: !gradeType.archived }"
+								:icon="
+									gradeType.archived ? 'mdi mdi-eye-closed' : 'mdi mdi-eye'
+								"
+								aria-label="Скрыть данный вид оценивания"
+								v-tooltip.left="{
+									value: 'Скрыть данный вид оценивания',
+									showDelay: 500,
+								}"
+								@click.stop="onClickShowSwitch(gradeType)"
+							/>
+						</div>
+					</template>
+
 					<div class="GradeTypeTab">
 						<div>
 							<label class="GradeTypeTab__label" for="integeronly">
@@ -25,7 +48,7 @@
 								</label>
 
 								<InputNumber
-									:modelValue="typeGrade.min_grade"
+									:modelValue="gradeType.min_grade"
 									inputId="integeronly"
 								/>
 							</div>
@@ -36,7 +59,7 @@
 								</label>
 
 								<InputNumber
-									:modelValue="typeGrade.max_grade"
+									:modelValue="gradeType.max_grade"
 									inputId="integeronly"
 								/>
 							</div>
@@ -68,7 +91,12 @@ import { useGradesStore } from '@/stores/grades'
 
 const gradesStore = useGradesStore()
 
-const typesGrade = computed(() => gradesStore.typesGrade)
+const gradeTypes = computed(() => gradesStore.typesGrade)
+
+const onClickShowSwitch = gradeType => {
+	const newGradeType = { ...gradeType, archived: !gradeType.archived }
+	gradesStore.updateGradeType(newGradeType)
+}
 </script>
 
 <style lang="scss">
@@ -80,6 +108,13 @@ const typesGrade = computed(() => gradesStore.typesGrade)
 	padding: 16px;
 	margin-left: 12px;
 	overflow: auto;
+
+	&__title {
+		background-color: $shade1000;
+		padding: 16px;
+		margin-bottom: 12px;
+		border-radius: $borderRadius;
+	}
 }
 
 .GradeTypeTab {
@@ -91,6 +126,30 @@ const typesGrade = computed(() => gradesStore.typesGrade)
 		margin-bottom: 6px;
 	}
 
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		font-weight: 400;
+	}
+
+	&__show-switcher {
+		background-color: $shade1000;
+		width: 2rem;
+		height: 2rem;
+		border: none !important;
+		outline: $focusOutlineTransparent;
+
+		&.isActive {
+			outline: $focusOutline;
+		}
+
+		.p-button-icon {
+			transition: all 0.35s ease;
+		}
+	}
+
 	&__range-wrapper {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -100,6 +159,18 @@ const typesGrade = computed(() => gradesStore.typesGrade)
 		.p-inputtext {
 			width: 100%;
 		}
+	}
+}
+
+.GradeTypeAccordion {
+	.p-accordion-header-link {
+		background-color: $shade1000;
+
+		border-top: 2px solid $shade700;
+	}
+
+	.p-accordion-content {
+		background-color: $shade1000;
 	}
 }
 </style>

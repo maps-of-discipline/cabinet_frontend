@@ -44,7 +44,10 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	}
 	/*  */
 
-	/* Выбор семестра */
+	/* Семестры */
+	const semesters: Ref<string[]> = ref([])
+	const setSemesters = (value: string[]) => (semesters.value = value)
+
 	const selectedSemester: Ref<number | null> = ref(null)
 	const setSelectedSemester = (semestr: string) => {
 		selectedSemester.value = +semestr
@@ -93,6 +96,28 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	const editMode = ref(false)
 	const switchMode = () => (editMode.value = !editMode.value)
 
+	/* new */
+	const isOpenDisciplineColumn = ref(true)
+	const setIsOpenDisciplineColumn = async value => {
+		await fetchDisciplines()
+		isOpenDisciplineColumn.value = value
+	}
+
+	const disciplinesByAup = ref({})
+	const disciplinesBySemester = computed(() => {
+		if (!selectedSemester.value) return []
+
+		return disciplinesByAup.value[selectedSemester.value]
+	})
+
+	const fetchDisciplines = async () => {
+		if (!selectedAup.value) return
+
+		const data = await Api.fetchDisciplines(selectedAup.value)
+		disciplinesByAup.value = data
+		setSemesters(Object.keys(data))
+	}
+
 	return {
 		search,
 		setSearch,
@@ -117,12 +142,23 @@ export const useDisciplineStore = defineStore('discipline', () => {
 
 		editMode,
 		switchMode,
+
+		semesters,
 		selectedSemester,
 		setSelectedSemester,
+
 		selectedGroup,
 		setSelectedGroup,
 
 		groups,
 		setStudyGroups,
+
+		/* new */
+		isOpenDisciplineColumn,
+		setIsOpenDisciplineColumn,
+
+		disciplinesBySemester,
+
+		fetchDisciplines,
 	}
 })

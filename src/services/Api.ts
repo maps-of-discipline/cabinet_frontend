@@ -128,6 +128,14 @@ abstract class Api {
 		return data
 	}
 
+	static async fetchDisciplines(aup: string) {
+		const { data, status } = await axios.get(`disciplines-new?aup=${aup}`)
+
+		if (status !== HttpStatusCode.Ok) return {}
+
+		return data
+	}
+
 	static async login(payload: any) {
 		try {
 			const { data } = await axios.post(`auth`, payload)
@@ -202,6 +210,14 @@ abstract class Api {
 		})
 
 		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async updateGradeType(gradeType: any) {
+		const { data, status } = await axios.post(`update-grade-type`, gradeType)
+
+		if (status !== HttpStatusCode.Ok) return {}
 
 		return data
 	}

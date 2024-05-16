@@ -25,7 +25,7 @@ import { useGradesStore } from '@/stores/grades'
 const disciplineStore = useDisciplineStore()
 const gradesStore = useGradesStore()
 
-const options = computed(() => gradesStore.typesGrade)
+const options = computed(() => gradesStore.availableTypesGrade)
 
 const selectedType = computed({
 	get() {
