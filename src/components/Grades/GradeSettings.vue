@@ -108,6 +108,7 @@ const onClickShowSwitch = gradeType => {
 	padding: 16px;
 	margin-left: 12px;
 	overflow: auto;
+	min-width: 300px;
 
 	&__title {
 		background-color: $shade1000;

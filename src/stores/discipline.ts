@@ -99,8 +99,8 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	/* new */
 	const isOpenDisciplineColumn = ref(true)
 	const setIsOpenDisciplineColumn = async value => {
-		await fetchDisciplines()
 		isOpenDisciplineColumn.value = value
+		await fetchDisciplines()
 	}
 
 	const disciplinesByAup = ref({})

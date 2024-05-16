@@ -9,36 +9,41 @@
 			<GradeSettingsButton />
 		</HeaderTable>
 
-		<Transition name="fade">
-			<div v-if="isOpenLeftMenu" class="DisciplineSelectColumn">
-				<DisciplineSelectControl />
+		<div class="Grades__body">
+			<div class="Grades__left">
+				<Transition name="fade">
+					<div v-if="isOpenLeftMenu" class="DisciplineSelectColumn">
+						<DisciplineSelectControl />
 
-				<div class="DisciplineSelectColumn__list-wrapper">
-					<div class="DisciplineSelectColumn__list">
-						<div
-							v-for="discipline in disciplines"
-							class="DisciplineSelectColumn__block"
-							:class="{
-								isActive:
-									`${discipline.id}` === disciplineStore.selectedDisciplineId,
-							}"
-							:style="{
-								backgroundColor: discipline.color,
-								'--shade-color': shadeColor(discipline.color, -35),
-							}"
-							@click="onSelectDiscipline(discipline)"
-						>
-							{{ discipline.name }}
+						<div class="DisciplineSelectColumn__list-wrapper">
+							<div class="DisciplineSelectColumn__list">
+								<div
+									v-for="discipline in disciplines"
+									class="DisciplineSelectColumn__block"
+									:class="{
+										isActive:
+											`${discipline.id}` ===
+											disciplineStore.selectedDisciplineId,
+									}"
+									:style="{
+										backgroundColor: discipline.color,
+										'--shade-color': shadeColor(discipline.color, -35),
+									}"
+									@click="onSelectDiscipline(discipline)"
+								>
+									{{ discipline.name }}
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
+				</Transition>
 			</div>
-		</Transition>
 
-		<div class="Grades__body">
-			<GradesTable />
+			<GradesTable class="Grades__table" />
 
-			<GradeSettings />
+			<div class="Grades__right">
+				<GradeSettings />
+			</div>
 		</div>
 	</div>
 </template>
@@ -83,36 +88,54 @@ const onSelectDiscipline = discipline => {
 
 .Grades {
 	height: calc(100vh - 16px - 16px);
-	display: grid;
-	grid-template-rows: 70px calc(100% - 70px - 12px);
-	grid-template-columns: 0px 1fr;
-	grid-template-areas:
-		'header header'
-		'left right';
+
 	gap: 12px;
 	transition: 0.25s ease;
 
-	&.isOpenLeftMenu {
-		grid-template-columns: 300px 1fr;
-	}
+	display: grid;
+	grid-template-rows: 70px calc(100% - 70px - 12px);
+	grid-template-columns: 1fr;
 
 	&__header {
-		grid-area: header;
+		grid-column: 1 / 2;
 	}
 
 	&__body {
-		display: grid;
-		grid-template-columns: 1fr 0px;
-		grid-template-rows: 100%;
+		display: flex;
 		transition: all 0.3s;
 		height: 100%;
-		grid-area: right;
+		align-items: stretch;
+	}
+
+	&__table {
+		width: 100%;
+	}
+
+	&__left,
+	&__right {
+		width: 0px;
+		height: 100%;
+		transition: 0.25s ease;
+		margin-left: 0px;
+		margin-right: 0px;
+		display: flex;
+		align-items: stretch;
 	}
 
 	&.isShowSettings {
 		.Grades {
-			&__body {
-				grid-template-columns: 1fr 300px;
+			&__right {
+				width: 300px;
+				margin-left: 12px;
+			}
+		}
+	}
+
+	&.isOpenLeftMenu {
+		.Grades {
+			&__left {
+				width: 300px;
+				margin-right: 12px;
 			}
 		}
 	}
@@ -120,12 +143,12 @@ const onSelectDiscipline = discipline => {
 
 .DisciplineSelectColumn {
 	background-color: $shade900;
-	grid-area: left;
 	border-radius: $borderRadius;
-	width: 100%;
 	padding: 16px;
 	display: grid;
 	grid-template-rows: auto 1fr;
+	min-width: 300px;
+	transition: 0.25s ease;
 
 	&__semester {
 		text-align: center;
