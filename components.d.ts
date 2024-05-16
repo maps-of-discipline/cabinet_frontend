@@ -37,6 +37,7 @@ declare module 'vue' {
     GradeNameHeaderColumn: typeof import('./src/components/Grades/columns/GradeNameHeaderColumn.vue')['default']
     GradeSelect: typeof import('./src/components/Grades/GradeSelect.vue')['default']
     GradeSettings: typeof import('./src/components/Grades/GradeSettings.vue')['default']
+    GradeSettingsAddType: typeof import('./src/components/Grades/GradeSettingsAddType.vue')['default']
     GradeSettingsButton: typeof import('./src/components/Grades/GradeSettingsButton.vue')['default']
     GradesTable: typeof import('./src/components/Grades/GradesTable.vue')['default']
     GradeTag: typeof import('./src/components/Grades/GradeTag.vue')['default']

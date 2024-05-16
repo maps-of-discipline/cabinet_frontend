@@ -222,6 +222,17 @@ abstract class Api {
 		return data
 	}
 
+	static async createGradeType(gradeTypeSettings: any, gradeTableId: Key) {
+		const { data, status } = await axios.post(`create-grade-type`, {
+			name: gradeTypeSettings.name,
+			table_id: gradeTableId,
+		})
+
+		if (status !== HttpStatusCode.Ok) return {}
+
+		return data
+	}
+
 	static async uploadGroups(formdata) {
 		const { data, status } = await axios.post(`uploadGroups`, formdata)
 

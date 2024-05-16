@@ -54,6 +54,17 @@ export const useGradesStore = defineStore('grades', () => {
 		}
 	}
 
+	const createGradeType = async gradeTypeSettings => {
+		if (!gradeTypeSettings) return
+
+		const data: any = await Api.createGradeType(
+			gradeTypeSettings,
+			gradeTableId.value
+		)
+
+		typesGrade.value.push(data)
+	}
+
 	// Выбранный вид оценивания
 	const selectedTypeGrade = ref(null)
 	const setSelectedTypeGrade = value => (selectedTypeGrade.value = value)
@@ -168,6 +179,7 @@ export const useGradesStore = defineStore('grades', () => {
 		typesGrade,
 		availableTypesGrade,
 		updateGradeType,
+		createGradeType,
 
 		selectedTypeGrade,
 		setSelectedTypeGrade,
