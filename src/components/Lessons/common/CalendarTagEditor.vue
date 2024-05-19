@@ -4,7 +4,7 @@
 			v-if="value || editMode"
 			class="CalendarTagEditor__activator"
 			:label="label"
-			:icon="!!value ? 'mdi mdi-calendar-blank' : ''"
+			:icon="!value ? 'mdi mdi-calendar-blank' : ''"
 			@click="togglePanel"
 			:disabled="!editMode"
 		/>
