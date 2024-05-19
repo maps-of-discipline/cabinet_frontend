@@ -45,6 +45,20 @@
 						/>
 
 						<Column
+							header="Дата"
+							class="column-header--center"
+							headerStyle="width: 136px;"
+							:colspan="1"
+						/>
+
+						<Column
+							header="Время"
+							class="column-header--center"
+							headerStyle="width: 140px;"
+							:colspan="1"
+						/>
+
+						<Column
 							header="Вид"
 							class="column-header--center"
 							headerStyle="width: 120px"
@@ -105,6 +119,31 @@
 					<template v-if="lessonsStore.loadViewMode" #footer>{{
 						lessonsStore.rowsCount
 					}}</template>
+				</Column>
+
+				<!-- Дата -->
+				<Column v-if="!nestedViewMode" field="date" header="Дата">
+					<template #body="{ data, field }">
+						<CalendarTagEditor
+							class="LessonsTable__date-editor"
+							:value="data[field]"
+							:editMode="disciplineStore.editMode"
+							@input="onInputDate(data, $event)"
+						/>
+					</template>
+				</Column>
+
+				<!-- Время -->
+				<Column v-if="!nestedViewMode" field="lesson_order" header="Время">
+					<template #body="{ data, field }">
+						<LessonTimeRangeEditor
+							class="LessonsTable__timerange-editor"
+							v-if="disciplineStore.editMode || data[field]"
+							:value="data[field]"
+							:editMode="disciplineStore.editMode"
+							@change="onChangeLessonRange(data, $event)"
+						/>
+					</template>
 				</Column>
 
 				<!-- Вид -->
@@ -251,6 +290,8 @@ import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
 import AttachLinkButton from '@components/Lessons/common/AttachLinkButton.vue'
+import LessonTimeRangeEditor from '@components/Lessons/LessonTimeRangeEditor.vue'
+import CalendarTagEditor from '@components/Lessons/common/CalendarTagEditor.vue'
 
 import { useLessonsStore } from '@/stores/lessons'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -276,6 +317,18 @@ const onCellEditComplete = event => {
 	if (res) {
 		data[field] = newValue
 	}
+}
+
+const onInputDate = (data, value) => {
+	const newLesson = Object.assign({}, data)
+	newLesson.date = value
+	lessonsStore.editLesson(newLesson)
+}
+
+const onChangeLessonRange = (data, value) => {
+	const newLesson = Object.assign({}, data)
+	newLesson.lesson_order = value
+	lessonsStore.editLesson(newLesson)
 }
 
 const onChangeControlType = (data, id) => {
@@ -442,6 +495,10 @@ if (aupCode && idDiscipline) {
 
 	&__chip {
 		font-size: 14px;
+	}
+
+	&__timerange-editor {
+		width: 100%;
 	}
 
 	&.isEmpty {

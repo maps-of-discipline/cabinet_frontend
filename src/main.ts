@@ -20,7 +20,51 @@ app.directive('tooltip', Tooltip)
 app.directive('ripple', Ripple)
 app.use(createPinia())
 app.use(router)
-app.use(PrimeVue, { ripple: true })
+app.use(PrimeVue, {
+	ripple: true,
+	locale: {
+		firstDayOfWeek: 1,
+		monthNames: [
+			'Январь',
+			'Февраль',
+			'Март',
+			'Апрель',
+			'Май',
+			'Июнь',
+			'Июль',
+			'Август',
+			'Сентябрь',
+			'Октябрь',
+			'Ноябрь',
+			'Декабрь',
+		],
+		monthNamesShort: [
+			'Янв',
+			'Фев',
+			'Мар',
+			'Апр',
+			'Май',
+			'Июн',
+			'Июл',
+			'Авг',
+			'Сен',
+			'Окт',
+			'Ноя',
+			'Дек',
+		],
+		dayNames: [
+			'Воскресенье',
+			'Понедельник',
+			'Вторник',
+			'Среда',
+			'Четверг',
+			'Пятница',
+			'Суббота',
+		],
+		dayNamesShort: ['Воск', 'Пон', 'Вт', 'Ср', 'Четв', 'Пят', 'Суб'],
+		dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+	},
+})
 app.use(ToastService)
 app.use(VueApexCharts)
 

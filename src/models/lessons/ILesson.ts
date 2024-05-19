@@ -12,4 +12,9 @@ export interface ILesson {
 	topic: string
 	semester: number
 	study_group_id: Key
+
+	date: string
+	date_task_finish: string
+	datetime_finish: string
+	datetime_start: string
 }

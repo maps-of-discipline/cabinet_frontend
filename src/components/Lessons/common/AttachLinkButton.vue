@@ -38,7 +38,7 @@ const icon = computed(() => {
 	border: none;
 
 	&.isEmpty {
-		background-color: $shade1050;
+		background-color: $shade800;
 	}
 }
 </style>
