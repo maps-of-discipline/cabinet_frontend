@@ -48,7 +48,9 @@ const label = computed(() => {
 		: 'Указать'
 })
 
-const valueObj = computed(() => new Date(props.value))
+const valueObj = computed(() =>
+	props.value ? new Date(props.value) : new Date()
+)
 
 const onInputDate = value => emit('input', value)
 </script>
