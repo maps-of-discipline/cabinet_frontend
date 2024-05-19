@@ -8,6 +8,15 @@ const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
 		{
+			path: '/auth',
+			name: 'auth',
+			component: () => import('../views/AuthView.vue'),
+			meta: {
+				title: 'Вход · Успеваемость',
+				layout: EmptyLayout,
+			},
+		},
+		{
 			path: '/grades',
 			name: 'grades',
 			component: () => import('../views/GradesView.vue'),
@@ -35,12 +44,12 @@ const router = createRouter({
 			},
 		},
 		{
-			path: '/auth',
-			name: 'auth',
-			component: () => import('../views/AuthView.vue'),
+			path: '/profile',
+			name: 'profile',
+			component: () => import('../views/ProfileView.vue'),
 			meta: {
-				title: 'Вход · Успеваемость',
-				layout: EmptyLayout,
+				title: 'Профиль · Успеваемость',
+				layout: MainLayout,
 			},
 		},
 		{

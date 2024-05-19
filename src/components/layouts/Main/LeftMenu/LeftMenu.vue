@@ -14,7 +14,7 @@
 		/>
 
 		<div class="LeftMenu__footer">
-			<divider class="LeftMenu__divider" />
+			<divider class="LeftMenu__divider" style="margin-bottom: 15px" />
 			<LeftMenuAccount />
 		</div>
 	</div>

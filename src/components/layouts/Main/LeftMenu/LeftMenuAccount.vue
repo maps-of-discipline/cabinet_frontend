@@ -1,5 +1,5 @@
 <template>
-	<div class="LeftMenuAccount" :class="{ isMini }">
+	<router-link to="/profile" class="LeftMenuAccount" :class="{ isMini }">
 		<div class="LeftMenuAccount__avatar-wrapper">
 			<Avatar
 				class="LeftMenuAccount__avatar"
@@ -21,7 +21,7 @@
 			rounded
 			@click="onClickLogout"
 		/>
-	</div>
+	</router-link>
 </template>
 
 <script setup>
@@ -42,17 +42,26 @@ const imageUrl = computed(() => userStore.userData?.avatar || '')
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .LeftMenuAccount {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
 	white-space: nowrap;
 	overflow: hidden;
+	border-radius: $borderRadius;
+	padding: 12px 12px;
+
+	&.router-link-active {
+		background: $menu-link-hover-bg;
+		color: #fff;
+	}
 
 	&__avatar-wrapper {
 		display: flex;
 		justify-content: center;
-		width: 52px;
+		width: 35px;
 
 		img {
 			object-fit: cover;
