@@ -104,7 +104,8 @@ export const useGradesStore = defineStore('grades', () => {
 		if (
 			!disciplineStore.selectedAup ||
 			!disciplineStore.selectedDisciplineId ||
-			!disciplineStore.selectedGroup?.title
+			!disciplineStore.selectedGroup?.title ||
+			!disciplineStore.selectedSemester
 		)
 			return
 
@@ -113,7 +114,8 @@ export const useGradesStore = defineStore('grades', () => {
 		const data = await Api.getGrades(
 			disciplineStore.selectedAup,
 			disciplineStore.selectedDisciplineId,
-			disciplineStore.selectedGroup.title
+			disciplineStore.selectedGroup.title,
+			disciplineStore.selectedSemester
 		)
 
 		if (data.is_not_exist) {
@@ -151,14 +153,16 @@ export const useGradesStore = defineStore('grades', () => {
 		if (
 			!disciplineStore.selectedAup ||
 			!disciplineStore.selectedDisciplineId ||
-			!disciplineStore.selectedGroup?.title
+			!disciplineStore.selectedGroup?.title ||
+			!disciplineStore.selectedSemester
 		)
 			return
 
 		const data = await Api.createGradeTable(
 			disciplineStore.selectedAup,
 			disciplineStore.selectedDisciplineId,
-			disciplineStore.selectedGroup.title
+			disciplineStore.selectedGroup.title,
+			disciplineStore.selectedSemester
 		)
 
 		gradeTableIsNotExist.value = false

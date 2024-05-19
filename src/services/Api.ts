@@ -180,12 +180,13 @@ abstract class Api {
 		return data
 	}
 
-	static async getGrades(aup: Key, id: Key, group: string) {
+	static async getGrades(aup: Key, id: Key, group: string, semester: number) {
 		const { data, status } = await axios.get(`get-grades`, {
 			params: {
 				aup,
 				id,
 				group,
+				semester,
 			},
 		})
 
@@ -195,12 +196,18 @@ abstract class Api {
 		return data
 	}
 
-	static async createGradeTable(aup: Key, id: Key, group: string) {
+	static async createGradeTable(
+		aup: Key,
+		id: Key,
+		group: string,
+		semester: number
+	) {
 		const { data, status } = await axios.get(`create-grade-table`, {
 			params: {
 				aup,
 				id,
 				group,
+				semester,
 			},
 		})
 

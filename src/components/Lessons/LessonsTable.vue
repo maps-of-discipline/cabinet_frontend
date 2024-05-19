@@ -101,11 +101,7 @@
 				</ColumnGroup>
 
 				<!-- # -->
-				<Column
-					headerClass="column-header-index"
-					bodyClass="column-cell-index"
-					headerStyle="width: 45px"
-				>
+				<Column headerClass="column-header-index" bodyClass="column-cell-index">
 					<template #body="{ data, index }">
 						<span
 							v-if="!lessonsStore.isLocalLesson(data.id)"

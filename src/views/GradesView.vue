@@ -58,7 +58,7 @@ const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
 
 	display: grid;
 	grid-template-rows: 70px calc(100% - 70px - 12px);
-	grid-template-columns: 1fr;
+	grid-template-columns: minmax(0px, 1fr);
 
 	&__header {
 		grid-column: 1 / 2;

@@ -53,7 +53,7 @@
 									value: col.name,
 								}"
 							>
-								{{ index + 1 }}
+								{{ col.name }}
 							</span>
 						</template>
 					</Column>
@@ -171,7 +171,7 @@
 </template>
 
 <script setup>
-import { ref, computed, toRaw, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -233,6 +233,13 @@ const getSummaryGrade = values => {
 
 const onRowClick = e => console.log({ ...e.data })
 
+watch(
+	() => disciplineStore.selectedSemester,
+	() => {
+		gradesStore.fetchGrades()
+	}
+)
+
 const aupCode = disciplineStore.selectedAup
 const idDiscipline = disciplineStore.selectedDisciplineId
 
@@ -250,7 +257,7 @@ onMounted(async () => {
 .GradesTable {
 	background-color: $view-bg;
 	border-radius: 8px;
-	overflow: hidden;
+	overflow: auto;
 
 	$row-height: 60px;
 
@@ -268,6 +275,7 @@ onMounted(async () => {
 
 	&__topic-header {
 		cursor: pointer;
+		font-size: 0.9rem;
 	}
 
 	/* 	&__name-cell {
