@@ -193,7 +193,15 @@ const disciplineStore = useDisciplineStore()
 
 const columns = computed(() => {
 	if (gradesStore.isHideEmptyCols) {
-		return []
+		const setOfExistsColumns = new Set()
+
+		gradesStore.grades.forEach(row => {
+			setOfExistsColumns.add(...Object.keys(row.values))
+		})
+
+		return gradesStore.filteredColumnsBySelectedType.filter(col => {
+			return setOfExistsColumns.has(`${col.id}`)
+		})
 	} else {
 		return gradesStore.filteredColumnsBySelectedType
 	}
