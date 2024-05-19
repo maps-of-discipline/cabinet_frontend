@@ -46,11 +46,21 @@ const router = createRouter({
 		{
 			path: '/admin',
 			name: 'admin',
-			component: () => import('../views/AdminView.vue'),
+			component: () => import('../views/admin/AdminView.vue'),
 			meta: {
 				title: 'Панель администратора · Успеваемость',
 				layout: MainLayout,
 			},
+			children: [
+				{
+					path: 'groups',
+					component: import('../views/admin/groups/GroupsView.vue'),
+				},
+				{
+					path: 'tutors',
+					component: import('../views/admin/tutors/TutorsView.vue'),
+				},
+			],
 		},
 		{
 			path: '/:pathMatch(.*)*',
