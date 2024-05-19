@@ -2,7 +2,7 @@
 	<div class="GradeSettingsAddType">
 		<div class="GradeSettingsAddType__label-block">
 			<label class="GradeSettingsAddType__label" for="typeGrade">
-				Введите название
+				Добавить вид оценивания
 			</label>
 
 			<InputText
@@ -13,7 +13,7 @@
 			/>
 		</div>
 
-		<div class="GradeSettingsAddType__label-block">
+		<!-- <div class="GradeSettingsAddType__label-block">
 			<label class="GradeSettingsAddType__label" for="countCols">
 				Количество столбцов ???
 			</label>
@@ -24,7 +24,7 @@
 				inputId="countCols"
 				placeholder="Введите кол-во столбцов"
 			/>
-		</div>
+		</div> -->
 
 		<Button label="Добавить" @click="onClickAddType" />
 	</div>

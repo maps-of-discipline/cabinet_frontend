@@ -8,8 +8,9 @@
 		panelClass="GradeFilterDropdown__panel"
 		placeholder="Фильтры"
 	>
-		<template #value>Фильтры</template>
-		<template #closeicon></template>
+		<template #value>
+			<i class="mdi mdi-filter" />
+		</template>
 	</MultiSelect>
 </template>
 
@@ -35,6 +36,14 @@ const filters = computed(() => gradesStore.filters)
 
 <style lang="scss">
 .GradeFilterDropdown {
+	.p-multiselect-label.p-placeholder {
+		color: #fff;
+	}
+
+	.p-multiselect-trigger {
+		display: none;
+	}
+
 	&__panel {
 		.p-multiselect-header {
 			display: none;

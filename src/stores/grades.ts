@@ -170,7 +170,7 @@ export const useGradesStore = defineStore('grades', () => {
 	}
 
 	watch(
-		() => disciplineStore.selectedGroup,
+		() => [disciplineStore.selectedGroup, disciplineStore.selectedSemester],
 		(count, prevCount) => {
 			fetchGrades()
 		}

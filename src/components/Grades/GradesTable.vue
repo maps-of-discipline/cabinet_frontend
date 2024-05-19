@@ -241,13 +241,6 @@ const getSummaryGrade = values => {
 
 const onRowClick = e => console.log({ ...e.data })
 
-watch(
-	() => disciplineStore.selectedSemester,
-	() => {
-		gradesStore.fetchGrades()
-	}
-)
-
 const aupCode = disciplineStore.selectedAup
 const idDiscipline = disciplineStore.selectedDisciplineId
 

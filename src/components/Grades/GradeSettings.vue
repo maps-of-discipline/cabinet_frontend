@@ -4,7 +4,10 @@
 			<div class="GradeSettings__title">Настройки оценивания</div>
 
 			<Accordion class="GradeTypeAccordion" multiple>
-				<AccordionTab v-for="gradeType in gradeTypes" :key="gradeType.id">
+				<AccordionTab
+					v-for="(localGradeType, i) in localGradeTypes"
+					:key="localGradeType.id"
+				>
 					<template #headericon="{ index, active }">
 						<i
 							class="mdi mdi-chevron-down"
@@ -14,32 +17,34 @@
 
 					<template #header>
 						<div class="GradeTypeTab__header">
-							<span>{{ gradeType.name }}</span>
+							<span>{{ localGradeType.name }}</span>
 
 							<div class="GradeTypeTab__header-controls">
 								<Button
 									class="GradeTypeTab__show-switcher"
-									:class="{ isActive: !gradeType.archived }"
+									:class="{ isActive: !localGradeType.archived }"
 									:icon="
-										gradeType.archived ? 'mdi mdi-eye-closed' : 'mdi mdi-eye'
+										localGradeType.archived
+											? 'mdi mdi-eye-closed'
+											: 'mdi mdi-eye'
 									"
 									aria-label="Скрыть данный вид оценивания"
 									v-tooltip.left="{
 										value: 'Скрыть данный вид оценивания',
 										showDelay: 500,
 									}"
-									@click.stop="onClickShowSwitch(gradeType)"
+									@click.stop="onClickShowSwitch(localGradeType)"
 								/>
 
 								<Button
-									v-if="gradeType.type === 'custom'"
+									v-if="localGradeType.type === 'custom'"
 									class="GradeTypeTab__delete-grade-type"
 									icon="mdi mdi-delete"
 									v-tooltip.left="{
 										value: 'Удалить вид оценивания',
 										showDelay: 500,
 									}"
-									@click.stop="onClickDelete(gradeType)"
+									@click.stop="onClickDelete(localGradeType)"
 								/>
 							</div>
 						</div>
@@ -47,36 +52,57 @@
 
 					<div class="GradeTypeTab">
 						<div>
-							<label class="GradeTypeTab__label" for="integeronly">
+							<label class="GradeTypeTab__label" :for="'weight' + i">
 								Вес оценки
 							</label>
 
-							<InputNumber inputId="integeronly" />
+							<InputNumber
+								v-model="localGradeType.weight_grade"
+								:inputId="'weight' + i"
+							/>
 						</div>
 
 						<div class="GradeTypeTab__range-wrapper">
 							<div>
-								<label class="GradeTypeTab__label" for="integeronly">
+								<label class="GradeTypeTab__label" :for="'min' + i">
 									Минимум
 								</label>
 
 								<InputNumber
-									:modelValue="gradeType.min_grade"
-									inputId="integeronly"
+									v-model="localGradeType.min_grade"
+									:disabled="localGradeType.binary"
+									:inputId="'min' + i"
 								/>
 							</div>
 
 							<div>
-								<label class="GradeTypeTab__label" for="integeronly">
+								<label class="GradeTypeTab__label" :for="'max' + i">
 									Максимум
 								</label>
 
 								<InputNumber
-									:modelValue="gradeType.max_grade"
-									inputId="integeronly"
+									v-model="localGradeType.max_grade"
+									:disabled="localGradeType.binary"
+									:inputId="'max' + i"
 								/>
 							</div>
 						</div>
+
+						<div>
+							<Checkbox
+								v-model="localGradeType.binary"
+								binary
+								:inputId="'binary' + i"
+							/>
+							<label :for="'binary' + i" class="ml-2"> Бинарная шкала </label>
+						</div>
+
+						<Button
+							class="GradeTypeTab__submit"
+							label="Применить"
+							:loading="isLoadingSave"
+							@click="onClickSubmit(localGradeType)"
+						/>
 					</div>
 				</AccordionTab>
 			</Accordion>
@@ -87,20 +113,38 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useGradesStore } from '@/stores/grades'
 
 import GradeSettingsAddType from '@components/Grades/GradeSettingsAddType.vue'
 
 const gradesStore = useGradesStore()
 
-const gradeTypes = computed(() =>
-	gradesStore.typesGrade.sort((a, b) => a.name.localeCompare(b.name))
+const localGradeTypes = ref([])
+const isLoadingSave = ref(false)
+
+const setLocalGradeTypes = () => {
+	localGradeTypes.value = gradesStore.typesGrade.sort((a, b) =>
+		a.name.localeCompare(b.name)
+	)
+}
+
+watch(
+	() => gradesStore.typesGrade,
+	() => {
+		setLocalGradeTypes(gradesStore.typesGrade)
+	}
 )
 
 const onClickShowSwitch = gradeType => {
 	const newGradeType = { ...gradeType, archived: !gradeType.archived }
 	gradesStore.updateGradeType(newGradeType)
+}
+
+const onClickSubmit = async gradeType => {
+	isLoadingSave.value = true
+	await gradesStore.updateGradeType(gradeType)
+	isLoadingSave.value = false
 }
 </script>
 
