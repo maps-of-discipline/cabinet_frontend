@@ -191,7 +191,13 @@ const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
 
-const columns = computed(() => gradesStore.filteredColumnsBySelectedType)
+const columns = computed(() => {
+	if (gradesStore.isHideEmptyCols) {
+		return []
+	} else {
+		return gradesStore.filteredColumnsBySelectedType
+	}
+})
 const showSelectDisciplineStub = computed(
 	() => !disciplineStore.hasSelectedDiscipline
 )

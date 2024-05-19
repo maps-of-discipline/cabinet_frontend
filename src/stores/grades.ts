@@ -171,6 +171,19 @@ export const useGradesStore = defineStore('grades', () => {
 			fetchGrades()
 		}
 	)
+
+	/* filters */
+	const filters = ref([
+		{ label: 'Скрыть пустые столбцы', name: 'hideEmptyCols' },
+	])
+
+	const selectedFilters = ref([])
+	const setSelectedFilters = filters => (selectedFilters.value = filters)
+
+	const isHideEmptyCols = computed(() =>
+		selectedFilters.value.some(filter => filter.name === 'hideEmptyCols')
+	)
+
 	return {
 		isShowSettings,
 		setIsShowSettings,
@@ -201,5 +214,12 @@ export const useGradesStore = defineStore('grades', () => {
 		fetchGrades,
 		createGradeTable,
 		updateGrade,
+
+		/* filters */
+		filters,
+		selectedFilters,
+		setSelectedFilters,
+
+		isHideEmptyCols,
 	}
 })
