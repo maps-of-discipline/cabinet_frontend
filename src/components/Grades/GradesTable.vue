@@ -130,7 +130,9 @@
 				</template>
 
 				<template #editor="{ data }">
-					<CellEditor
+					<GradeEditor
+						:min="gradesStore.selectedTypeGrade.min_grade"
+						:max="gradesStore.selectedTypeGrade.max_grade"
 						v-model="data.values[col.id]"
 						style="justify-content: center"
 					/>
@@ -182,6 +184,7 @@ import GradeSelect from '@components/Grades/GradeSelect.vue'
 import GradeTag from '@components/Grades/GradeTag.vue'
 import NotExistGradeTableStub from '@components/Grades/NotExistGradeTableStub.vue'
 import GradeNameHeaderColumn from '@components/Grades/columns/GradeNameHeaderColumn.vue'
+import GradeEditor from '@components/Grades/GradeEditor.vue'
 
 import getSurname from '@services/helpers/getSurname'
 
@@ -198,6 +201,8 @@ const columns = computed(() => {
 		gradesStore.grades.forEach(row => {
 			setOfExistsColumns.add(...Object.keys(row.values))
 		})
+
+		console.log(setOfExistsColumns)
 
 		return gradesStore.filteredColumnsBySelectedType.filter(col => {
 			return setOfExistsColumns.has(`${col.id}`)
@@ -220,9 +225,8 @@ const isLoadingTable = computed(() => gradesStore.isLoading)
 const onCellEditComplete = event => {
 	let { newData, field } = event
 
-	console.log(event)
-
-	const grade = +newData.values[field]
+	const grade = newData.values[field]
+	console.log(grade)
 	const colId = field
 	const studentId = newData.id
 

@@ -38,6 +38,7 @@ declare module 'vue' {
     Divider: typeof import('primevue/divider')['default']
     Dropdown: typeof import('primevue/dropdown')['default']
     EditModeSwitcher: typeof import('./src/components/layouts/HeaderTable/EditModeSwitcher.vue')['default']
+    GradeEditor: typeof import('./src/components/Grades/GradeEditor.vue')['default']
     GradeFilterDropdown: typeof import('./src/components/Grades/GradeFilterDropdown.vue')['default']
     GradeNameHeaderColumn: typeof import('./src/components/Grades/columns/GradeNameHeaderColumn.vue')['default']
     GradeSelect: typeof import('./src/components/Grades/GradeSelect.vue')['default']

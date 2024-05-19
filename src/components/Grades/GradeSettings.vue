@@ -90,6 +90,7 @@
 
 						<div>
 							<Checkbox
+								disabled
 								v-model="localGradeType.binary"
 								binary
 								:inputId="'binary' + i"
