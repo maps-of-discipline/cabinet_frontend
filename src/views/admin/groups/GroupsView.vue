@@ -6,8 +6,8 @@
 </template>
 
 <script setup>
-import GroupsHeader from '@components/admin/groups/GroupsHeader.vue'
 import GroupsTable from '@components/admin/groups/GroupsTable.vue'
+import GroupsHeader from '@components/admin/groups/GroupsHeader.vue'
 </script>
 
 <style lang="scss">
