@@ -1,13 +1,13 @@
 <template>
 	<div class="GroupsView">
-		<GroupsHeader />
-		<GroupsTable />
+		<!-- <GroupsHeader />
+		<GroupsTable /> -->
 	</div>
 </template>
 
 <script setup>
-import GroupsTable from '@components/admin/groups/GroupsTable.vue'
-import GroupsHeader from '@components/admin/groups/GroupsHeader.vue'
+/* import GroupsTable from '@components/admin/GroupsTable.vue'
+import GroupsHeader from '@components/admin/GroupsHeader.vue' */
 </script>
 
 <style lang="scss">
