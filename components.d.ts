@@ -11,6 +11,7 @@ declare module 'vue' {
     AccordionTab: typeof import('primevue/accordiontab')['default']
     AddTask: typeof import('./src/components/Lessons/AddTask.vue')['default']
     ApButton: typeof import('./src/components/ui/ApButton.vue')['default']
+    ApHint: typeof import('./src/components/ui/ApHint.vue')['default']
     ApLoadingIcon: typeof import('./src/components/ui/ApLoadingIcon.vue')['default']
     ApLoadingSpinner: typeof import('./src/components/ui/ApLoadingSpinner.vue')['default']
     AttachLinkButton: typeof import('./src/components/Lessons/common/AttachLinkButton.vue')['default']

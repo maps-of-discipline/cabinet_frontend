@@ -1,7 +1,7 @@
 <template>
 	<Transition name="fade">
 		<div class="GradeSettings" v-if="gradesStore.isShowSettings">
-			<div class="GradeSettings__title">Настройки оценивания</div>
+			<div class="GradeSettings__title">Настройки</div>
 
 			<Accordion class="GradeTypeAccordion" multiple>
 				<AccordionTab
@@ -53,19 +53,36 @@
 					<div class="GradeTypeTab">
 						<div>
 							<label class="GradeTypeTab__label" :for="'weight' + i">
-								Вес оценки
+								<span>Наименование</span>
 							</label>
 
-							<InputNumber
-								v-model="localGradeType.weight_grade"
-								:inputId="'weight' + i"
+							<InputText
+								class="GradeTypeTab__input"
+								v-model="localGradeType.name"
 							/>
 						</div>
 
-						<div class="GradeTypeTab__range-wrapper">
+						<div class="GradeTypeTab__inputs">
+							<div>
+								<label class="GradeTypeTab__label" :for="'weight' + i">
+									<span>Вес</span>
+
+									<ApHint
+										hint="Вес оценки. Рекомендуется выставлять значение от 0 до 2."
+									/>
+								</label>
+
+								<InputNumber
+									v-model="localGradeType.weight_grade"
+									:inputId="'weight' + i"
+								/>
+							</div>
+
 							<div>
 								<label class="GradeTypeTab__label" :for="'min' + i">
-									Минимум
+									<span>Мин</span>
+
+									<ApHint hint="Минимальное значение оценки" />
 								</label>
 
 								<InputNumber
@@ -77,7 +94,9 @@
 
 							<div>
 								<label class="GradeTypeTab__label" :for="'max' + i">
-									Максимум
+									<span>Макc</span>
+
+									<ApHint hint="Максимальное значение оценки" />
 								</label>
 
 								<InputNumber
@@ -95,6 +114,7 @@
 								binary
 								:inputId="'binary' + i"
 							/>
+
 							<label :for="'binary' + i" class="ml-2"> Бинарная шкала </label>
 						</div>
 
@@ -118,6 +138,7 @@ import { ref, computed, watch } from 'vue'
 import { useGradesStore } from '@/stores/grades'
 
 import GradeSettingsAddType from '@components/Grades/GradeSettingsAddType.vue'
+import ApHint from '@components/ui/ApHint.vue'
 
 const gradesStore = useGradesStore()
 
@@ -161,8 +182,7 @@ const onClickSubmit = async gradeType => {
 	min-width: 300px;
 
 	&__title {
-		background-color: $shade1000;
-		padding: 16px;
+		font-size: 1.1rem;
 		margin-bottom: 12px;
 		border-radius: $borderRadius;
 	}
@@ -173,8 +193,11 @@ const onClickSubmit = async gradeType => {
 	gap: 12px;
 
 	&__label {
-		display: inline-block;
+		display: flex;
+		align-items: center;
+		gap: 8px;
 		margin-bottom: 6px;
+		font-size: 0.9rem;
 	}
 
 	&__header {
@@ -189,6 +212,19 @@ const onClickSubmit = async gradeType => {
 		display: flex;
 		align-items: center;
 		gap: 12px;
+	}
+
+	&__input {
+		width: 100%;
+	}
+
+	&__inputs {
+		display: flex;
+		gap: 8px;
+
+		.p-inputtext {
+			width: 100%;
+		}
 	}
 
 	&__show-switcher {
@@ -236,6 +272,12 @@ const onClickSubmit = async gradeType => {
 		background-color: $shade1000;
 
 		border-top: 2px solid $shade700;
+	}
+
+	.p-accordion-tab[data-pc-index='0'] {
+		.p-accordion-header-link {
+			border-top: 2px solid transparent;
+		}
 	}
 
 	.p-accordion-content {
