@@ -68,6 +68,8 @@ export const useGradesStore = defineStore('grades', () => {
 	// Выбранный вид оценивания
 	const selectedTypeGrade = ref(null)
 	const setSelectedTypeGrade = value => (selectedTypeGrade.value = value)
+	const isAllGradeType = ref(false)
+	const setIsAllGradeType = value => (isAllGradeType.value = value)
 
 	// Оценки
 	const grades: Ref<IGradeRow[]> = ref([])
@@ -80,13 +82,19 @@ export const useGradesStore = defineStore('grades', () => {
 		const set = new Set()
 
 		columns.value.forEach(col => {
-			if (selectedTypeGrade.value.id === col.grade_type_id) set.add(col.id)
+			if (
+				isAllGradeType.value ||
+				selectedTypeGrade.value.id === col.grade_type_id
+			)
+				set.add(col.id)
 		})
 
 		return set
 	})
 
 	const filteredColumnsBySelectedType = computed(() => {
+		if (isAllGradeType.value) return columns
+
 		return columns.value.filter(
 			column => column.grade_type_id === selectedTypeGrade.value.id
 		)
@@ -211,6 +219,9 @@ export const useGradesStore = defineStore('grades', () => {
 
 		selectedTypeGrade,
 		setSelectedTypeGrade,
+
+		isAllGradeType,
+		setIsAllGradeType,
 
 		showFullname,
 		setShowFullname,

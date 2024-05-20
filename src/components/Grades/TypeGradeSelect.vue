@@ -25,9 +25,19 @@ import { useGradesStore } from '@/stores/grades'
 const disciplineStore = useDisciplineStore()
 const gradesStore = useGradesStore()
 
-const options = computed(() =>
-	gradesStore.availableTypesGrade.sort((a, b) => a.name.localeCompare(b.name))
-)
+const options = computed(() => {
+	/* const allTypes = {
+		name: 'Выбрать все',
+		value: 'all',
+		disabled: true,
+	} */
+
+	const availableTypes = gradesStore.availableTypesGrade.sort((a, b) =>
+		a.name.localeCompare(b.name)
+	)
+
+	return availableTypes
+})
 
 const selectedType = computed({
 	get() {
@@ -35,6 +45,8 @@ const selectedType = computed({
 	},
 
 	set(type) {
+		if (type.value === 'all') gradesStore.setIsAllGradeType(true)
+
 		return gradesStore.setSelectedTypeGrade(type)
 	},
 })
