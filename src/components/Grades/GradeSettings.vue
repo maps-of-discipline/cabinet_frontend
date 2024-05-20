@@ -177,7 +177,6 @@ const onClickSubmit = async gradeType => {
 	background-color: $view-bg;
 	border-radius: 8px;
 	padding: 16px;
-	margin-left: 12px;
 	overflow: auto;
 	min-width: 300px;
 
