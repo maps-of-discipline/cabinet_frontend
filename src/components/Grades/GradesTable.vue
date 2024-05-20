@@ -1,6 +1,5 @@
 <template>
 	<div class="GradesTable__wrapper">
-		<Button label="download" @click="onDownload" />
 		<DataTable
 			class="GradesTable"
 			:class="{ editMode: disciplineStore.editMode }"
