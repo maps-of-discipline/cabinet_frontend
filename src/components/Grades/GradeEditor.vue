@@ -6,6 +6,7 @@
 		:max="props.max"
 		:useGrouping="false"
 		:modelValue="+modelValue"
+		:maxFractionDigits="2"
 		@update:modelValue="handleInput"
 	/>
 </template>

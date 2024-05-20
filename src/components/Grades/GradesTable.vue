@@ -1,21 +1,21 @@
 <template>
 	<div class="GradesTable__wrapper">
+		<Button label="download" @click="onDownload" />
 		<DataTable
 			class="GradesTable"
 			:class="{ editMode: disciplineStore.editMode }"
-			ref="table"
+			v-model:filters="filters"
 			:value="grades"
 			:loading="isLoadingTable"
 			showGridlines
 			scrollable
 			scrollHeight="flex"
 			stripedRows
+			dataKey="id"
 			:rowClass="() => 'GradesTable__row'"
 			:editMode="disciplineStore.editMode ? 'cell' : null"
-			v-model:filters="filters"
 			:globalFilterFields="['name']"
 			@cell-edit-complete="onCellEditComplete"
-			dataKey="id"
 			@row-click="onRowClick"
 		>
 			<ColumnGroup type="header">
@@ -240,7 +240,7 @@ const getSummaryGrade = values => {
 		if (values[colId]) sum += values[colId]
 	})
 
-	return sum
+	return sum.toFixed(2)
 }
 
 const onRowClick = e => console.log({ ...e.data })
