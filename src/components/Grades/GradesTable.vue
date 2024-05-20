@@ -280,6 +280,9 @@ onMounted(async () => {
 	&__topic-header {
 		cursor: pointer;
 		font-size: 0.9rem;
+		overflow: hidden;
+		white-space: nowrap; /* Don't forget this one */
+		text-overflow: ellipsis;
 	}
 
 	/* 	&__name-cell {
