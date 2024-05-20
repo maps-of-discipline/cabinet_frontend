@@ -264,7 +264,7 @@ onMounted(async () => {
 	border-radius: 8px;
 	overflow: auto;
 
-	$row-height: 60px;
+	$row-height: 40px;
 
 	&__wrapper {
 		position: relative;
