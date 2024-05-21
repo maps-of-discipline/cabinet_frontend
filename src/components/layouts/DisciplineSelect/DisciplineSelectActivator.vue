@@ -42,5 +42,17 @@ const onClick = () => emit('open')
 		border: none;
 		outline: $focusOutline;
 	}
+
+	&--dev {
+		color: #eab308;
+		background-color: rgba(234, 179, 8, 0.16);
+		outline: 4px solid transparent;
+
+		&:hover,
+		&:focus {
+			border: none;
+			outline: 4px solid rgb(234, 179, 8, 0.3);
+		}
+	}
 }
 </style>

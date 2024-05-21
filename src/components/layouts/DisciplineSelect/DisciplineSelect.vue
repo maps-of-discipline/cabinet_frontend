@@ -1,8 +1,22 @@
 <template>
 	<div class="DisciplineSelect">
-		<!-- <DisciplineSelectActivator @open="openPopup" :label="lessonsStore.title" /> -->
-		<DisciplineSelectActivator @open="test" :label="lessonsStore.title" />
-		<DisciplineSelectActivator @open="openPopup" label="123" />
+		<div class="DisciplineSelect__activators">
+			<DisciplineSelectActivator
+				@open="openDisciplineColumn"
+				:label="lessonsStore.title"
+			/>
+
+			<Button
+				class="DisciplineSelectActivator DisciplineSelectActivator--dev"
+				icon="mdi mdi-alert"
+				v-tooltip.bottom="{
+					value:
+						'Выбор дисциплины. Интерфейс для разработки и выбора любого направления и дисциплины',
+					showDelay: 500,
+				}"
+				@click="openPopup"
+			/>
+		</div>
 
 		<DisciplineSelectDialog />
 	</div>
@@ -20,10 +34,17 @@ const lessonsStore = useLessonsStore()
 
 const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 
-const test = () =>
+const openDisciplineColumn = () =>
 	disciplineStore.setIsOpenDisciplineColumn(
 		!disciplineStore.isOpenDisciplineColumn
 	)
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.DisciplineSelect {
+	&__activators {
+		display: flex;
+		gap: 12px;
+	}
+}
+</style>
