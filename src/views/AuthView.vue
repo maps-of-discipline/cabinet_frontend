@@ -37,9 +37,9 @@
 						value="Cheese"
 					/>
 
-					<label for="keep_auth" style="user-select: none; cursor: pointer"
-						>Оставаться в системе</label
-					>
+					<label for="keep_auth" style="user-select: none; cursor: pointer">
+						Оставаться в системе
+					</label>
 				</div>
 			</div>
 
@@ -71,6 +71,8 @@ const keepAuthModel = ref(false)
 
 const onLoginClick = async () => {
 	isLoadingSubmit.value = true
+
+	authStore.setIsSession(!keepAuthModel.value)
 	const res = await authStore.login(loginModel.value, passwordModel.value)
 
 	if (res.error) {

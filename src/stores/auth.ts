@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
 
@@ -7,16 +8,50 @@ import Api from '@services/Api'
 import { useUser } from './user'
 import { HttpStatusCode } from 'axios'
 
+const getTokensFromStorage = () => {
+	return {
+		access:
+			localStorage.getItem('access') || sessionStorage.getItem('access') || '',
+		refresh:
+			localStorage.getItem('refresh') ||
+			sessionStorage.getItem('refresh') ||
+			'',
+		token:
+			localStorage.getItem('token') || sessionStorage.getItem('token') || '',
+	}
+}
+
+const setTokensToStorage = (tokens, isSession: boolean) => {
+	const storageObj = isSession ? sessionStorage : localStorage
+
+	storageObj.setItem('access', tokens.jwt)
+	storageObj.setItem('refresh', tokens.jwt_refresh)
+	storageObj.setItem('token', tokens.token)
+}
+
+const removeTokensFromStorage = (isSession: boolean) => {
+	const storageObj = isSession ? sessionStorage : localStorage
+
+	storageObj.removeItem('access')
+	storageObj.removeItem('refresh')
+	storageObj.removeItem('token')
+}
+
+interface ITokens {
+	access: string
+	refresh: string
+	token: string
+}
+
 export const useAuth = defineStore('auth', () => {
 	const userStore = useUser()
 
-	const tokens = ref({
-		access: localStorage.getItem('access'),
-		refresh: localStorage.getItem('refresh'),
-		token: localStorage.getItem('token'),
-	})
+	const tokens: Ref<ITokens> = ref(getTokensFromStorage())
 
-	const isAuth = ref(!!localStorage.getItem('access'))
+	const isAuth = ref(!!getTokensFromStorage().access)
+
+	const isSession = ref(false)
+	const setIsSession = value => (isSession.value = value)
 
 	const decode = (token?: string) => {
 		if (token) {
@@ -31,9 +66,7 @@ export const useAuth = defineStore('auth', () => {
 	const setTokens = payload => {
 		tokens.value = payload
 
-		localStorage.setItem('access', payload.jwt)
-		localStorage.setItem('refresh', payload.jwt_refresh)
-		localStorage.setItem('token', payload.token)
+		setTokensToStorage(payload, isSession.value)
 	}
 
 	const login = async (login: string, password: string) => {
@@ -50,9 +83,7 @@ export const useAuth = defineStore('auth', () => {
 	}
 
 	const logout = () => {
-		localStorage.removeItem('access')
-		localStorage.removeItem('refresh')
-		localStorage.removeItem('token')
+		removeTokensFromStorage(isSession.value)
 
 		window.location.reload()
 	}
@@ -63,5 +94,7 @@ export const useAuth = defineStore('auth', () => {
 		isAuth,
 		login,
 		logout,
+		isSession,
+		setIsSession,
 	}
 })
