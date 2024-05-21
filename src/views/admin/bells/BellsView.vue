@@ -1,5 +1,5 @@
 <template>
-	<div class="TutorsView">
+	<div class="BellsView">
 		<DevelopingStub />
 	</div>
 </template>
@@ -9,7 +9,7 @@ import DevelopingStub from '@components/layouts/DevelopingStub.vue'
 </script>
 
 <style lang="scss">
-.TutorsView {
+.BellsView {
 	height: 100%;
 	min-width: 500px;
 	width: 100%;

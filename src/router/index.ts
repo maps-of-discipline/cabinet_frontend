@@ -82,6 +82,15 @@ const router = createRouter({
 						useBubbleBg: false,
 					},
 				},
+				{
+					path: 'bells',
+					component: import('../views/admin/bells/BellsView.vue'),
+
+					meta: {
+						title: 'Звонки · Успеваемость',
+						useBubbleBg: false,
+					},
+				},
 			],
 		},
 		{

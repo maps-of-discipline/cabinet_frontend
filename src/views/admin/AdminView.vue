@@ -49,7 +49,7 @@ const categories = ref([
 	{
 		id: 3,
 		label: 'Справочник звонков',
-		to: '/admin/bell',
+		to: '/admin/bells',
 		icon: 'mdi mdi-bell',
 		color: 'rgb(60, 210, 136)',
 	},
