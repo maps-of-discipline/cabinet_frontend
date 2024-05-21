@@ -124,7 +124,7 @@
 							class="LessonsTable__date-editor"
 							:value="data[field]"
 							:editMode="disciplineStore.editMode"
-							@input="onInputDate(data, $event)"
+							@input="onEditField(data, $event, field)"
 						/>
 					</template>
 				</Column>
@@ -137,7 +137,7 @@
 							v-if="disciplineStore.editMode || data[field]"
 							:value="data[field]"
 							:editMode="disciplineStore.editMode"
-							@change="onChangeLessonRange(data, $event)"
+							@change="onEditField(data, $event, field)"
 						/>
 					</template>
 				</Column>
@@ -154,7 +154,7 @@
 							:editMode="disciplineStore.editMode"
 							:controlTypes="lessonsStore.controlTypesBySemester"
 							:item="data"
-							@change="id => onChangeControlType(data, id)"
+							@change="onEditField(data, $event, field)"
 						/>
 					</template>
 
@@ -238,8 +238,20 @@
 					</template>
 				</Column>
 
-				<Column field="deadline_date">
-					<template #body="{ data, field }"> </template>
+				<Column field="date_task_finish">
+					<template #body="{ data, field }">
+						<CalendarTagEditor
+							class="LessonsTable__date-editor"
+							:value="data[field]"
+							:editMode="disciplineStore.editMode"
+							optionIncludeDay
+							:includeSelectedDay="data['date_task_finish_include']"
+							@input="onEditField(data, $event, field)"
+							@changeIncludeDay="
+								onEditField(data, $event, 'date_task_finish_include')
+							"
+						/>
+					</template>
 				</Column>
 
 				<!-- Удаление -->
@@ -315,7 +327,7 @@ const onCellEditComplete = event => {
 	}
 }
 
-const onInputDate = (data, value) => {
+/* const onInputDate = (data, value) => {
 	const newLesson = Object.assign({}, data)
 	newLesson.date = value
 	lessonsStore.editLesson(newLesson)
@@ -328,8 +340,13 @@ const onChangeLessonRange = (data, value) => {
 }
 
 const onChangeControlType = (data, id) => {
+
+}
+ */
+const onEditField = (data, value, field) => {
+	console.log(value, field)
 	const newLesson = Object.assign({}, data)
-	newLesson.id_type_control = id
+	newLesson[field] = value
 	lessonsStore.editLesson(newLesson)
 }
 

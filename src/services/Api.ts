@@ -56,19 +56,8 @@ abstract class Api {
 	 * @param {ILesson} lesson - Обновленная строкоа
 	 */
 	static async editLesson(lesson: ILesson) {
-		console.log(lesson.date, new Date(lesson.date).toLocaleDateString('ru-RU'))
-
 		const { data, status } = await axios.post(`edit-lesson`, {
-			lesson: {
-				...lesson,
-				date: lesson.date
-					? new Date(lesson.date).toLocaleDateString('ru-RU', {
-							year: 'numeric',
-							month: 'numeric',
-							day: 'numeric',
-					  })
-					: null,
-			},
+			lesson,
 		})
 
 		if (status !== HttpStatusCode.Ok) return null

@@ -10,9 +10,23 @@
 		/>
 
 		<OverlayPanel ref="opRef">
+			<div v-if="optionIncludeDay" class="CalendarTagEditor__with-select-day">
+				<Checkbox
+					v-model="includeSelectedDayModel"
+					binary
+					inputId="with-select-day"
+					:disabled="!value"
+				/>
+
+				<label for="'with-select-day" class="ml-2">
+					Включая выбранную дату
+				</label>
+			</div>
+
 			<Calendar
 				selectionMode="single"
 				inline
+				dateFormat="dd.mm.yy"
 				:modelValue="valueObj"
 				@update:modelValue="onInputDate"
 			>
@@ -22,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, toRaw } from 'vue'
 
 const props = defineProps({
 	editMode: {
@@ -34,9 +48,19 @@ const props = defineProps({
 		type: String,
 		default: null,
 	},
+
+	optionIncludeDay: {
+		type: Boolean,
+		default: false,
+	},
+
+	includeSelectedDay: {
+		type: Boolean,
+		default: null,
+	},
 })
 
-const emit = defineEmits(['input'])
+const emit = defineEmits(['input', 'changeIncludeDay'])
 
 const opRef = ref()
 
@@ -53,6 +77,16 @@ const valueObj = computed(() =>
 )
 
 const onInputDate = value => emit('input', value)
+
+const includeSelectedDayModel = computed({
+	get() {
+		return toRaw(props.includeSelectedDay)
+	},
+
+	set(value) {
+		emit('changeIncludeDay', value)
+	},
+})
 </script>
 
 <style lang="scss">
@@ -67,6 +101,12 @@ const onInputDate = value => emit('input', value)
 		&.p-disabled {
 			opacity: 1;
 		}
+	}
+
+	&__with-select-day {
+		margin: 12px 0 0 0;
+		display: flex;
+		gap: 12px;
 	}
 }
 </style>
