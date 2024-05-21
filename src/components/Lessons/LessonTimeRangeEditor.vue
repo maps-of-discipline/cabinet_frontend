@@ -6,7 +6,6 @@
 		optionLabel="label"
 		optionValue="order"
 		:disabled="!editMode"
-		checkmark
 		:highlightOnSelect="false"
 		:class="{ editMode, isEmpty: !selectedRangeId }"
 	>
@@ -14,6 +13,19 @@
 			<span class="LessonTimeRangeEditor__value">{{
 				getValueLabel(value) || 'Время'
 			}}</span>
+		</template>
+
+		<template #option="{ option }">
+			<div class="LessonTimeRangeEditor__option">
+				<span
+					class="LessonTimeRangeEditor__option-order"
+					:class="{ isSelected: option.order === selectedRangeId }"
+				>
+					{{ option.order }}
+				</span>
+
+				<span>{{ option.label }}</span>
+			</div>
 		</template>
 	</Dropdown>
 </template>
@@ -57,8 +69,30 @@ const selectedRangeId = computed({
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .LessonTimeRangeEditor {
 	width: 145px;
+
+	&__option {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	&__option-order {
+		width: 25px;
+		text-align: center;
+		background-color: $shade950;
+		border-radius: $borderRadius;
+		padding: 2px 2px;
+		transition: outline 0.2s;
+		outline: $focusOutlineTransparent;
+
+		&.isSelected {
+			outline: $focusOutline;
+		}
+	}
 
 	&.p-disabled {
 		opacity: 1;
