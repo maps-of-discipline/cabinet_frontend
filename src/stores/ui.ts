@@ -58,10 +58,22 @@ export const useUi = defineStore('ui', () => {
 		},
 	])
 
+	const isHideLeftMenuDevBlock = ref(
+		sessionStorage.getItem('isHideLeftMenuDevBlock') === 'true'
+	)
+	const setIsHideLeftMenuDevBlock = value => {
+		isHideLeftMenuDevBlock.value = value
+		sessionStorage.setItem('isHideLeftMenuDevBlock', value)
+	}
+
 	return {
 		leftMenuMiniMode,
 		setLeftMenuMiniMode,
 
 		leftMenuNavItems,
+
+		/* dev */
+		isHideLeftMenuDevBlock,
+		setIsHideLeftMenuDevBlock,
 	}
 })

@@ -1,6 +1,13 @@
 <template>
 	<div class="AuthView">
+		<div class="AuthView__dev-block"></div>
+
 		<form class="AuthForm">
+			<InlineMessage severity="warn" style="font-size: 0.9rem">
+				Приложение находится в режиме разработки. Для доступа необходимо
+				получить одобрение администратора.
+			</InlineMessage>
+
 			<div class="AuthForm__logo">Успеваемость</div>
 
 			<div class="AuthForm__main">
@@ -97,6 +104,8 @@ const onLoginClick = async () => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
+	gap: 16px;
 }
 
 .AuthForm {

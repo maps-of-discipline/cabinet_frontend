@@ -29,12 +29,13 @@ const setTokensToStorage = (tokens, isSession: boolean) => {
 	storageObj.setItem('token', tokens.token)
 }
 
-const removeTokensFromStorage = (isSession: boolean) => {
-	const storageObj = isSession ? sessionStorage : localStorage
-
-	storageObj.removeItem('access')
-	storageObj.removeItem('refresh')
-	storageObj.removeItem('token')
+const removeTokensFromStorage = () => {
+	localStorage.removeItem('access')
+	localStorage.removeItem('refresh')
+	localStorage.removeItem('token')
+	sessionStorage.removeItem('access')
+	sessionStorage.removeItem('refresh')
+	sessionStorage.removeItem('token')
 }
 
 interface ITokens {
@@ -83,7 +84,7 @@ export const useAuth = defineStore('auth', () => {
 	}
 
 	const logout = () => {
-		removeTokensFromStorage(isSession.value)
+		removeTokensFromStorage()
 
 		window.location.reload()
 	}

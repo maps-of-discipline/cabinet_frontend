@@ -1,5 +1,5 @@
 <template>
-	<div class="LeftMenu" :class="{ isOpen: uiStore.leftMenuMiniMode }">
+	<div class="LeftMenu" :class="{ isHide: uiStore.leftMenuMiniMode }">
 		<router-link class="LeftMenu__logo-block" to="/">
 			<img class="LeftMenu__logo" src="@assets/logo.png" alt="" />
 			<div class="LeftMenu__logo-title">Успеваемость</div>
@@ -14,7 +14,18 @@
 		/>
 
 		<div class="LeftMenu__footer">
-			<divider class="LeftMenu__divider" style="margin-bottom: 15px" />
+			<Transition name="fade">
+				<Message
+					v-if="!uiStore.isHideLeftMenuDevBlock && !uiStore.leftMenuMiniMode"
+					class="LeftMenu__dev-block"
+					severity="warn"
+					style="font-size: 0.9rem"
+					@close="onCloseDevBlock"
+				>
+					Приложение находится в режиме разработки.
+				</Message>
+			</Transition>
+			<divider class="LeftMenu__divider" style="margin: 15px 0" />
 			<LeftMenuAccount />
 		</div>
 	</div>
@@ -30,6 +41,8 @@ import LeftMenuSwitcher from '@components/layouts/Main/LeftMenu/LeftMenuSwitcher
 import { useUi } from '@stores/ui'
 
 const uiStore = useUi()
+
+const onCloseDevBlock = () => uiStore.setIsHideLeftMenuDevBlock(true)
 </script>
 
 <style lang="scss">
@@ -79,7 +92,11 @@ const uiStore = useUi()
 		margin: 30px 0;
 	}
 
-	&.isOpen {
+	&__dev-block {
+		min-width: 266px;
+	}
+
+	&.isHide {
 		max-width: 84px;
 
 		.LeftMenu {
