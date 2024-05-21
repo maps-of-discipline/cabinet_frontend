@@ -21,6 +21,7 @@ declare module 'vue' {
     Button: typeof import('primevue/button')['default']
     Calendar: typeof import('primevue/calendar')['default']
     CalendarTagEditor: typeof import('./src/components/Lessons/common/CalendarTagEditor.vue')['default']
+    CategoryBlock: typeof import('./src/components/admin/CategoryBlock.vue')['default']
     CellEditor: typeof import('./src/components/Lessons/common/CellEditor.vue')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     CloudIconNotSaved: typeof import('./src/components/Lessons/common/CloudIconNotSaved.vue')['default']

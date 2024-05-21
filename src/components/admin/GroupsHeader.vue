@@ -13,6 +13,7 @@
 				class="UploadGroupsActivator"
 				:loading="isLoadingUploadFile"
 				label="Загрузить"
+				icon="mdi mdi-upload"
 				@click="onClick"
 			/>
 
@@ -84,6 +85,11 @@ const onInputFileInput = async e => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	&__left {
+		font-size: 1rem;
+		font-weight: 600;
+	}
 
 	&__right,
 	&__left {
