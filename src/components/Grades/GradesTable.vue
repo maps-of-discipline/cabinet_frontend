@@ -41,7 +41,6 @@
 
 					<Column
 						v-for="(col, index) of columns"
-						style="min-width: 50px; width: 50px; max-width: 50px"
 						headerClass="column-header-index"
 						bodyClass="column-cell-index"
 					>
@@ -119,7 +118,6 @@
 			<!-- Столбцы -->
 			<Column
 				v-for="(col, index) of columns"
-				style="min-width: 50px; width: 50px; max-width: 50px"
 				:field="`${col.id}`"
 				headerClass="column-header-index"
 				bodyClass="column-cell-index"
@@ -280,9 +278,9 @@ onMounted(async () => {
 	&__topic-header {
 		cursor: pointer;
 		font-size: 0.9rem;
-		overflow: hidden;
-		white-space: nowrap; /* Don't forget this one */
-		text-overflow: ellipsis;
+		/* overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis; */
 	}
 
 	/* 	&__name-cell {
