@@ -1,6 +1,9 @@
 <template>
 	<router-link class="CategoryBlock" :to="to" rel="noopener">
-		<div class="CategoryBlock__icon" :style="{ backgroundColor: color }">
+		<div
+			class="CategoryBlock__icon"
+			:style="{ backgroundColor: color, '--color': color }"
+		>
 			<i :class="[icon]" />
 		</div>
 
@@ -49,6 +52,20 @@ const props = defineProps({
 	align-items: center;
 	justify-content: center;
 
+	&:hover {
+		.CategoryBlock {
+			&__icon {
+				box-shadow: var(--color) 0px 20px 110px 60px;
+				transform: scale(1.1) translateY(10px);
+			}
+
+			&__label {
+				transform: scale(0.95) translateY(40%);
+				color: rgb(255, 255, 255);
+			}
+		}
+	}
+
 	&__icon {
 		height: 38px;
 		width: 38px;
@@ -61,10 +78,13 @@ const props = defineProps({
 	}
 
 	&__label {
+		position: relative;
+		z-index: 2;
 		font-weight: 600;
 		height: 30px;
 		font-size: 0.8rem;
 		text-align: center;
+		transition: all 0.2s ease 0s;
 	}
 }
 </style>
