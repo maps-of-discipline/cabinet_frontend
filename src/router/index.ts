@@ -91,6 +91,15 @@ const router = createRouter({
 						useBubbleBg: false,
 					},
 				},
+				{
+					path: 'access',
+					component: import('../views/admin/access/AccessView.vue'),
+
+					meta: {
+						title: 'Доступ к системе · Успеваемость',
+						useBubbleBg: false,
+					},
+				},
 			],
 		},
 		{

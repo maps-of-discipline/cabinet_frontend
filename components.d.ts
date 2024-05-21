@@ -89,6 +89,10 @@ declare module 'vue' {
     Tag: typeof import('primevue/tag')['default']
     TimeTagEditor: typeof import('./src/components/Lessons/TimeTagEditor.vue')['default']
     ToggleButton: typeof import('primevue/togglebutton')['default']
+    TutorsDateEditor: typeof import('./src/components/admin/tutors/TutorsDateEditor.vue')['default']
+    TutorsDepartmentTable: typeof import('./src/components/admin/tutors/TutorsDepartmentTable.vue')['default']
+    TutorsForm: typeof import('./src/components/admin/tutors/TutorsForm.vue')['default']
+    TutorsMetaForm: typeof import('./src/components/admin/tutors/TutorsMetaForm.vue')['default']
     TypeGradeSelect: typeof import('./src/components/Grades/TypeGradeSelect.vue')['default']
     ViewSelect: typeof import('./src/components/Lessons/ViewSelect.vue')['default']
   }

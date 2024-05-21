@@ -1,15 +1,15 @@
 <template>
-	<div class="TutorsView">
-		<TutorsForm />
+	<div class="AccessView">
+		<DevelopingStub />
 	</div>
 </template>
 
 <script setup>
-import TutorsForm from '@components/admin/tutors/TutorsForm.vue'
+import DevelopingStub from '@components/layouts/DevelopingStub.vue'
 </script>
 
 <style lang="scss">
-.TutorsView {
+.AccessView {
 	height: 100%;
 	min-width: 500px;
 	width: 100%;

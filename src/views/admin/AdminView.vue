@@ -53,6 +53,13 @@ const categories = ref([
 		icon: 'mdi mdi-bell',
 		color: 'rgb(60, 210, 136)',
 	},
+	{
+		id: 3,
+		label: 'Доступ к системе',
+		to: '/admin/access',
+		icon: 'mdi mdi-security',
+		color: 'rgb(236, 95, 107)',
+	},
 ])
 </script>
 
