@@ -2,7 +2,7 @@
 	<div class="MainLayout">
 		<LeftMenu class="MainLayout__menu" />
 
-		<BubbleBg />
+		<BubbleBg v-if="route?.meta.useBubbleBg" />
 
 		<main class="MainLayout__main">
 			<slot />
@@ -13,6 +13,10 @@
 <script lang="ts" setup>
 import BubbleBg from '@components/layouts/Main/BubbleBg.vue'
 import LeftMenu from '@components/layouts/Main/LeftMenu/LeftMenu.vue'
+
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <style lang="scss">

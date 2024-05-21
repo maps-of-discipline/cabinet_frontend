@@ -23,6 +23,7 @@ const router = createRouter({
 			meta: {
 				title: 'Успеваемость · Успеваемость',
 				layout: MainLayout,
+				useBubbleBg: true,
 			},
 		},
 		{
@@ -32,6 +33,7 @@ const router = createRouter({
 			meta: {
 				title: 'Темы занятий · Успеваемость',
 				layout: MainLayout,
+				useBubbleBg: true,
 			},
 		},
 		{
@@ -59,15 +61,26 @@ const router = createRouter({
 			meta: {
 				title: 'Панель администратора · Успеваемость',
 				layout: MainLayout,
+				useBubbleBg: true,
 			},
 			children: [
 				{
 					path: 'groups',
 					component: import('../views/admin/groups/GroupsView.vue'),
+
+					meta: {
+						title: 'Группы · Успеваемость',
+						useBubbleBg: false,
+					},
 				},
 				{
 					path: 'tutors',
 					component: import('../views/admin/tutors/TutorsView.vue'),
+
+					meta: {
+						title: 'Тьюторы · Успеваемость',
+						useBubbleBg: false,
+					},
 				},
 			],
 		},

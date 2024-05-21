@@ -31,6 +31,7 @@ const route = useRoute()
 	&__router {
 		height: 100%;
 		display: grid;
+		justify-content: center;
 		grid-template-rows: auto 1fr;
 		gap: 12px;
 	}

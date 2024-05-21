@@ -1,5 +1,6 @@
 <template>
 	<DataTable
+		v-model:filters="filters"
 		class="GroupsTable"
 		ref="table"
 		:value="groups"
@@ -21,7 +22,13 @@
 					frozen
 				/>
 
-				<Column header="Группа" style="width: 100px" frozen :colspan="1" />
+				<Column
+					class="column-header--center"
+					header="Группа"
+					style="width: 100px"
+					frozen
+					:colspan="1"
+				/>
 				<Column header="Номер АУП" frozen :colspan="1" />
 			</Row>
 		</ColumnGroup>
@@ -33,11 +40,10 @@
 			bodyClass="column-cell-index"
 			headerStyle="width: 45px"
 			:colspan="1"
-			frozen
 		>
 			<template #body="{ data, index }">
 				<span class="LessonsTable__index">
-					{{ index + 1 }}
+					{{ data.id }}
 				</span>
 			</template>
 		</Column>
@@ -47,8 +53,6 @@
 			field="title"
 			headerClass="column-header-center"
 			bodyClass="column-cell-center"
-			frozen
-			style="width: 100px"
 		>
 			<template #body="{ data, field }">
 				<span>
@@ -57,7 +61,7 @@
 			</template>
 		</Column>
 
-		<Column header="Номер АУП" field="num_aup" frozen style="min-width: 450px">
+		<Column header="Номер АУП" field="num_aup" frozen>
 			<template #body="{ data, field }">
 				<span>
 					{{ data[field] }}
@@ -68,11 +72,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Api from '@services/Api'
+import { FilterMatchMode } from 'primevue/api'
 
 const isLoadingGroups = ref(true)
 const groups = ref([])
+
+const props = defineProps({
+	search: {
+		type: String,
+		default: '',
+	},
+})
+
+const filters = computed(() => ({
+	global: { value: props.search, matchMode: FilterMatchMode.CONTAINS },
+}))
 
 onMounted(async () => {
 	const groupsRes = await Api.getGroups()
@@ -89,5 +105,6 @@ onMounted(async () => {
 	border-radius: 8px;
 	overflow: hidden;
 	height: 100%;
+	width: 100%;
 }
 </style>

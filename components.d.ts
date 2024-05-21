@@ -51,6 +51,7 @@ declare module 'vue' {
     GradeTag: typeof import('./src/components/Grades/GradeTag.vue')['default']
     GroupSelect: typeof import('./src/components/layouts/HeaderTable/GroupSelect.vue')['default']
     GroupsHeader: typeof import('./src/components/admin/GroupsHeader.vue')['default']
+    GroupsSearchField: typeof import('./src/components/admin/GroupsSearchField.vue')['default']
     GroupsTable: typeof import('./src/components/admin/GroupsTable.vue')['default']
     HeaderAdmin: typeof import('./src/components/admin/HeaderAdmin.vue')['default']
     HeaderTable: typeof import('./src/components/layouts/HeaderTable/HeaderTable.vue')['default']

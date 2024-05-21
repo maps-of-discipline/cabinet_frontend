@@ -3,6 +3,12 @@
 		<div class="GroupsHeader__left">Академические группы</div>
 
 		<div class="GroupsHeader__right">
+			<InputText
+				v-model="search"
+				class="GroupsHeader__search"
+				placeholder="Поиск"
+			/>
+
 			<Button
 				class="UploadGroupsActivator"
 				:loading="isLoadingUploadFile"
@@ -40,6 +46,7 @@ import Api from '@services/Api'
 const onClick = () => {
 	uploadGroupsDialogModel.value = true
 } */
+const search = defineModel('search')
 
 const isLoadingUploadFile = ref(false)
 const accessTypes = ['.xlsx', '.xls']
@@ -83,6 +90,10 @@ const onInputFileInput = async e => {
 		display: flex;
 		gap: 12px;
 		align-items: center;
+	}
+
+	&__search {
+		height: 37px;
 	}
 }
 

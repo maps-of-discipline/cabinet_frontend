@@ -1,6 +1,7 @@
 <template>
 	<div class="HeaderAdmin">
 		<Button
+			class="HeaderAdmin__all-categories-link"
 			label="Все разделы"
 			link
 			icon="mdi mdi-chevron-left"
@@ -25,5 +26,26 @@ const onClickAllCategories = () => {
 
 .HeaderAdmin {
 	display: flex;
+	align-items: center;
+
+	&__all-categories-link {
+		padding-left: 0px;
+		color: $blue000;
+		font-weight: 600;
+
+		font-size: 0.85rem;
+
+		&:hover {
+			filter: brightness(0.97);
+		}
+
+		.p-button-icon {
+			font-size: 1.2rem;
+		}
+
+		.p-button-label {
+			text-decoration: none;
+		}
+	}
 }
 </style>
