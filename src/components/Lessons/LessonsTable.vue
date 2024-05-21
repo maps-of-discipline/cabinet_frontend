@@ -78,10 +78,11 @@
 							v-if="!nestedViewMode"
 							field="chapter"
 							header="Глава"
+							headerStyle="min-width: 500px"
 							:colspan="1"
 						/>
 
-						<Column header="Тема" :colspan="1" />
+						<Column header="Тема" headerStyle="min-width: 500px" :colspan="1" />
 
 						<Column header="Задание" :colspan="1" headerStyle="width: 200px" />
 						<Column
