@@ -2,7 +2,7 @@
 	<div class="TutorsForm">
 		<div class="TutorsForm__title">Утверждение тьюторов</div>
 
-		<div class="TutorsForm__body">
+		<div class="TutorsForm__header-block">
 			<Dropdown
 				class="TutorsForm__faculty-select"
 				v-model="selectedFaculty"
@@ -12,46 +12,62 @@
 				optionLabel="name_faculty"
 			/>
 
-			<div class="TutorsForm__dep-wrapper">
-				<Dropdown
-					class="TutorsForm__dep-select"
-					v-model="selectedDepartment"
-					:options="departments"
-					:optionDisabled="isDisabledDepartmentOption"
-					placeholder="Выберите кафедру"
-					optionLabel="name_department"
-				/>
-
-				<Button
-					label="Добавить кафедру"
-					:disabled="!selectedDepartment"
-					@click="onAddDepartment"
-				/>
-				<Button label="Редактирование" @click="onChangeMode" />
-			</div>
-
-			<div
-				class="TutorsForm__table-wrapper"
-				v-for="(department, i) in departmentsItems"
-			>
-				<TutorsDepartmentTable
-					:order="i + 1"
-					:department="department"
-					:editMode="editMode"
-					:tutorsOptions="tutors"
-					:studyGroupsOptions="studyGroups"
-					@addRow="onAddRow"
-					@deleteRow="onDeleteRow"
-					@editStudyGroups="onEditStudyGroups"
-					@editTutor="onEditTutor"
-				/>
-			</div>
+			<Button label="Скачать" icon="mdi mdi-download" />
+			<Button
+				label="Редактирование"
+				icon="mdi mdi-pencil"
+				@click="onChangeMode"
+			/>
 		</div>
 
-		<TutorsMetaForm />
+		<div v-if="editMode" class="TutorsForm__header-block">
+			<Dropdown
+				class="TutorsForm__dep-select"
+				v-model="selectedDepartment"
+				:options="departments"
+				:optionDisabled="isDisabledDepartmentOption"
+				placeholder="Выберите кафедру"
+				optionLabel="name_department"
+			/>
+
+			<Button
+				label="Добавить кафедру"
+				icon="mdi mdi-plus"
+				:disabled="!selectedDepartment"
+				@click="onAddDepartment"
+			/>
+		</div>
+
+		<div class="TutorsForm__body">
+			<div
+				v-if="departmentsItems.length || editMode"
+				class="TutorsForm__table-wrapper"
+			>
+				<div
+					class="TutorsForm__table"
+					v-for="(department, i) in departmentsItems"
+				>
+					<TutorsDepartmentTable
+						:order="i + 1"
+						:department="department"
+						:editMode="editMode"
+						:tutorsOptions="tutors"
+						:studyGroupsOptions="studyGroups"
+						@addRow="onAddRow"
+						@deleteRow="onDeleteRow"
+						@editStudyGroups="onEditStudyGroups"
+						@editTutor="onEditTutor"
+					/>
+				</div>
+			</div>
+
+			<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
+
+			<TutorsMetaForm />
+		</div>
 
 		<div class="TutorsForm__footer">
-			<Button v-if="editMode" label="Сохранить" />
+			<Button v-if="editMode" icon="mdi mdi-plus" label="Сохранить" />
 		</div>
 	</div>
 </template>
@@ -242,33 +258,47 @@ const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 	background-color: $view-bg;
 	border-radius: 8px;
 	padding: 16px;
-	min-width: 900px;
+	min-width: 1000px;
 
 	&__title {
 		font-weight: 600;
 		font-size: 1.2rem;
+		margin-bottom: 12px;
+	}
+
+	&__header-block {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-auto-columns: auto;
+		grid-template-rows: 37px;
+		grid-auto-flow: column;
+		gap: 8px;
+		margin-bottom: 12px;
 	}
 
 	&__body {
 		margin-top: 12px;
+		max-height: 60vh;
+		overflow: auto;
+		padding: 16px 16px 16px;
 	}
 
 	&__table-wrapper {
 		margin-bottom: 12px;
+		min-height: calc(300px - 37px - 12px);
 	}
 
-	&__faculty-select {
-		width: 100%;
-		margin-bottom: 12px;
+	&__table {
+		margin-bottom: 24px;
 	}
 
-	&__dep-wrapper {
-		display: grid;
-		grid-template-columns: 1fr auto auto;
-		gap: 8px;
-		height: 37px;
-
+	&__table-empty {
 		margin-bottom: 12px;
+		min-height: 300px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.1rem;
 	}
 
 	&__footer {

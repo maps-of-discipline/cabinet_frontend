@@ -12,6 +12,7 @@
 				v-if="editMode"
 				class="TutorsDepartmentTable__add-row"
 				label="Добавить строку"
+				icon="mdi mdi-plus"
 				@click="onAddRow"
 			/>
 		</div>
