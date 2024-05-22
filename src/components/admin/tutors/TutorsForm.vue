@@ -59,10 +59,7 @@
 		</div>
 
 		<div class="TutorsForm__body">
-			<div
-				v-if="departmentsItems.length || editMode"
-				class="TutorsForm__table-wrapper"
-			>
+			<div v-if="departmentsItems.length" class="TutorsForm__table-wrapper">
 				<div
 					class="TutorsForm__table"
 					v-for="(department, i) in departmentsItems"
@@ -83,6 +80,17 @@
 
 			<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
 				Выберите факультет
+			</div>
+
+			<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
+				Выберите факультет
+			</div>
+
+			<div
+				v-else-if="!departmentsItems.length && editMode"
+				class="TutorsForm__table-empty"
+			>
+				Добавьте кафедру
 			</div>
 
 			<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
