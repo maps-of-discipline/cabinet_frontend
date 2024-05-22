@@ -16,7 +16,7 @@ axiosInstance.interceptors.response.use(
 		app.config.globalProperties.$toast.add({
 			severity: 'error',
 			summary: 'Неизвестная ошибка.',
-			detail: 'Произошла ошибка при подгрузке занятий.',
+			detail: 'Произошла ошибка при подгрузке данных.',
 			life: 2000,
 		})
 
