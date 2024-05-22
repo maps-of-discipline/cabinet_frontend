@@ -187,6 +187,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 		if (!data) return []
 
 		bells.value = data
+
+		return data
 	}
 
 	return {

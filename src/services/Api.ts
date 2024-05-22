@@ -285,6 +285,11 @@ abstract class Api {
 
 		return data
 	}
+	static async updateBells(bells) {
+		const { data, status } = await axios.post(`update-bells`, bells)
+		if (status !== HttpStatusCode.Ok) return {}
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

@@ -18,12 +18,8 @@
 				:disabled="!selectedFaculty || !departmentsItems.length"
 				icon="mdi mdi-download"
 			/>
-			<Button
-				label="Редактирование"
-				:disabled="!selectedFaculty"
-				icon="mdi mdi-pencil"
-				@click="onChangeMode"
-			/>
+
+			<ApEditMode v-model="editMode" :disabled="!selectedFaculty" />
 		</div>
 
 		<div v-if="editMode" class="TutorsForm__header-block">
@@ -132,7 +128,6 @@ const meta = ref({
 })
 
 const editMode = ref(false)
-const onChangeMode = () => (editMode.value = !editMode.value)
 
 const departmentsItemsMap = ref({})
 const departmentsItems = computed(() =>

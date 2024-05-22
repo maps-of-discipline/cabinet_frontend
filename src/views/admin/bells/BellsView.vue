@@ -1,11 +1,11 @@
 <template>
 	<div class="BellsView">
-		<DevelopingStub />
+		<BellsTable />
 	</div>
 </template>
 
 <script setup>
-import DevelopingStub from '@components/layouts/DevelopingStub.vue'
+import BellsTable from '@components/admin/bells/BellsTable.vue'
 </script>
 
 <style lang="scss">
