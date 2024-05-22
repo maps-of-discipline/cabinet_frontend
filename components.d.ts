@@ -92,6 +92,7 @@ declare module 'vue' {
     TutorsDateEditor: typeof import('./src/components/admin/tutors/TutorsDateEditor.vue')['default']
     TutorsDepartmentTable: typeof import('./src/components/admin/tutors/TutorsDepartmentTable.vue')['default']
     TutorsForm: typeof import('./src/components/admin/tutors/TutorsForm.vue')['default']
+    TutorsHeader: typeof import('./src/components/admin/tutors/TutorsHeader.vue')['default']
     TutorsMetaForm: typeof import('./src/components/admin/tutors/TutorsMetaForm.vue')['default']
     TypeGradeSelect: typeof import('./src/components/Grades/TypeGradeSelect.vue')['default']
     ViewSelect: typeof import('./src/components/Lessons/ViewSelect.vue')['default']

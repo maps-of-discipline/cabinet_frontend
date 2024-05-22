@@ -249,6 +249,34 @@ abstract class Api {
 
 		return data
 	}
+
+	static async getFaculties() {
+		const { data, status } = await axios.get(`get-faculties`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async getDepartments() {
+		const { data, status } = await axios.get(`get-departments`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async getStaff(division: string) {
+		const { data, status } = await axios.get(`get-staff`, {
+			params: {
+				division,
+			},
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

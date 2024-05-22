@@ -8,6 +8,7 @@
 				v-model="selectedFaculty"
 				:options="faculties"
 				:optionDisabled="isDisabledDepartmentOption"
+				:loading="isLoading"
 				placeholder="Выберите факультет"
 				optionLabel="name_faculty"
 			/>
@@ -23,12 +24,26 @@
 		<div v-if="editMode" class="TutorsForm__header-block">
 			<Dropdown
 				class="TutorsForm__dep-select"
+				panelClass="TutorsForm__dep-select-panel"
 				v-model="selectedDepartment"
 				:options="departments"
 				:optionDisabled="isDisabledDepartmentOption"
+				:loading="isLoading"
 				placeholder="Выберите кафедру"
 				optionLabel="name_department"
-			/>
+			>
+				<template #option="{ option }">
+					<span
+						class="TutorsForm__dep-select-option"
+						v-tooltip.bottom="{
+							value: option.name_department,
+							showDelay: 500,
+						}"
+					>
+						{{ option.name_department }}
+					</span>
+				</template>
+			</Dropdown>
 
 			<Button
 				label="Добавить кафедру"
@@ -75,40 +90,25 @@
 <script setup>
 import TutorsDepartmentTable from '@components/admin/tutors/TutorsDepartmentTable.vue'
 import TutorsMetaForm from '@components/admin/tutors/TutorsMetaForm.vue'
+import Api from '@services/Api'
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 
+const isLoading = ref(false)
+const faculties = ref([])
 const selectedFaculty = ref(null)
-const faculties = ref([
-	{
-		id_faculty: 1,
-		name_faculty: 'Факультет информационных технологий',
-	},
-	{
-		id_faculty: 2,
-		name_faculty: 'Транспортный факультет',
-	},
-	{
-		id_faculty: 3,
-		name_faculty: 'Факультет машиностроения',
-	},
-])
 
 const selectedDepartment = ref(null)
-const departments = ref([
-	{
-		id_department: 1,
-		name_department: 'Кафедра "Информатика и вычислительная техника"',
-	},
-	{
-		id_department: 2,
-		name_department: 'Кафедра "Инфокогнитивные технологии"',
-	},
-	{
-		id_department: 3,
-		name_department: 'Кафедра "Информационная безопасность"',
-	},
-])
+const departments = ref([])
+
+watch(
+	() => selectedFaculty.value,
+	async () => {
+		isLoading.value = true
+		departments.value = await Api.getDepartments()
+		isLoading.value = false
+	}
+)
 
 const meta = ref({
 	date: '',
@@ -249,6 +249,16 @@ const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 
 	neededDepartment.body[neededRowIndex].tutor = newTutor
 }
+
+onMounted(async () => {
+	try {
+		isLoading.value = true
+		faculties.value = await Api.getFaculties()
+		isLoading.value = false
+	} catch (e) {
+		console.log(e)
+	}
+})
 </script>
 
 <style lang="scss">
@@ -269,7 +279,7 @@ const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 	&__header-block {
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-auto-columns: auto;
+		grid-auto-columns: minmax(200px, auto);
 		grid-template-rows: 37px;
 		grid-auto-flow: column;
 		gap: 8px;
@@ -305,6 +315,15 @@ const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 		margin-top: 12px;
 		display: flex;
 		justify-content: flex-end;
+	}
+
+	&__dep-select .p-dropdown-label,
+	&__dep-select-option {
+		max-width: 700px;
+		width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }
 </style>

@@ -48,20 +48,22 @@
 					<Dropdown
 						v-if="editMode"
 						class="TutorsDepartmentTable__tutor-select"
-						:options="tutorsOptions"
+						:options="tutorOptions"
 						:modelValue="data[field]"
+						:loading="isLoadingTutors"
 						placeholder="Выберите тьютора"
 						@update:modelValue="onEditTutor(data.id, $event)"
-						optionLabel="name"
+						@before-show="fetchTutors"
+						optionLabel="fio"
 					/>
 
-					<span v-else>{{ data[field].name }}</span>
+					<span v-else>{{ data[field].fio }}</span>
 				</template>
 			</Column>
 
 			<Column header="Должность" headerStyle="width: 300px">
 				<template #body="{ data, field }">
-					<span>{{ data.tutor?.jobtitle }}</span>
+					<span>{{ data.tutor?.post }}</span>
 				</template>
 			</Column>
 
@@ -79,6 +81,7 @@
 </template>
 
 <script setup>
+import Api from '@services/Api'
 import { ref } from 'vue'
 
 const emit = defineEmits([
@@ -97,11 +100,6 @@ const props = defineProps({
 	department: {
 		type: Object,
 		required: true,
-	},
-
-	tutorsOptions: {
-		type: Array,
-		default: () => [],
 	},
 
 	studyGroupsOptions: {
@@ -141,6 +139,16 @@ const onEditTutor = (id, newTutor) => {
 }
 
 const onRowClick = e => console.log({ ...e.data })
+
+const isLoadingTutors = ref(false)
+const tutorOptions = ref([])
+const fetchTutors = async () => {
+	if (tutorOptions.value.length > 0) return
+
+	isLoadingTutors.value = true
+	tutorOptions.value = await Api.getStaff(props.department.name_department)
+	isLoadingTutors.value = false
+}
 </script>
 
 <style lang="scss">
