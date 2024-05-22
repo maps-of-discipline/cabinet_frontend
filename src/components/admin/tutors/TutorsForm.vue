@@ -13,9 +13,14 @@
 				optionLabel="name_faculty"
 			/>
 
-			<Button label="Скачать" icon="mdi mdi-download" />
+			<Button
+				label="Скачать"
+				:disabled="!selectedFaculty"
+				icon="mdi mdi-download"
+			/>
 			<Button
 				label="Редактирование"
+				:disabled="!selectedFaculty"
 				icon="mdi mdi-pencil"
 				@click="onChangeMode"
 			/>
@@ -78,11 +83,11 @@
 
 			<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
 
-			<TutorsMetaForm />
+			<TutorsMetaForm v-if="selectedFaculty" />
 		</div>
 
 		<div class="TutorsForm__footer">
-			<Button v-if="editMode" icon="mdi mdi-plus" label="Сохранить" />
+			<Button v-if="editMode" label="Сохранить" />
 		</div>
 	</div>
 </template>

@@ -48,14 +48,24 @@
 					<Dropdown
 						v-if="editMode"
 						class="TutorsDepartmentTable__tutor-select"
-						:options="tutorOptions"
+						panelClass="TutorsDepartmentTable__tutor-select-panel"
+						:options="sortedTutorOptions"
 						:modelValue="data[field]"
 						:loading="isLoadingTutors"
+						dataKey="id"
 						placeholder="Выберите тьютора"
 						@update:modelValue="onEditTutor(data.id, $event)"
 						@before-show="fetchTutors"
+						:optionDisabled="checkIsSelectedTutor"
 						optionLabel="fio"
-					/>
+					>
+						<template #value="{ value }">
+							<span v-if="value?.fio" style="color: #fff">
+								{{ value?.fio }}
+							</span>
+							<span v-else>Выберите тьютора</span>
+						</template>
+					</Dropdown>
 
 					<span v-else>{{ data[field].fio }}</span>
 				</template>
@@ -82,7 +92,7 @@
 
 <script setup>
 import Api from '@services/Api'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const emit = defineEmits([
 	'addRow',
@@ -138,15 +148,29 @@ const onEditTutor = (id, newTutor) => {
 	})
 }
 
+const selectedTutorsIds = computed(
+	() => new Set([...props.department.body.map(row => row.tutor?.id)])
+)
+const checkIsSelectedTutor = tutor => selectedTutorsIds.value.has(tutor.id)
+
 const onRowClick = e => console.log({ ...e.data })
 
 const isLoadingTutors = ref(false)
 const tutorOptions = ref([])
+const sortedTutorOptions = computed(() => [
+	...tutorOptions.value.sort((a, b) => {
+		if (!checkIsSelectedTutor(a) && checkIsSelectedTutor(b)) return -1
+	}),
+])
+
 const fetchTutors = async () => {
 	if (tutorOptions.value.length > 0) return
 
 	isLoadingTutors.value = true
-	tutorOptions.value = await Api.getStaff(props.department.name_department)
+
+	const staff = await Api.getStaff(props.department.name_department)
+	staff.sort((a, b) => a.fio.localeCompare(b.fio))
+	tutorOptions.value = staff
 	isLoadingTutors.value = false
 }
 </script>
