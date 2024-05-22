@@ -81,6 +81,7 @@ declare module 'vue' {
     RadioButton: typeof import('primevue/radiobutton')['default']
     ReportAreaByGradeType: typeof import('./src/components/Report/ReportAreaByGradeType.vue')['default']
     ReportRadialsBars: typeof import('./src/components/Report/ReportRadialsBars.vue')['default']
+    ReportRatingChart: typeof import('./src/components/Report/ReportRatingChart.vue')['default']
     ReportStudentsClassificationTable: typeof import('./src/components/Report/ReportStudentsClassificationTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -3,11 +3,9 @@
 		<HeaderTable />
 
 		<div class="ReportView__body">
-			<ReportStudentsClassificationTable class="ReportBlock ReportBlock-1" />
-			<ReportRadialsBars class="ReportBlock ReportBlock-2" />
-			<div class="ReportBlock ReportBlock-3">
-				<div class="ReportBlock__title">Что-то еще...</div>
-			</div>
+			<ReportRatingChart class="ReportBlock ReportBlock-1" />
+			<ReportStudentsClassificationTable class="ReportBlock ReportBlock-2" />
+			<ReportRadialsBars class="ReportBlock ReportBlock-3" />
 			<ReportAreaByGradeType class="ReportBlock ReportBlock-4" />
 		</div>
 	</div>
@@ -18,6 +16,7 @@ import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 
 import ReportStudentsClassificationTable from '@components/Report/ReportStudentsClassificationTable.vue'
 import ReportRadialsBars from '@components/Report/ReportRadialsBars.vue'
+import ReportRatingChart from '@components/Report/ReportRatingChart.vue'
 import ReportAreaByGradeType from '@components/Report/ReportAreaByGradeType.vue'
 </script>
 
@@ -41,6 +40,12 @@ import ReportAreaByGradeType from '@components/Report/ReportAreaByGradeType.vue'
 
 		padding-right: 16px;
 	}
+
+	.asis-label {
+		tspan {
+			fill: #fff;
+		}
+	}
 }
 
 .ReportBlock {
@@ -49,22 +54,22 @@ import ReportAreaByGradeType from '@components/Report/ReportAreaByGradeType.vue'
 	border-radius: $borderRadius;
 
 	&-1 {
-		grid-column: 1 / span 2;
-	}
-
-	&-2 {
-		grid-column: 3;
+		grid-column: 1 / span 3;
 		grid-row: 1;
 	}
 
+	&-2 {
+		grid-column: 1 / span 2;
+	}
+
 	&-3 {
-		grid-column: 1;
+		grid-column: 3;
 		grid-row: 2;
 	}
 
 	&-4 {
-		grid-column: 2 / span 2;
-		grid-row: 2;
+		grid-column: 1 / span 3;
+		grid-row: 3;
 	}
 
 	&__title {

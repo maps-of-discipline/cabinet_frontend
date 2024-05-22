@@ -1,7 +1,7 @@
 <template>
 	<div class="ReportAreaByGradeType">
 		<div class="ReportBlock__title">
-			<span>Показатели по видам оценивания </span>
+			<span>Динамика среднего балла по видам оценивания</span>
 
 			<Button label="Выбрать вид оценивания" />
 		</div>
@@ -24,7 +24,11 @@ import apexchart from 'vue3-apexcharts'
 const series = ref([
 	{
 		name: 'Посещение',
-		data: [31, 40, 28, 51, 42, 109, 100],
+		data: [99, 40, 28, 51, 42, 109, 100],
+	},
+	{
+		name: 'Активность',
+		data: [56, 23, 13, 44, 34, 56, 78],
 	},
 ])
 
@@ -72,7 +76,7 @@ const chartOptions = ref({
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
 				fontWeight: 400,
-				cssClass: 'asis-label ',
+				cssClass: 'asis-label',
 			},
 		},
 
@@ -88,7 +92,7 @@ const chartOptions = ref({
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
 				fontWeight: 400,
-				cssClass: 'asis-label ',
+				cssClass: 'asis-label',
 			},
 		},
 	},
@@ -129,12 +133,6 @@ const chartOptions = ref({
 
 	&__chart-wrapper {
 		padding: 0 16px;
-	}
-
-	.asis-label {
-		tspan {
-			fill: #fff;
-		}
 	}
 
 	.apexcharts-tooltip {
