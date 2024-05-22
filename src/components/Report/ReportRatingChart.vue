@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+import colorById from '@services/helpers/colorById'
 import { computed, ref } from 'vue'
 import apexchart from 'vue3-apexcharts'
 
@@ -262,9 +263,18 @@ const chartOptions = ref({
 			enabled: false,
 		},
 	},
+
+	colors: [
+		function ({ value, seriesIndex, dataPointIndex, w }) {
+			return ['#A85FEC', '#EC5F6B', '#3CD288'][seriesIndex]
+		},
+	],
+
 	plotOptions: {
 		bar: {
 			horizontal: true,
+			barHeight: '60%',
+
 			dataLabels: {
 				total: {
 					enabled: true,
@@ -283,12 +293,9 @@ const chartOptions = ref({
 
 	xaxis: {
 		categories: categories,
-		labels: {
-			formatter: val => `${val}`,
-		},
 
 		labels: {
-			show: true,
+			show: false,
 			style: {
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
@@ -306,6 +313,7 @@ const chartOptions = ref({
 		labels: {
 			show: true,
 			minWidth: '200px',
+			align: 'right',
 			style: {
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
