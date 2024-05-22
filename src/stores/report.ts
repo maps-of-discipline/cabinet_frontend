@@ -13,7 +13,7 @@ export const useReportStore = defineStore('report', () => {
 		ratingChartItems.value = value
 	}
 
-	const isLoading = ref(false)
+	const isLoading = ref(true)
 
 	const fetchReport = async () => {
 		if (

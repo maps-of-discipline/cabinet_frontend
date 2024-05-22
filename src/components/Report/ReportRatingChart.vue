@@ -6,10 +6,11 @@
 			<ApLoadingSpinner />
 		</div>
 
-		<div v-else-if="students.length" class="ReportRatingChart__body">
+		<div v-else-if="students.length" class="ReportRatingChart__chart">
 			<apexchart
 				ref="chart"
 				type="bar"
+				:height="`${50 * students.length + 100}px`"
 				:options="chartOptions"
 				:series="series"
 			/>
@@ -36,11 +37,13 @@ watch(
 	() => {
 		chart.value?.updateOptions({
 			xaxis: {
-				categories: categories.value,
+				categories: categories,
 			},
+
 			chart: {
 				height: `${70 * students.value.length}px`,
 			},
+
 			series: [
 				{
 					data: series.value,
@@ -93,7 +96,7 @@ const chartOptions = ref({
 		type: 'bar',
 		stacked: true,
 		stackOnlyBar: true,
-		height: `${70 * students.value.length}px`,
+		height: `${50 * students.value.length}px`,
 
 		toolbar: {
 			show: false,
@@ -180,6 +183,13 @@ const chartOptions = ref({
 .ReportRatingChart {
 	display: grid;
 	grid-template-rows: auto 1fr;
+
+	&__chart {
+		width: 100%;
+		max-height: 500px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 
 	&__body {
 		padding-bottom: 12px;
