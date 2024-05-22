@@ -322,6 +322,10 @@ onMounted(async () => {
 		justify-content: flex-end;
 	}
 
+	&__dep-select {
+		justify-content: space-between;
+	}
+
 	&__dep-select .p-dropdown-label,
 	&__dep-select-option {
 		max-width: 700px;

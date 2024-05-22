@@ -1,7 +1,7 @@
 <template>
 	<div class="TutorsDepartmentTable">
-		<div class="TutorsDepartmentTable__title">
-			<span>
+		<div class="TutorsDepartmentTable__header">
+			<span class="TutorsDepartmentTable__titlet">
 				<span class="TutorsDepartmentTable__order">{{ order }}.</span>
 				<span class="TutorsDepartmentTable__name">
 					{{ department.name_department }}
@@ -179,17 +179,23 @@ const fetchTutors = async () => {
 
 <style lang="scss">
 .TutorsDepartmentTable {
-	&__title {
+	&__header {
 		font-weight: 600;
-		margin-bottom: 8px;
-		display: flex;
+		margin-bottom: 12px;
+		display: grid;
+		grid-template-columns: 1fr minmax(200px, auto);
+		gap: 8px;
 		align-items: center;
 		justify-content: space-between;
 		height: 37px;
 	}
 
+	&__title {
+		display: flex;
+		gap: 12px;
+	}
+
 	&__order {
-		display: inline-block;
 		margin-right: 4px;
 	}
 
