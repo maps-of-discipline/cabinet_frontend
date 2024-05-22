@@ -200,7 +200,7 @@ const fetchTutors = async () => {
 	}
 
 	&__table {
-		$row-height: 65px;
+		$row-height: 50px;
 
 		tr {
 			height: $row-height;
