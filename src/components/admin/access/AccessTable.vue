@@ -6,7 +6,7 @@
 		</div>
 
 		<InputText
-			v-model="search"
+			v-model="filters['global'].value"
 			class="AccessTable__search"
 			placeholder="Поиск"
 		/>
@@ -18,6 +18,7 @@
 			scrollable
 			v-model:filters="filters"
 			ref="table"
+			:globalFilterFields="['name']"
 			dataKey="id_user"
 		>
 			<Column header="#" style="max-width: 50px; width: 50px">
@@ -30,7 +31,12 @@
 
 			<Column field="name" header="ФИО"></Column>
 
-			<Column field="approved_lk" header="Доступ">
+			<Column
+				field="approved_lk"
+				header="Доступ"
+				headerClass="column-header-center"
+				bodyClass="column-cell-center"
+			>
 				<template #body="{ data, field }">
 					<Checkbox
 						:modelValue="data[field]"
@@ -57,10 +63,9 @@ const toast = useToast()
 const isLoading = ref(false)
 const editMode = ref(false)
 
-const search = ref(null)
-const filters = computed(() => ({
-	global: { value: search, matchMode: FilterMatchMode.CONTAINS },
-}))
+const filters = ref({
+	global: { value: '', matchMode: FilterMatchMode.CONTAINS },
+})
 
 const users = ref([])
 
