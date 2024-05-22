@@ -18,6 +18,19 @@ import ReportStudentsClassificationTable from '@components/Report/ReportStudents
 import ReportRadialsBars from '@components/Report/ReportRadialsBars.vue'
 import ReportRatingChart from '@components/Report/ReportRatingChart.vue'
 import ReportAreaByGradeType from '@components/Report/ReportAreaByGradeType.vue'
+
+import { useDisciplineStore } from '@/stores/discipline'
+import { useLessonsStore } from '@/stores/lessons'
+
+const lessonsStore = useLessonsStore()
+const disciplineStore = useDisciplineStore()
+
+const aupCode = disciplineStore.selectedAup
+const idDiscipline = disciplineStore.selectedDisciplineId
+
+if (aupCode && idDiscipline) {
+	lessonsStore.fetchLessons(aupCode, idDiscipline)
+}
 </script>
 
 <style lang="scss">

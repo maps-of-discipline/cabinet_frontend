@@ -30,20 +30,12 @@ abstract class Api {
 
 			return data
 		} catch (error) {
-			if (isAxiosError(error) && !error) {
-				app.config.globalProperties.$toast.add({
-					severity: 'error',
-					summary: 'Неизвестная ошибка.',
-					detail: 'Произошла ошибка при подгрузке таблицы.',
-					life: 2000,
-				})
-			} else {
-				app.config.globalProperties.$toast.add({
-					severity: 'error',
-					summary: error as string,
-					life: 2000,
-				})
-			}
+			app.config.globalProperties.$toast.add({
+				severity: 'error',
+				summary: 'Неизвестная ошибка.',
+				detail: 'Произошла ошибка при подгрузке занятий.',
+				life: 2000,
+			})
 
 			console.error(error)
 			return null
@@ -288,6 +280,20 @@ abstract class Api {
 	static async updateBells(bells) {
 		const { data, status } = await axios.post(`update-bells`, bells)
 		if (status !== HttpStatusCode.Ok) return {}
+		return data
+	}
+
+	static async getReport(aup: Key, id: Key, group: string) {
+		const { data, status } = await axios.get(`get-report`, {
+			params: {
+				aup,
+				id,
+				group,
+			},
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
 		return data
 	}
 }

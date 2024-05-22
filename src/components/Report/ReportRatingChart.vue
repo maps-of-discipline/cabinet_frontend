@@ -2,203 +2,59 @@
 	<div class="ReportRatingChart">
 		<div class="ReportBlock__title">Рейтинг студентов</div>
 
-		<div class="ReportRatingChart__chart">
+		<div v-if="isLoading" class="ReportRatingChart__body">
+			<ApLoadingSpinner />
+		</div>
+
+		<div v-else-if="students.length" class="ReportRatingChart__body">
 			<apexchart
+				ref="chart"
 				type="bar"
-				height="auto"
 				:options="chartOptions"
 				:series="series"
 			/>
+		</div>
+
+		<div v-else class="ReportRatingChart__body ReportRatingChart__empty">
+			Данные отсутствуют
 		</div>
 	</div>
 </template>
 
 <script setup>
-import colorById from '@services/helpers/colorById'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import apexchart from 'vue3-apexcharts'
 
-const students = ref([
-	{
-		name: 'Шеховцов Всеволод Антонович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 44,
-			},
-			{
-				name: 'Активность',
-				value: 53,
-			},
-			{
-				name: 'Задания',
-				value: 12,
-			},
-		],
-	},
+import { useReportStore } from '@stores/report'
+import ApLoadingSpinner from '@components/ui/ApLoadingSpinner.vue'
 
-	{
-		name: 'Захаров Никита Сергеевич',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 13,
-			},
-			{
-				name: 'Активность',
-				value: 22,
-			},
-			{
-				name: 'Задания',
-				value: 33,
-			},
-		],
-	},
+const reportStore = useReportStore()
 
-	{
-		name: 'Иванов Денис Олегович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
+const chart = ref(null)
+watch(
+	() => reportStore.ratingChartItems,
+	() => {
+		chart.value.updateOptions({
+			xaxis: {
+				categories: categories.value,
 			},
-			{
-				name: 'Активность',
-				value: 32,
+			chart: {
+				height: `${70 * students.value.length}px`,
 			},
-			{
-				name: 'Задания',
-				value: 17,
-			},
-		],
-	},
+			series: [
+				{
+					data: series.value,
+				},
+			],
+		})
+	}
+)
 
-	{
-		name: 'Панин Максим Иванович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 44,
-			},
-			{
-				name: 'Задания',
-				value: 23,
-			},
-		],
-	},
+const students = computed(() => {
+	return reportStore.ratingChartItems
+})
 
-	{
-		name: 'Иванов Денис Олегович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 32,
-			},
-			{
-				name: 'Задания',
-				value: 17,
-			},
-		],
-	},
-
-	{
-		name: 'Панин Максим Иванович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 44,
-			},
-			{
-				name: 'Задания',
-				value: 23,
-			},
-		],
-	},
-
-	{
-		name: 'Иванов Денис Олегович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 32,
-			},
-			{
-				name: 'Задания',
-				value: 17,
-			},
-		],
-	},
-
-	{
-		name: 'Панин Максим Иванович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 44,
-			},
-			{
-				name: 'Задания',
-				value: 23,
-			},
-		],
-	},
-
-	{
-		name: 'Иванов Денис Олегович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 32,
-			},
-			{
-				name: 'Задания',
-				value: 17,
-			},
-		],
-	},
-
-	{
-		name: 'Панин Максим Иванович',
-		categories: [
-			{
-				name: 'Посещение',
-				value: 55,
-			},
-			{
-				name: 'Активность',
-				value: 44,
-			},
-			{
-				name: 'Задания',
-				value: 23,
-			},
-		],
-	},
-])
+const isLoading = computed(() => reportStore.isLoading)
 
 const categories = computed(() => {
 	return students.value
@@ -232,28 +88,12 @@ const series = computed(() => {
 	return resArr
 })
 
-/*
-[
-    'Шеховцов Всеволод Антонович',
-    'Иванов Денис Олегович',
-    'Панин Максим Иванович',
-    'Захаров Никита Сергеевич',
-    'Сизов Егор Андреевич',
-    'Иванов Иван Иванович',
-    'Марьюшкин Матвей Дмитриевич',
-    'Марьюшкин Матвей Дмитриевич',
-    'Лаптев Никита Олегович',
-    'Гимаев Илья Александрович',
-    'Кириллов Даниил Павлович',
-    'Панин Максим Иванович',
-]
- */
-
 const chartOptions = ref({
 	chart: {
 		type: 'bar',
-		height: '100%',
 		stacked: true,
+		stackOnlyBar: true,
+		height: `${70 * students.value.length}px`,
 
 		toolbar: {
 			show: false,
@@ -277,16 +117,17 @@ const chartOptions = ref({
 
 			dataLabels: {
 				total: {
-					enabled: true,
-					offsetX: 0,
+					enabled: false,
 					style: {
 						fontSize: '13px',
 						fontWeight: 900,
+						color: '#fff',
 					},
 				},
 			},
 		},
 	},
+
 	stroke: {
 		width: 0,
 	},
@@ -295,7 +136,7 @@ const chartOptions = ref({
 		categories: categories,
 
 		labels: {
-			show: false,
+			show: true,
 			style: {
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
@@ -312,8 +153,6 @@ const chartOptions = ref({
 
 		labels: {
 			show: true,
-			minWidth: '200px',
-			align: 'right',
 			style: {
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
@@ -339,16 +178,17 @@ const chartOptions = ref({
 @import '@styles/_variables.scss';
 
 .ReportRatingChart {
-	&__chart {
+	display: grid;
+	grid-template-rows: auto 1fr;
+
+	&__body {
 		padding-bottom: 12px;
 		overflow: auto;
-		max-height: 500px;
-
-		text {
-			fill: white !important;
-			font-family: inherit !important;
-			font-weight: normal !important;
-		}
+		min-height: 200px;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.rating-yasis-label {
