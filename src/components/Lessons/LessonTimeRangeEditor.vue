@@ -3,8 +3,8 @@
 		v-model="selectedRangeId"
 		class="LessonTimeRangeEditor"
 		:options="options"
-		optionLabel="label"
-		optionValue="order"
+		optionLabel="name"
+		optionValue="id"
 		:disabled="!editMode"
 		:highlightOnSelect="false"
 		:class="{ editMode, isEmpty: !selectedRangeId }"
@@ -24,7 +24,7 @@
 					{{ option.order }}
 				</span>
 
-				<span>{{ option.label }}</span>
+				<span>{{ option.name }}</span>
 			</div>
 		</template>
 	</Dropdown>
@@ -33,16 +33,17 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-import lessonTimeRange from '@services/helpers/lessons/lessonTimeRange'
-
 const emit = defineEmits(['change'])
-
-const options = computed(() => lessonTimeRange)
 
 const props = defineProps({
 	editMode: {
 		type: Boolean,
 		default: false,
+	},
+
+	bells: {
+		type: Array,
+		default: () => [],
 	},
 
 	value: {
@@ -51,10 +52,10 @@ const props = defineProps({
 	},
 })
 
+const options = computed(() => props.bells)
+
 const getValueLabel = value => {
-	return (
-		lessonTimeRange.find(timerange => timerange.order === value)?.label || ''
-	)
+	return props.bells.find(bell => bell.id === value)?.name || ''
 }
 
 const selectedRangeId = computed({

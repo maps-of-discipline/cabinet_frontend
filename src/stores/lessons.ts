@@ -180,6 +180,15 @@ export const useLessonsStore = defineStore('lessons', () => {
 		loadViewMode.value = !loadViewMode.value
 	}
 
+	const bells = ref([])
+	const fetchBells = async () => {
+		const data = await Api.getBells()
+
+		if (!data) return []
+
+		bells.value = data
+	}
+
 	return {
 		lessons,
 		controlTypes,
@@ -220,5 +229,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 		setViewMode,
 		loadViewMode,
 		switchLoadViewMode,
+
+		bells,
+		fetchBells,
 	}
 })

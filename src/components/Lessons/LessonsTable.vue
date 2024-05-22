@@ -131,12 +131,13 @@
 				</Column>
 
 				<!-- Время -->
-				<Column v-if="!nestedViewMode" field="lesson_order" header="Время">
+				<Column v-if="!nestedViewMode" field="spr_bells_id" header="Время">
 					<template #body="{ data, field }">
 						<LessonTimeRangeEditor
 							class="LessonsTable__timerange-editor"
 							v-if="disciplineStore.editMode || data[field]"
 							:value="data[field]"
+							:bells="lessonsStore.bells"
 							:editMode="disciplineStore.editMode"
 							@change="onEditField(data, $event, field)"
 						/>
@@ -305,7 +306,7 @@ import CalendarTagEditor from '@components/Lessons/common/CalendarTagEditor.vue'
 import { useLessonsStore } from '@/stores/lessons'
 import { useDisciplineStore } from '@/stores/discipline'
 
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, computed, nextTick, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const lessonsStore = useLessonsStore()
@@ -452,6 +453,10 @@ const idDiscipline = disciplineStore.selectedDisciplineId
 if (aupCode && idDiscipline) {
 	lessonsStore.fetchLessons(aupCode, idDiscipline)
 }
+
+onMounted(() => {
+	lessonsStore.fetchBells()
+})
 </script>
 
 <style lang="scss">

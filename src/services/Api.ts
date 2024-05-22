@@ -277,6 +277,14 @@ abstract class Api {
 
 		return data
 	}
+
+	static async getBells() {
+		const { data, status } = await axios.get(`get-bells`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })
