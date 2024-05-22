@@ -58,6 +58,8 @@
 						@before-show="fetchTutors"
 						:optionDisabled="checkIsSelectedTutor"
 						optionLabel="fio"
+						filter
+						filterPlaceholder="Поиск по ФИО"
 					>
 						<template #value="{ value }">
 							<span v-if="value?.fio" style="color: #fff">
@@ -208,6 +210,16 @@ const fetchTutors = async () => {
 	&__groups-select-panel {
 		.p-multiselect-header {
 			display: none;
+		}
+	}
+
+	&__tutor-select-panel {
+		.p-dropdown-header {
+			padding-bottom: 8px;
+		}
+
+		.p-dropdown-items-wrapper {
+			padding-top: 0px !important;
 		}
 	}
 }
