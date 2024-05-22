@@ -84,6 +84,7 @@ onMounted(async () => {
 	border-radius: 8px;
 	padding: 16px;
 	display: grid;
+	min-height: 500px;
 	grid-template-rows: auto 1fr;
 	grid-template-columns: minmax(0px, 1fr);
 	gap: 12px;
