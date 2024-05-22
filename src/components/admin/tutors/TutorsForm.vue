@@ -15,7 +15,7 @@
 
 			<Button
 				label="Скачать"
-				:disabled="!selectedFaculty"
+				:disabled="!selectedFaculty || !departmentsItems.length"
 				icon="mdi mdi-download"
 			/>
 			<Button
