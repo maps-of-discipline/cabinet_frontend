@@ -1,11 +1,11 @@
 <template>
 	<div class="AccessView">
-		<DevelopingStub />
+		<AccessTable />
 	</div>
 </template>
 
 <script setup>
-import DevelopingStub from '@components/layouts/DevelopingStub.vue'
+import AccessTable from '@components/admin/access/AccessTable.vue'
 </script>
 
 <style lang="scss">

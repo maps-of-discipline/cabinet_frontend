@@ -24,8 +24,8 @@ const getTokensFromStorage = () => {
 const setTokensToStorage = (tokens, isSession: boolean) => {
 	const storageObj = isSession ? sessionStorage : localStorage
 
-	storageObj.setItem('access', tokens.jwt)
-	storageObj.setItem('refresh', tokens.jwt_refresh)
+	storageObj.setItem('access', tokens.access)
+	storageObj.setItem('refresh', tokens.refresh)
 	storageObj.setItem('token', tokens.token)
 }
 
@@ -71,16 +71,19 @@ export const useAuth = defineStore('auth', () => {
 	}
 
 	const login = async (login: string, password: string) => {
-		const res = await Api.login({ login, password })
+		const res = await Api.login({ username: login, password })
+
+		console.log()
 
 		if (res.error) return { error: res.error }
+		if (!res.data?.approved) return res
 
 		setTokens(res.data)
 
 		await userStore.fetchUser()
 		isAuth.value = true
 
-		return true
+		return res
 	}
 
 	const logout = () => {

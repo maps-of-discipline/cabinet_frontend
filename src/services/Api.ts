@@ -118,7 +118,10 @@ abstract class Api {
 
 	static async login(payload: any) {
 		try {
-			const { data } = await axios.post(`auth`, payload)
+			const { data } = await axios.post(
+				import.meta.env.VITE_API_KD + 'login/lk',
+				payload
+			)
 
 			return { data }
 		} catch (e) {
@@ -129,6 +132,25 @@ abstract class Api {
 
 			return { error: error.response?.data.message }
 		}
+	}
+
+	static async getLkUsers() {
+		const { data, status } = await axios.get(`get-lk-users`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async updateApproveUser(userId: Key, value: boolean) {
+		const { data, status } = await axios.post(`update-approve-user`, {
+			id_user: userId,
+			value,
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
 	}
 
 	static async getUser(token: string) {

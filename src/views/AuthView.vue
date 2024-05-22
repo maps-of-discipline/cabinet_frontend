@@ -5,7 +5,14 @@
 		<form class="AuthForm">
 			<InlineMessage severity="warn" style="font-size: 0.9rem">
 				Приложение находится в режиме разработки. Для доступа необходимо
-				получить одобрение администратора.
+				получить одобрение администратора. Telegram:
+				<a
+					class="AuthForm__contact-link"
+					href="https://t.me/KirillovDP"
+					target="_blank"
+				>
+					@KirillovDP
+				</a>
 			</InlineMessage>
 
 			<div class="AuthForm__logo">Успеваемость</div>
@@ -82,7 +89,14 @@ const onLoginClick = async () => {
 	authStore.setIsSession(!keepAuthModel.value)
 	const res = await authStore.login(loginModel.value, passwordModel.value)
 
-	if (res.error) {
+	if (res.data?.approved === false) {
+		app.config.globalProperties.$toast.add({
+			severity: 'warn',
+			summary:
+				'Система находится в разработке. Для получения доступа обратитесь к администратору',
+			life: 4000,
+		})
+	} else if (res.error) {
 		app.config.globalProperties.$toast.add({
 			severity: 'error',
 			summary: res.error,
@@ -118,6 +132,10 @@ const onLoginClick = async () => {
 	gap: 16px;
 	border-radius: $borderRadius;
 	min-height: 420px;
+
+	&__contact-link {
+		text-decoration: underline;
+	}
 
 	&__main {
 		display: flex;

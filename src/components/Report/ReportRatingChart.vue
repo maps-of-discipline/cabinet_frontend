@@ -34,7 +34,7 @@ const chart = ref(null)
 watch(
 	() => reportStore.ratingChartItems,
 	() => {
-		chart.value.updateOptions({
+		chart.value?.updateOptions({
 			xaxis: {
 				categories: categories.value,
 			},

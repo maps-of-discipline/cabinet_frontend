@@ -8,6 +8,13 @@ const axiosInstance = axios.create({
 	withCredentials: true,
 })
 
+axiosInstance.interceptors.request.use(config => {
+	config.headers.Authorization =
+		localStorage.getItem('access') || sessionStorage.getItem('access') || ''
+
+	return config
+})
+
 axiosInstance.interceptors.response.use(
 	response => response,
 	error => {

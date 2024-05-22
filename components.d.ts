@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AccessTable: typeof import('./src/components/admin/access/AccessTable.vue')['default']
     Accordion: typeof import('primevue/accordion')['default']
     AccordionTab: typeof import('primevue/accordiontab')['default']
     AddTask: typeof import('./src/components/Lessons/AddTask.vue')['default']
