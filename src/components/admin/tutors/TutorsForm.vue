@@ -284,7 +284,7 @@ onMounted(async () => {
 	&__header-block {
 		display: grid;
 		grid-template-columns: 1fr;
-		grid-auto-columns: minmax(200px, auto);
+		grid-auto-columns: minmax(100px, auto);
 		grid-template-rows: 37px;
 		grid-auto-flow: column;
 		gap: 8px;
