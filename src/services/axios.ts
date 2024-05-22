@@ -9,9 +9,7 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.response.use(
-	function (response) {
-		return response
-	},
+	response => response,
 	error => {
 		app.config.globalProperties.$toast.add({
 			severity: 'error',
