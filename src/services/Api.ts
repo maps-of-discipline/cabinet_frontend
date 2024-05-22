@@ -14,32 +14,18 @@ abstract class Api {
 	}
 
 	static async fetchLessons(aup: Key, id: Key) {
-		try {
-			/* await new Promise(r => setTimeout(r, 3000)) */
+		const { data } = await axios.get(`lessons`, {
+			params: {
+				aup,
+				id,
+			},
+		})
 
-			const { data } = await axios.get(`lessons`, {
-				params: {
-					aup,
-					id,
-				},
-			})
+		if (data.error) throw new Error(data.error)
 
-			if (data.error) throw new Error(data.error)
+		console.log(data)
 
-			console.log(data)
-
-			return data
-		} catch (error) {
-			app.config.globalProperties.$toast.add({
-				severity: 'error',
-				summary: 'Неизвестная ошибка.',
-				detail: 'Произошла ошибка при подгрузке занятий.',
-				life: 2000,
-			})
-
-			console.error(error)
-			return null
-		}
+		return data
 	}
 
 	/**
@@ -277,6 +263,7 @@ abstract class Api {
 
 		return data
 	}
+
 	static async updateBells(bells) {
 		const { data, status } = await axios.post(`update-bells`, bells)
 		if (status !== HttpStatusCode.Ok) return {}

@@ -135,27 +135,33 @@ export const useLessonsStore = defineStore('lessons', () => {
 	const isLocalLesson = (id: Key) => `${id}`.startsWith(prefixLocalId)
 
 	const fetchLessons = async (aupCode: Key, id: Key) => {
-		isLoadingLessons.value = true
-		const data: IFetchLessons | null = await Api.fetchLessons(aupCode, id)
+		let data: IFetchLessons | null = null
 
-		if (!data) return []
+		try {
+			isLoadingLessons.value = true
+			data = await Api.fetchLessons(aupCode, id)
 
-		setLessonItems(data.topics)
-		disciplineStore.setStudyGroups(data.groups)
+			if (!data) return []
 
-		aup.value = aupCode
-		disciplineId.value = id
-		rpdId.value = data.rpd_id
-		title.value = data.title
+			setLessonItems(data.topics)
+			disciplineStore.setStudyGroups(data.groups)
 
-		await fetchControlTypes(data.rpd_id)
+			aup.value = aupCode
+			disciplineId.value = id
+			rpdId.value = data.rpd_id
+			title.value = data.title
 
-		disciplineStore.setSelectedGroup(disciplineStore.groups[0])
-		disciplineStore.setSelectedSemester(semesters.value[0])
+			await fetchControlTypes(data.rpd_id)
 
-		isLoadingLessons.value = false
+			disciplineStore.setSelectedGroup(disciplineStore.groups[0])
+			disciplineStore.setSelectedSemester(semesters.value[0])
+		} catch (e) {
+			console.log(e)
+		} finally {
+			isLoadingLessons.value = false
+		}
 
-		return data.topics
+		return data?.topics || []
 	}
 
 	const fetchControlTypes = async id => {
