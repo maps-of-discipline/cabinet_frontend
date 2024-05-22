@@ -81,6 +81,10 @@
 				</div>
 			</div>
 
+			<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
+				Выберите факультет
+			</div>
+
 			<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
 
 			<TutorsMetaForm v-if="selectedFaculty" />
