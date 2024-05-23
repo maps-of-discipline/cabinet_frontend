@@ -29,7 +29,11 @@
 				</template>
 			</Column>
 
-			<Column field="name" header="ФИО"></Column>
+			<Column
+				field="name"
+				header="ФИО"
+				style="max-width: 350px; width: 350px"
+			></Column>
 
 			<Column
 				field="approved_lk"
@@ -94,10 +98,13 @@ const onEditAccess = async (data, value) => {
 
 onMounted(async () => {
 	try {
+		isLoading.value = true
 		const data = await Api.getLkUsers()
 		users.value = data
 	} catch (e) {
 		console.log(e)
+	} finally {
+		isLoading.value = false
 	}
 })
 </script>
@@ -133,6 +140,10 @@ onMounted(async () => {
 	&__table {
 		overflow: auto;
 		width: 100%;
+	}
+
+	.p-component-overlay {
+		border-radius: $borderRadius;
 	}
 }
 </style>
