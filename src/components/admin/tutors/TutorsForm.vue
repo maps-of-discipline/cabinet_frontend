@@ -16,6 +16,7 @@
 			<Button
 				label="Скачать"
 				:disabled="!selectedFaculty || !departmentsItems.length"
+				:loading="isDownloadLoading"
 				icon="mdi mdi-download"
 				@click="onClickDownload"
 			/>
@@ -107,6 +108,8 @@ import Api from '@services/Api'
 import { ref, computed, onMounted, watch, toRaw } from 'vue'
 
 const isLoading = ref(false)
+const isDownloadLoading = ref(false)
+
 const faculties = ref([])
 const selectedFaculty = ref(null)
 
@@ -206,7 +209,14 @@ const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 }
 
 const onClickDownload = async () => {
-	await Api.downloadTutorOrder(Object.values(departmentsItemsMap.value))
+	try {
+		isDownloadLoading.value = true
+		await Api.downloadTutorOrder(Object.values(departmentsItemsMap.value))
+	} catch (e) {
+		console.log(e)
+	} finally {
+		isDownloadLoading.value = false
+	}
 }
 
 onMounted(async () => {
