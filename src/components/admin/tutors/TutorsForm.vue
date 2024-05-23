@@ -116,9 +116,9 @@ const departments = ref([])
 
 watch(
 	() => selectedFaculty.value,
-	async () => {
+	async newFaculty => {
 		isLoading.value = true
-		departments.value = await Api.getDepartments()
+		departments.value = newFaculty.departments
 		isLoading.value = false
 	}
 )
