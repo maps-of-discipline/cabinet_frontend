@@ -43,6 +43,7 @@ const router = createRouter({
 			meta: {
 				layout: MainLayout,
 				title: 'Отчеты · Успеваемость',
+				useBubbleBg: true,
 			},
 		},
 		{
