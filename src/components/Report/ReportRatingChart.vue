@@ -113,11 +113,10 @@ const chartOptions = ref({
 
 			dataLabels: {
 				total: {
-					formatter: () => '1',
 					enabled: true,
 					style: {
-						fontSize: '13px',
-						fontWeight: 900,
+						fontSize: '.9rem',
+						fontWeight: 600,
 						color: '#fff',
 					},
 				},
