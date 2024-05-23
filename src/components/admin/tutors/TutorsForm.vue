@@ -17,6 +17,7 @@
 				label="Скачать"
 				:disabled="!selectedFaculty || !departmentsItems.length"
 				icon="mdi mdi-download"
+				@click="onClickDownload"
 			/>
 
 			<ApEditMode v-model="editMode" :disabled="!selectedFaculty" />
@@ -92,9 +93,9 @@
 			<TutorsMetaForm v-if="selectedFaculty" />
 		</div>
 
-		<div class="TutorsForm__footer">
-			<Button v-if="editMode" label="Сохранить" />
-		</div>
+		<!-- <div class="TutorsForm__footer">
+			<Button v-if="editMode" label="Скачать" @click="onClickDownload" />
+		</div> -->
 	</div>
 </template>
 
@@ -103,7 +104,7 @@ import TutorsDepartmentTable from '@components/admin/tutors/TutorsDepartmentTabl
 import TutorsMetaForm from '@components/admin/tutors/TutorsMetaForm.vue'
 import Api from '@services/Api'
 
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, toRaw } from 'vue'
 
 const isLoading = ref(false)
 const faculties = ref([])
@@ -134,7 +135,7 @@ const onAddDepartment = () => {
 
 	departmentsItemsMap.value[departmentId] = {
 		...selectedDepartment.value,
-		body: [
+		rows: [
 			{
 				id: Date.now(),
 				study_groups: [],
@@ -148,7 +149,7 @@ const onAddDepartment = () => {
 }
 
 const onAddRow = ({ departmentId }) => {
-	departmentsItemsMap.value[departmentId].body.push({
+	departmentsItemsMap.value[departmentId].rows.push({
 		id: Date.now(),
 		study_groups: [],
 		tutor: '',
@@ -159,49 +160,53 @@ const onAddRow = ({ departmentId }) => {
 const onDeleteRow = ({ departmentId, rowId }) => {
 	const neededDepartment = departmentsItemsMap.value[departmentId]
 
-	const neededRowIndex = neededDepartment.body.findIndex(
+	const neededRowIndex = neededDepartment.rows.findIndex(
 		row => rowId === row.id
 	)
 
-	if (neededDepartment.body.length === 1) {
+	if (neededDepartment.rows.length === 1) {
 		delete departmentsItemsMap.value[departmentId]
 	} else {
-		neededDepartment.body.splice(neededRowIndex, 1)
+		neededDepartment.rows.splice(neededRowIndex, 1)
 	}
 }
 
 const onEditStudyGroups = ({ departmentId, rowId, newGroups, newGroupId }) => {
 	const neededDepartment = departmentsItemsMap.value[departmentId]
 
-	const neededRowIndex = neededDepartment.body.findIndex(
+	const neededRowIndex = neededDepartment.rows.findIndex(
 		row => rowId === row.id
 	)
 
 	if (newGroupId) {
-		const neededDeleteGroupBodyIndex = neededDepartment.body.findIndex(row => {
+		const neededDeleteGroupBodyIndex = neededDepartment.rows.findIndex(row => {
 			const mappedGroupIds = row.study_groups.map(s => s.id)
 			return mappedGroupIds.includes(newGroupId)
 		})
 
 		if (neededDeleteGroupBodyIndex >= 0) {
-			neededDepartment.body[neededDeleteGroupBodyIndex].study_groups =
-				neededDepartment.body[neededDeleteGroupBodyIndex].study_groups.filter(
+			neededDepartment.rows[neededDeleteGroupBodyIndex].study_groups =
+				neededDepartment.rows[neededDeleteGroupBodyIndex].study_groups.filter(
 					group => group.id !== newGroupId
 				)
 		}
 	}
 
-	neededDepartment.body[neededRowIndex].study_groups = newGroups
+	neededDepartment.rows[neededRowIndex].study_groups = newGroups
 }
 
 const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 	const neededDepartment = departmentsItemsMap.value[departmentId]
 
-	const neededRowIndex = neededDepartment.body.findIndex(
+	const neededRowIndex = neededDepartment.rows.findIndex(
 		row => rowId === row.id
 	)
 
-	neededDepartment.body[neededRowIndex].tutor = newTutor
+	neededDepartment.rows[neededRowIndex].tutor = newTutor
+}
+
+const onClickDownload = async () => {
+	await Api.downloadTutorOrder(Object.values(departmentsItemsMap.value))
 }
 
 onMounted(async () => {

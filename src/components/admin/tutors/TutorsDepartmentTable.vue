@@ -19,7 +19,7 @@
 
 		<DataTable
 			class="TutorsDepartmentTable__table"
-			:value="department.body"
+			:value="department.rows"
 			showGridlines
 		>
 			<Column
@@ -158,11 +158,11 @@ const onEditTutor = (id, newTutor) => {
 }
 
 const selectedTutorsIds = computed(
-	() => new Set([...props.department.body.map(row => row.tutor?.id)])
+	() => new Set([...props.department.rows.map(row => row.tutor?.id)])
 )
 
 const selectedGroupIds = computed(() => {
-	const rows = props.department.body
+	const rows = props.department.rows
 
 	const selectedGroups = new Set()
 	rows.forEach(row => {

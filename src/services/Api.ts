@@ -305,6 +305,32 @@ abstract class Api {
 
 		return data
 	}
+
+	static async downloadTutorOrder(payload) {
+		const { data, status } = await axios(`download-tutor-order`, {
+			method: 'POST',
+			data: payload,
+			responseType: 'blob',
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		// create file link in browser's memory
+		const href = URL.createObjectURL(data)
+
+		// create "a" HTML element with href to file & click
+		const link = document.createElement('a')
+		link.href = href
+		link.setAttribute('download', 'Распоряжение_Тьюторы.docx') //or any other extension
+		document.body.appendChild(link)
+		link.click()
+
+		// clean up "a" element & remove ObjectURL
+		document.body.removeChild(link)
+		URL.revokeObjectURL(href)
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })
