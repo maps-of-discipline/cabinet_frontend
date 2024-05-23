@@ -8,9 +8,21 @@ import { useDisciplineStore } from './discipline'
 export const useReportStore = defineStore('report', () => {
 	const disciplineStore = useDisciplineStore()
 
-	const ratingChartItems = ref([])
+	const ratingChartItemsRaw = ref([])
+	const ratingChartItems = computed(() => {
+		return ratingChartItemsRaw.value.sort((a, b) => {
+			const aValues = Object.values(a.categories)
+				?.map(c => c.value)
+				.reduce((c, d) => c + d, 0)
+			const bValues = Object.values(b.categories)
+				?.map(c => c.value)
+				.reduce((c, d) => c + d, 0)
+
+			return bValues - aValues
+		})
+	})
 	const setRatingChartItems = value => {
-		ratingChartItems.value = value
+		ratingChartItemsRaw.value = value
 	}
 
 	const isLoading = ref(true)

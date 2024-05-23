@@ -6,11 +6,14 @@
 			<ApLoadingSpinner />
 		</div>
 
-		<div v-else-if="students.length" class="ReportRatingChart__chart">
+		<div
+			v-else-if="reportStore.ratingChartItems.length"
+			class="ReportRatingChart__chart"
+		>
 			<apexchart
 				ref="chart"
 				type="bar"
-				:height="`${50 * students.length + 100}px`"
+				:height="`${50 * reportStore.ratingChartItems.length + 100}px`"
 				:options="chartOptions"
 				:series="series"
 			/>
@@ -23,7 +26,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, toRaw, onUnmounted } from 'vue'
 import apexchart from 'vue3-apexcharts'
 
 import { useReportStore } from '@stores/report'
@@ -32,6 +35,7 @@ import ApLoadingSpinner from '@components/ui/ApLoadingSpinner.vue'
 const reportStore = useReportStore()
 
 const chart = ref(null)
+
 watch(
 	() => reportStore.ratingChartItems,
 	() => {
@@ -41,7 +45,7 @@ watch(
 			},
 
 			chart: {
-				height: `${70 * students.value.length}px`,
+				height: `${70 * reportStore.ratingChartItems.value.length}px`,
 			},
 
 			series: [
@@ -53,34 +57,23 @@ watch(
 	}
 )
 
-const students = computed(() => {
-	return reportStore.ratingChartItems
-})
-
 const isLoading = computed(() => reportStore.isLoading)
 
 const categories = computed(() => {
-	return students.value
-		.sort((a, b) => {
-			const aValues = a.categories.map(c => c.value).reduce((c, d) => c + d, 0)
-			const bValues = b.categories.map(c => c.value).reduce((c, d) => c + d, 0)
-
-			return bValues - aValues
-		})
-		.map(student => student.name)
+	return reportStore.ratingChartItems.map(student => student.name)
 })
 
 const series = computed(() => {
 	const res = {}
 
-	students.value.forEach(student => {
-		student.categories.forEach(category => {
+	reportStore.ratingChartItems.forEach(student => {
+		Object.values(student.categories).forEach(category => {
 			if (res[category.name]) {
 				res[category.name].data.push(category.value)
 			} else {
 				res[category.name] = {
 					name: category.name,
-					data: [category.value],
+					data: [category.value || 0],
 				}
 			}
 		})
@@ -96,7 +89,7 @@ const chartOptions = ref({
 		type: 'bar',
 		stacked: true,
 		stackOnlyBar: true,
-		height: `${50 * students.value.length}px`,
+		height: `${50 * reportStore.ratingChartItems.length}px`,
 
 		toolbar: {
 			show: false,
@@ -120,7 +113,8 @@ const chartOptions = ref({
 
 			dataLabels: {
 				total: {
-					enabled: false,
+					formatter: () => '1',
+					enabled: true,
 					style: {
 						fontSize: '13px',
 						fontWeight: 900,
@@ -139,9 +133,9 @@ const chartOptions = ref({
 		categories: categories,
 
 		labels: {
-			show: true,
+			show: false,
 			style: {
-				fontSize: '.9rem',
+				fontSize: 'rem',
 				fontFamily: 'inherit',
 				fontWeight: 400,
 				cssClass: 'asis-label',
@@ -174,6 +168,10 @@ const chartOptions = ref({
 	legend: {
 		show: false,
 	},
+})
+
+onUnmounted(() => {
+	chart.value?.destroy()
 })
 </script>
 
