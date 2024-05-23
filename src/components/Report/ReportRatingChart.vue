@@ -63,6 +63,14 @@ const categories = computed(() => {
 	return reportStore.ratingChartItems.map(student => student.name)
 })
 
+const mapOrderByName = computed(() => {
+	const res = {}
+
+	categories.value.forEach((name, index) => (res[name] = index + 1))
+
+	return res
+})
+
 const series = computed(() => {
 	const res = {}
 
@@ -149,11 +157,15 @@ const chartOptions = ref({
 
 		labels: {
 			show: true,
+			minWidth: 200,
+			maxWidth: 400,
+			formatter: value => `${mapOrderByName.value[value]}. ${value}`,
 			style: {
 				fontSize: '.9rem',
 				fontFamily: 'inherit',
 				fontWeight: 400,
-				cssClass: 'rating-yasis-label asis-label',
+
+				cssClass: 'asis-label',
 			},
 		},
 	},
