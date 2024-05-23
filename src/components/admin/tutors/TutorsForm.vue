@@ -64,8 +64,6 @@
 						:order="i + 1"
 						:department="department"
 						:editMode="editMode"
-						:tutorsOptions="tutors"
-						:studyGroupsOptions="studyGroups"
 						@addRow="onAddRow"
 						@deleteRow="onDeleteRow"
 						@editStudyGroups="onEditStudyGroups"
@@ -129,67 +127,6 @@ const isDisabledDepartmentOption = department => {
 	return department.id_department in departmentsItemsMap.value
 }
 
-const tutors = ref([
-	{
-		id: 1337,
-		name: 'Кириллов Даниил Павлович',
-		jobtitle: 'Старший преподаватель',
-	},
-	{
-		id: 1338,
-		name: 'Марьюшкин Матвей Дмитриевич',
-		jobtitle: 'Директор завода',
-	},
-	{
-		id: 1339,
-		name: 'Селиванов-Селиванов ЛеонтийЛеонтий Дмитриевич',
-		jobtitle: 'Директор унитаза',
-	},
-])
-
-const studyGroups = ref([
-	{
-		id: 1,
-		title: '201-321',
-	},
-	{
-		id: 2,
-		title: '201-322',
-	},
-	{
-		id: 3,
-		title: '201-323',
-	},
-	{
-		id: 4,
-		title: '201-324',
-	},
-	{
-		id: 5,
-		title: '201-325',
-	},
-	{
-		id: 6,
-		title: '201-326',
-	},
-	{
-		id: 7,
-		title: '201-327',
-	},
-	{
-		id: 8,
-		title: '201-328',
-	},
-	{
-		id: 9,
-		title: '201-329',
-	},
-	{
-		id: 10,
-		title: '201-3210',
-	},
-])
-
 const onAddDepartment = () => {
 	const departmentId = selectedDepartment.value.id_department
 
@@ -233,12 +170,26 @@ const onDeleteRow = ({ departmentId, rowId }) => {
 	}
 }
 
-const onEditStudyGroups = ({ departmentId, rowId, newGroups }) => {
+const onEditStudyGroups = ({ departmentId, rowId, newGroups, newGroupId }) => {
 	const neededDepartment = departmentsItemsMap.value[departmentId]
 
 	const neededRowIndex = neededDepartment.body.findIndex(
 		row => rowId === row.id
 	)
+
+	if (newGroupId) {
+		const neededDeleteGroupBodyIndex = neededDepartment.body.findIndex(row => {
+			const mappedGroupIds = row.study_groups.map(s => s.id)
+			return mappedGroupIds.includes(newGroupId)
+		})
+
+		if (neededDeleteGroupBodyIndex >= 0) {
+			neededDepartment.body[neededDeleteGroupBodyIndex].study_groups =
+				neededDepartment.body[neededDeleteGroupBodyIndex].study_groups.filter(
+					group => group.id !== newGroupId
+				)
+		}
+	}
 
 	neededDepartment.body[neededRowIndex].study_groups = newGroups
 }

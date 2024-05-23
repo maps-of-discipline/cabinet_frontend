@@ -21,7 +21,6 @@
 			class="TutorsDepartmentTable__table"
 			:value="department.body"
 			showGridlines
-			@row-click="onRowClick"
 		>
 			<Column
 				field="study_groups"
@@ -34,9 +33,14 @@
 						class="TutorsDepartmentTable__groups-select"
 						panelClass="TutorsDepartmentTable__groups-select-panel"
 						:modelValue="data.study_groups"
-						:options="studyGroupsOptions"
+						:options="getStudyGroupsOptions(data.study_groups)"
 						placeholder="Выберите группы"
-						@update:modelValue="onEditStudyGroups(data.id, $event)"
+						optionGroupLabel="label"
+						optionGroupChildren="items"
+						dataKey="id"
+						@update:modelValue="
+							onEditStudyGroups(data.id, $event, data.study_groups)
+						"
 						optionLabel="title"
 					/>
 
@@ -114,11 +118,6 @@ const props = defineProps({
 		required: true,
 	},
 
-	studyGroupsOptions: {
-		type: Array,
-		default: () => [],
-	},
-
 	editMode: {
 		type: Boolean,
 		default: false,
@@ -134,11 +133,19 @@ const onClickDeleteRow = id =>
 		rowId: id,
 	})
 
-const onEditStudyGroups = (id, newGroups) => {
+const onEditStudyGroups = (id, newGroups, oldGroups) => {
+	let newGroupId = null
+
+	const mapNewGroups = newGroups.map(g => g.id)
+	const mapOldGroups = oldGroups.map(g => g.id)
+
+	newGroupId = mapNewGroups.filter(x => !mapOldGroups.includes(x))[0]
+
 	emit('editStudyGroups', {
 		departmentId: props.department.id_department,
 		rowId: id,
 		newGroups,
+		newGroupId: selectedGroupIds.value.has(newGroupId) ? newGroupId : null,
 	})
 }
 
@@ -153,7 +160,26 @@ const onEditTutor = (id, newTutor) => {
 const selectedTutorsIds = computed(
 	() => new Set([...props.department.body.map(row => row.tutor?.id)])
 )
+
+const selectedGroupIds = computed(() => {
+	const rows = props.department.body
+
+	const selectedGroups = new Set()
+	rows.forEach(row => {
+		row.study_groups.forEach(group => selectedGroups.add(group.id))
+	})
+
+	return selectedGroups
+})
+
 const checkIsSelectedTutor = tutor => selectedTutorsIds.value.has(tutor.id)
+const checkIsSelectedGroup = (group, exclude) => {
+	if (exclude) {
+		return selectedGroupIds.value.has(group.id) && !exclude.has(group.id)
+	} else {
+		return selectedGroupIds.value.has(group.id)
+	}
+}
 
 const onRowClick = e => console.log({ ...e.data })
 
@@ -164,6 +190,70 @@ const sortedTutorOptions = computed(() => [
 		if (!checkIsSelectedTutor(a) && checkIsSelectedTutor(b)) return -1
 	}),
 ])
+
+const studyGroupsOptions = ref([
+	{
+		id: 1,
+		title: '201-321',
+	},
+	{
+		id: 2,
+		title: '201-322',
+	},
+	{
+		id: 3,
+		title: '201-323',
+	},
+	{
+		id: 4,
+		title: '201-324',
+	},
+	{
+		id: 5,
+		title: '201-325',
+	},
+	{
+		id: 6,
+		title: '201-326',
+	},
+	{
+		id: 7,
+		title: '201-327',
+	},
+	{
+		id: 8,
+		title: '201-328',
+	},
+	{
+		id: 9,
+		title: '201-329',
+	},
+	{
+		id: 10,
+		title: '201-3210',
+	},
+])
+
+const getStudyGroupsOptions = selectedItemGroups => {
+	const selectedItemGroupsIds = new Set([...selectedItemGroups.map(s => s.id)])
+
+	const res = [
+		{
+			label: 'Свободные',
+			items: studyGroupsOptions.value.filter(
+				s => !checkIsSelectedGroup(s, selectedItemGroupsIds)
+			),
+		},
+		{
+			label: 'Назначенные',
+			items: studyGroupsOptions.value.filter(
+				s => checkIsSelectedGroup(s) && !selectedItemGroupsIds.has(s.id)
+			),
+		},
+	]
+
+	return res
+}
 
 const fetchTutors = async () => {
 	if (tutorOptions.value.length > 0) return
