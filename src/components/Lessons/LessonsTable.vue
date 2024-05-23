@@ -84,7 +84,11 @@
 
 						<Column header="Тема" headerStyle="min-width: 500px" :colspan="1" />
 
-						<Column header="Задание" :colspan="1" headerStyle="width: 200px" />
+						<Column
+							header="Задание"
+							:colspan="1"
+							headerStyle="min-width: 200px"
+						/>
 						<Column
 							header="Загрузка задания"
 							:colspan="1"

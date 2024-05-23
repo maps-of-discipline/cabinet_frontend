@@ -43,6 +43,7 @@
 						v-for="(col, index) of columns"
 						headerClass="column-header-index"
 						bodyClass="column-cell-index"
+						style="min-width: 50px; width: 50px; max-width: 50px"
 					>
 						<template #header="{ column }">
 							<span
@@ -51,7 +52,7 @@
 									value: col.name,
 								}"
 							>
-								{{ col.name }}
+								{{ col.grade_type.type !== 'tasks' ? col.name : index + 1 }}
 							</span>
 						</template>
 					</Column>
@@ -278,9 +279,7 @@ onMounted(async () => {
 	&__topic-header {
 		cursor: pointer;
 		font-size: 0.9rem;
-		/* overflow: hidden;
 		white-space: nowrap;
-		text-overflow: ellipsis; */
 	}
 
 	/* 	&__name-cell {
