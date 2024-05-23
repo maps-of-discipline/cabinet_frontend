@@ -112,16 +112,7 @@ const faculties = ref([])
 const selectedFaculty = ref(null)
 
 const selectedDepartment = ref(null)
-const departments = ref([])
-
-watch(
-	() => selectedFaculty.value,
-	async newFaculty => {
-		isLoading.value = true
-		departments.value = newFaculty.departments
-		isLoading.value = false
-	}
-)
+const departments = computed(() => selectedFaculty.value.departments)
 
 const meta = ref({
 	date: '',
