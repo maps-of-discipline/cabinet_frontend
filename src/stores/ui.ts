@@ -9,6 +9,7 @@ export const useUi = defineStore('ui', () => {
 	const setLeftMenuMiniMode = value => {
 		leftMenuMiniMode.value = value
 		localStorage.setItem('leftMenuMiniMode', value)
+		new Event('resize') // for resize apexcharts
 	}
 
 	const leftMenuNavItems = ref([
