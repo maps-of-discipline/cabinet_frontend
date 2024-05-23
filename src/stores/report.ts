@@ -48,16 +48,10 @@ export const useReportStore = defineStore('report', () => {
 		isLoading.value = false
 	}
 
-	watch(
-		() => [disciplineStore.selectedGroup, disciplineStore.selectedSemester],
-		() => {
-			fetchReport()
-		}
-	)
-
 	return {
 		ratingChartItems,
 		fetchReport,
 		isLoading,
+		setRatingChartItems,
 	}
 })

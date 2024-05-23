@@ -26,12 +26,14 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, toRaw, onUnmounted } from 'vue'
+import { computed, ref, watch, onUnmounted } from 'vue'
 import apexchart from 'vue3-apexcharts'
 
 import { useReportStore } from '@stores/report'
+import { useDisciplineStore } from '@stores/discipline'
 import ApLoadingSpinner from '@components/ui/ApLoadingSpinner.vue'
 
+const disciplineStore = useDisciplineStore()
 const reportStore = useReportStore()
 
 const chart = ref(null)
@@ -181,8 +183,21 @@ const chartOptions = ref({
 	},
 })
 
+watch(
+	() => [disciplineStore.selectedGroup],
+	() => {
+		reportStore.fetchReport()
+	}
+)
+
 onUnmounted(() => {
-	chart.value?.destroy()
+	chart.value?.updateOptions({
+		xaxis: {
+			categories: [],
+		},
+	})
+
+	reportStore.setRatingChartItems([])
 })
 </script>
 
