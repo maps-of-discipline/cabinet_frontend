@@ -1,13 +1,13 @@
 <template>
 	<div class="LessonsTableView">
-		<HeaderTable :title="lessonsStore.title">
+		<!-- <HeaderTable :title="lessonsStore.title">
 			<AddTask @add="onAddRow" />
 
 			<div class="HeaderTable__editMode">
 				<ViewSelect />
 				<LoadViewSelect />
 			</div>
-		</HeaderTable>
+		</HeaderTable> -->
 
 		<div class="LessonsTable__wrapper">
 			<DataTable
@@ -280,14 +280,14 @@
 				v-if="!disciplineStore.hasSelectedDiscipline"
 				class="LessonsTable__stub"
 			/>
-		</div>
 
-		<AttachLinkDialog
-			v-model="attachDialogModel"
-			:link="link"
-			:linkName="linkName"
-			@save="onSaveLink"
-		/>
+			<AttachLinkDialog
+				v-model="attachDialogModel"
+				:link="link"
+				:linkName="linkName"
+				@save="onSaveLink"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -468,9 +468,14 @@ onMounted(() => {
 
 .LessonsTableView {
 	height: 100%;
+	border-radius: $borderRadius;
 	display: grid;
-	grid-template-rows: 70px calc(100vh - 70px - 12px - 16px - 16px);
-	gap: 12px;
+	grid-template-rows: 1fr;
+
+	&__wrapper {
+		position: relative;
+		overflow: auto;
+	}
 
 	&__empty {
 		height: 100%;
@@ -484,9 +489,10 @@ onMounted(() => {
 
 .LessonsTable {
 	font-size: 16px;
-	border-radius: 8px;
-	overflow: hidden;
+	overflow: auto;
 	background-color: $view-bg;
+	border-radius: $borderRadius;
+	height: 100%;
 
 	$row-height: 60px;
 
