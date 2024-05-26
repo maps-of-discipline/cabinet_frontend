@@ -50,6 +50,18 @@
 					/>
 				</template>
 			</Column>
+
+			<Column
+				field="request_approve_date"
+				header="Дата обращения"
+				style="max-width: 200px; width: 200px"
+				headerClass="column-header-center"
+				bodyClass="column-cell-center"
+			>
+				<template #body="{ data, field }">
+					<span>{{ getDateFormatted(data[field]) }}</span>
+				</template>
+			</Column>
 		</DataTable>
 	</div>
 </template>
@@ -57,8 +69,12 @@
 <script setup>
 import ApEditMode from '@components/ui/ApEditMode.vue'
 
+import moment from 'moment'
+import 'moment/dist/locale/ru'
+
 import { onMounted, ref, computed } from 'vue'
 import { FilterMatchMode } from 'primevue/api'
+
 import { useToast } from 'primevue/usetoast'
 import Api from '@services/Api'
 
@@ -70,6 +86,15 @@ const editMode = ref(false)
 const filters = ref({
 	global: { value: '', matchMode: FilterMatchMode.CONTAINS },
 })
+
+const getDateFormatted = date => {
+	if (!date) return ''
+	date = new Date(date)
+
+	const localeMoment = moment(date).subtract(3, 'hours').locale('ru')
+
+	return localeMoment.calendar()
+}
 
 const users = ref([])
 
