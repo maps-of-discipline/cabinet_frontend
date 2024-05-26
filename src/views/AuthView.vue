@@ -3,7 +3,11 @@
 		<div class="AuthView__dev-block"></div>
 
 		<form class="AuthForm">
-			<InlineMessage severity="warn" style="font-size: 0.9rem">
+			<InlineMessage
+				v-if="showDevBlock"
+				severity="warn"
+				style="font-size: 0.9rem"
+			>
 				Приложение находится в режиме разработки. Для доступа необходимо
 				получить одобрение администратора. Telegram:
 				<a
@@ -82,6 +86,7 @@ const loginModel = ref('')
 const passwordModel = ref('')
 const isLoadingSubmit = ref(false)
 const keepAuthModel = ref(false)
+const showDevBlock = ref(false)
 
 const onLoginClick = async () => {
 	isLoadingSubmit.value = true
@@ -96,6 +101,8 @@ const onLoginClick = async () => {
 				'Система находится в разработке. Для получения доступа обратитесь к администратору',
 			life: 4000,
 		})
+
+		showDevBlock.value = true
 	} else if (res.error) {
 		app.config.globalProperties.$toast.add({
 			severity: 'error',
