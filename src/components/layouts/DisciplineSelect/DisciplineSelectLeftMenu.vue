@@ -19,7 +19,9 @@
 							}"
 							@click="onSelectDiscipline(discipline)"
 						>
-							{{ discipline.name }}
+							<span>
+								{{ discipline.name }}
+							</span>
 						</div>
 					</div>
 				</div>

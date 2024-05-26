@@ -2,17 +2,29 @@
 	<div class="DisciplineSelectControl">
 		<ApButton icon="mdi mdi-chevron-left" @click="changeSemester(-1)" />
 
-		<Dropdown
-			class="DisciplineSelectControl__select"
-			panelClass="DisciplineSelectControl__select-panel"
-			v-model="selectedSemestr"
-			:options="semesters"
-			:loading="lessonsStore.isLoadingControlTypes"
-			:optionLabel="getLabel"
-			placeholder="Семестр"
-			:disabled="!disciplineStore.hasSelectedDiscipline"
-			emptyMessage="Выберите дисциплину"
-		/>
+		<div
+			v-tooltip.bottom="{
+				value: 'Выбор семестра',
+				showDelay: 500,
+			}"
+		>
+			<Dropdown
+				class="DisciplineSelectControl__select"
+				panelClass="DisciplineSelectControl__select-panel"
+				v-model="selectedSemestr"
+				:options="semesters"
+				:loading="lessonsStore.isLoadingControlTypes"
+				:optionLabel="getLabel"
+				placeholder="Семестр"
+				:disabled="!disciplineStore.hasSelectedDiscipline"
+				emptyMessage="Выберите дисциплину"
+			>
+				<template #option="{ option }">
+					<span v-if="isActiveSemester(option)">🔥</span>
+					<span>{{ getLabel(option) }}</span>
+				</template>
+			</Dropdown>
+		</div>
 
 		<ApButton icon="mdi mdi-chevron-right" @click="changeSemester(1)" />
 	</div>
@@ -64,6 +76,10 @@ const selectedSemestr = computed({
 const getLabel = value => {
 	return semesterNamesByNum[+value]
 }
+
+const isActiveSemester = value => {
+	return +value === 8
+}
 </script>
 
 <style lang="scss">
@@ -74,6 +90,10 @@ const getLabel = value => {
 	grid-template-columns: auto 1fr auto;
 	align-items: center;
 	gap: 12px;
+
+	&__select {
+		width: 100%;
+	}
 
 	&__select {
 		outline: $focusOutlineTransparent;
