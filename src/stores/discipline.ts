@@ -14,9 +14,10 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	const selectedAup: Ref<string | null> = ref(
 		sessionStorage.getItem('selectedAup')
 	)
-	const setSelectedAup = (value: string) => {
+	const setSelectedAup = async (value: string) => {
 		selectedAup.value = value
 		sessionStorage.setItem('selectedAup', value)
+		await fetchDisciplines()
 	}
 
 	/* Выбранная дисциплина */
@@ -101,13 +102,13 @@ export const useDisciplineStore = defineStore('discipline', () => {
 
 	const isOpenDisciplineColumn = ref(false)
 	const setIsOpenDisciplineColumn = async value => {
-		isLoadingDisciplineLeftMenu.value = true
-
 		isOpenDisciplineColumn.value = value
 
-		await fetchDisciplines()
-
-		isLoadingDisciplineLeftMenu.value = false
+		if (!Object.keys(disciplinesByAup.value).length) {
+			isLoadingDisciplineLeftMenu.value = true
+			await fetchDisciplines()
+			isLoadingDisciplineLeftMenu.value = false
+		}
 	}
 
 	const disciplinesByAup = ref({})
@@ -164,6 +165,7 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		isOpenDisciplineColumn,
 		setIsOpenDisciplineColumn,
 
+		disciplinesByAup,
 		disciplinesBySemester,
 
 		fetchDisciplines,
