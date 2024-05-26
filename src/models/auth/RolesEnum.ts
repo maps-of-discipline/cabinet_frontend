@@ -1,5 +1,5 @@
 enum RolesEnum {
-	stud = 'Студент',
+	Student = 'Студент',
 	Teacher = 'Куратор',
 	Tutor = 'Тьютор',
 	Faculty = 'Администратор',

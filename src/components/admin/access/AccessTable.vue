@@ -62,6 +62,18 @@
 					<span>{{ getDateFormatted(data[field]) }}</span>
 				</template>
 			</Column>
+
+			<Column
+				field=""
+				header="Роль"
+				style="max-width: 200px; width: 200px"
+				headerClass="column-header-center"
+				bodyClass="column-cell-center"
+			>
+				<template #body="{ data, field }">
+					<span>{{ 1 }}</span>
+				</template>
+			</Column>
 		</DataTable>
 	</div>
 </template>

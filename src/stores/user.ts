@@ -5,6 +5,7 @@ import { RolesEnum } from '@models/auth/RolesEnum'
 
 import Api from '@services/Api'
 import { useAuth } from './auth'
+import { jwtDecode } from 'jwt-decode'
 
 export const useUser = defineStore('user', () => {
 	const authStore = useAuth()
@@ -17,7 +18,17 @@ export const useUser = defineStore('user', () => {
 		() => userData.value?.name + ' ' + userData.value?.surname
 	)
 
-	const status = computed(() => RolesEnum[userData.value?.user_status])
+	const roles = computed(() => {
+		return new Set(
+			jwtDecode(authStore.tokens.access)?.roles?.map(role => role.name) || []
+		)
+	})
+
+	const status = computed(() =>
+		Array.from(roles.value)
+			.map(role => RolesEnum[role])
+			.join(', ')
+	)
 
 	const fetchUser = async () => {
 		if (!authStore.tokens.token) return null
@@ -30,6 +41,7 @@ export const useUser = defineStore('user', () => {
 	return {
 		isAuth,
 		userData,
+		roles,
 		name,
 		status,
 		fetchUser,

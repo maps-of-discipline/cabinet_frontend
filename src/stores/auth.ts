@@ -73,8 +73,6 @@ export const useAuth = defineStore('auth', () => {
 	const login = async (login: string, password: string) => {
 		const res = await Api.login({ username: login, password })
 
-		console.log()
-
 		if (res.error) return { error: res.error }
 		if (!res.data?.approved) return res
 
