@@ -4,10 +4,12 @@
 		:class="{ isShowSettings: gradesStore.isShowSettings, isOpenLeftMenu }"
 	>
 		<HeaderTable class="Grades__header">
-			<TypeGradeSelect />
+			<template v-if="!gradesStore.gradeTableIsNotExist">
+				<TypeGradeSelect />
 
-			<GradeFilterDropdown />
-			<GradeSettingsButton />
+				<GradeFilterDropdown />
+				<GradeSettingsButton />
+			</template>
 		</HeaderTable>
 
 		<div class="Grades__body">

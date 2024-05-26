@@ -4,8 +4,10 @@
 			<DisciplineSelect />
 			<GroupSelect />
 			<SemesterSelect />
-			<EditModeSwitcher />
-			<OpenPlanButton />
+			<template v-if="disciplineStore.selectedDisciplineId">
+				<EditModeSwitcher />
+				<OpenPlanButton />
+			</template>
 		</div>
 
 		<div class="HeaderTable__right" id="headerTableTarget">
@@ -21,6 +23,10 @@ import GroupSelect from '@components/layouts/HeaderTable/GroupSelect.vue'
 import SemesterSelect from '@components/layouts/HeaderTable/SemesterSelect.vue'
 import EditModeSwitcher from '@components/layouts/HeaderTable/EditModeSwitcher.vue'
 import OpenPlanButton from '@components/layouts/HeaderTable/OpenPlanButton.vue'
+
+import { useDisciplineStore } from '@/stores/discipline'
+
+const disciplineStore = useDisciplineStore()
 
 defineProps({
 	title: {
