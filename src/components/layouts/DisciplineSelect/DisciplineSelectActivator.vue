@@ -3,7 +3,7 @@
 		class="DisciplineSelectActivator"
 		:label="_label"
 		v-tooltip.bottom="{
-			value: 'Выбор дисциплины',
+			value: tooltip,
 			showDelay: 500,
 		}"
 		@click="onClick"
@@ -13,6 +13,10 @@
 <script setup>
 import { computed } from 'vue'
 
+import { useDisciplineStore } from '@/stores/discipline'
+
+const disciplineStore = useDisciplineStore()
+
 const props = defineProps({
 	label: {
 		type: String,
@@ -20,6 +24,9 @@ const props = defineProps({
 })
 
 const _label = computed(() => props.label || 'Выбор дисциплины')
+const tooltip = computed(() =>
+	disciplineStore.hasSelectedDiscipline ? props.label : 'Выбор дисциплины'
+)
 
 const emit = defineEmits('open')
 
@@ -32,6 +39,13 @@ const onClick = () => emit('open')
 .DisciplineSelectActivator {
 	background-color: $shade950;
 	height: 37px;
+	max-width: 300px;
+
+	.p-button-label {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+	}
 
 	outline: $focusOutlineTransparent;
 	border: none;
