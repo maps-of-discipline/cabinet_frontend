@@ -2,7 +2,7 @@
 	<div class="AuthView">
 		<div class="AuthView__dev-block"></div>
 
-		<form class="AuthForm">
+		<form class="AuthForm" @keydown.enter="onLogin">
 			<InlineMessage
 				v-if="showDevBlock"
 				severity="warn"
@@ -64,7 +64,7 @@
 			<Button
 				class="AuthForm__submit"
 				label="Вход"
-				@click="onLoginClick"
+				@click="onLogin"
 				:loading="isLoadingSubmit"
 			/>
 		</form>
@@ -88,7 +88,7 @@ const isLoadingSubmit = ref(false)
 const keepAuthModel = ref(false)
 const showDevBlock = ref(false)
 
-const onLoginClick = async () => {
+const onLogin = async () => {
 	isLoadingSubmit.value = true
 
 	authStore.setIsSession(!keepAuthModel.value)
