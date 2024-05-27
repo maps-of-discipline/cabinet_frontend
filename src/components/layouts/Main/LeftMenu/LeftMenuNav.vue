@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 import LeftMenuLink from '@components/layouts/Main/LeftMenu/LeftMenuLink.vue'
 
 const props = defineProps({

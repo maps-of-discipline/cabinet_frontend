@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, watch } from 'vue'
+import { ref, defineEmits, watch } from 'vue'
 
 const props = defineProps({
 	min: {
