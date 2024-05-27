@@ -20,9 +20,8 @@ export default defineConfig({
 			outDir: 'dist',
 			manifest: {
 				name: 'Успеваемость',
-				short_name: 'Успеваемость',
 				description: 'Приложение для учета успеваемости. Московский Политех.',
-				theme_color: '#333',
+				theme_color: '#2e2e2e',
 				icons: [
 					{
 						src: 'favicon.png',
