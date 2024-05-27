@@ -4,9 +4,9 @@
 		:class="{ isShowSettings: gradesStore.isShowSettings, isOpenLeftMenu }"
 	>
 		<HeaderTable class="Grades__header">
-			<template v-if="gradesStore.grades.length">
-				<TypeGradeSelect />
+			<TypeGradeSelect v-if="gradesStore.grades.length" />
 
+			<template v-if="gradesStore.grades.length && userStore.isTeacher">
 				<GradeFilterDropdown />
 				<GradeSettingsButton />
 			</template>
@@ -42,9 +42,11 @@ import DisciplineSelectLeftMenu from '@components/layouts/DisciplineSelect/Disci
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
+import { useUser } from '@/stores/user'
 
 const gradesStore = useGradesStore()
 const disciplineStore = useDisciplineStore()
+const userStore = useUser()
 
 const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
 </script>

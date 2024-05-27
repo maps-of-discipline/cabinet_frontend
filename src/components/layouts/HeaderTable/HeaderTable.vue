@@ -5,7 +5,7 @@
 			<GroupSelect />
 			<SemesterSelect />
 			<template v-if="disciplineStore.selectedDisciplineId">
-				<EditModeSwitcher v-if="userStore.hasRole(RolesEnum.Admin)" />
+				<EditModeSwitcher v-if="userStore.isTeacher" />
 				<OpenPlanButton />
 			</template>
 		</div>

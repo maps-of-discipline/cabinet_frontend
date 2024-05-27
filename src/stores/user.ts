@@ -1,7 +1,7 @@
 import { ref, computed, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { RolesNamesEnum } from '@models/auth/RolesEnum'
+import { RolesEnum, RolesNamesEnum } from '@models/auth/RolesEnum'
 
 import Api from '@services/Api'
 import { useAuth } from './auth'
@@ -25,8 +25,16 @@ export const useUser = defineStore('user', () => {
 	})
 
 	const hasRole = role => {
-		roles.value.has(role)
+		return roles.value.has(role) || roles.value.has(RolesEnum.Admin)
 	}
+
+	const isAdmin = computed(() => roles.value.has(RolesEnum.Admin))
+	const isStudent = computed(
+		() => roles.value.has(RolesEnum.Student) || isAdmin.value
+	)
+	const isTeacher = computed(
+		() => roles.value.has(RolesEnum.Teacher) || isAdmin.value
+	)
 
 	const status = computed(() =>
 		Array.from(roles.value)
@@ -50,5 +58,9 @@ export const useUser = defineStore('user', () => {
 		name,
 		status,
 		fetchUser,
+
+		isAdmin,
+		isStudent,
+		isTeacher,
 	}
 })
