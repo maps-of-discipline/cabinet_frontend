@@ -1,4 +1,5 @@
 enum RolesEnum {
+	Guest = 'Guest',
 	Student = 'student',
 	Teacher = 'Teacher',
 	Tutor = 'Tutor',
@@ -7,7 +8,8 @@ enum RolesEnum {
 	Admin = 'Admin',
 }
 
-enum RolesEnumNames {
+enum RolesNamesEnum {
+	Guest = 'Гость',
 	student = 'Студент',
 	Teacher = 'Куратор',
 	Tutor = 'Тьютор',
@@ -16,4 +18,4 @@ enum RolesEnumNames {
 	Admin = 'Администратор',
 }
 
-export { RolesEnum, RolesEnumNames }
+export { RolesEnum, RolesNamesEnum }

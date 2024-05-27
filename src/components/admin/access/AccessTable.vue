@@ -71,7 +71,11 @@
 				bodyClass="column-cell-center"
 			>
 				<template #body="{ data, field }">
-					<span>{{ data[field].map(role => role.name_role).join(', ') }}</span>
+					<span>{{
+						data[field]
+							.map(role => RolesNamesEnum[role.name_role] || '')
+							.join(', ')
+					}}</span>
 				</template>
 			</Column>
 		</DataTable>
@@ -79,6 +83,7 @@
 </template>
 
 <script setup>
+import { RolesNamesEnum } from '@models/auth/RolesEnum'
 import ApEditMode from '@components/ui/ApEditMode.vue'
 
 import moment from 'moment'
