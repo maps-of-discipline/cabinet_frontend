@@ -44,6 +44,8 @@
 						headerClass="column-header-index"
 						bodyClass="column-cell-index"
 						style="min-width: 50px; width: 50px; max-width: 50px"
+						:hidden="checkNeedHideCol(col)"
+						:key="col.id"
 					>
 						<template #header="{ column }">
 							<span
@@ -52,7 +54,8 @@
 									value: col.name,
 								}"
 							>
-								{{ col.grade_type.type !== 'tasks' ? col.name : index + 1 }}
+								<!-- {{ col.grade_type.type !== 'tasks' ? col.name : index + 1 }} -->
+								{{ col.id }}
 							</span>
 						</template>
 					</Column>
@@ -122,6 +125,8 @@
 				:field="`${col.id}`"
 				headerClass="column-header-index"
 				bodyClass="column-cell-index"
+				:hidden="checkNeedHideCol(col)"
+				:key="col.id"
 			>
 				<template #body="{ data }">
 					<span>{{ data.values[col.id] }}</span>
@@ -192,23 +197,28 @@ const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
 
-const columns = computed(() => {
-	if (gradesStore.isHideEmptyCols) {
-		const setOfExistsColumns = new Set()
+const checkNeedHideCol = col => {
+	if (gradesStore.isHideEmptyCols) return !existColIdsSet.value.has(col.id)
 
-		gradesStore.grades.forEach(row => {
-			setOfExistsColumns.add(...Object.keys(row.values))
-		})
+	return false
+}
 
-		console.log(setOfExistsColumns)
+const existColIdsSet = computed(() => {
+	const setOfExistsColumns = new Set()
 
-		return gradesStore.filteredColumnsBySelectedType.filter(col => {
-			return setOfExistsColumns.has(`${col.id}`)
-		})
-	} else {
-		return gradesStore.filteredColumnsBySelectedType
-	}
+	gradesStore.grades.forEach(row => {
+		for (const colId in row.values) {
+			if (Number.isInteger(row.values[colId])) setOfExistsColumns.add(+colId)
+		}
+	})
+
+	return setOfExistsColumns
 })
+
+const columns = computed(() => {
+	return gradesStore.filteredColumnsBySelectedType
+})
+
 const showSelectDisciplineStub = computed(
 	() => !disciplineStore.hasSelectedDiscipline
 )
