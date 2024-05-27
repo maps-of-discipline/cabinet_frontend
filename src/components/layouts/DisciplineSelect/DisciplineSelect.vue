@@ -7,6 +7,7 @@
 			/>
 
 			<Button
+				v-if="userStore.hasRole(RolesEnum.Admin)"
 				class="DisciplineSelectActivator DisciplineSelectActivator--dev"
 				icon="mdi mdi-alert"
 				v-tooltip.bottom="{
@@ -23,14 +24,18 @@
 </template>
 
 <script setup>
+import { RolesEnum } from '@models/auth/RolesEnum'
+
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
+import { useUser } from '@/stores/user'
 
 import DisciplineSelectDialog from '@components/layouts/DisciplineSelect/DisciplineSelectDialog.vue'
 import DisciplineSelectActivator from '@components/layouts/DisciplineSelect/DisciplineSelectActivator.vue'
 
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
+const userStore = useUser()
 
 const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 

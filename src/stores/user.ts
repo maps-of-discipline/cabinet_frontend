@@ -24,6 +24,10 @@ export const useUser = defineStore('user', () => {
 		)
 	})
 
+	const hasRole = role => {
+		roles.value.has(role)
+	}
+
 	const status = computed(() =>
 		Array.from(roles.value)
 			.map(role => RolesEnumNames[role])
@@ -42,6 +46,7 @@ export const useUser = defineStore('user', () => {
 		isAuth,
 		userData,
 		roles,
+		hasRole,
 		name,
 		status,
 		fetchUser,
