@@ -34,7 +34,7 @@ abstract class Api {
 	 * @param {ILesson} lesson - Обновленная строкоа
 	 */
 	static async editLesson(lesson: ILesson) {
-		const { data, status } = await axios.post(`edit-lesson`, {
+		const { data, status } = await axios.patch(`lesson`, {
 			lesson,
 		})
 
@@ -49,7 +49,7 @@ abstract class Api {
 	 * @param {ILesson} lesson - Обновленная строкоа
 	 */
 	static async createLesson(lesson: ILesson) {
-		const { data, status } = await axios.post(`create-lesson`, lesson)
+		const { data, status } = await axios.post(`lesson`, lesson)
 
 		if (status !== HttpStatusCode.Ok) return null
 
@@ -67,7 +67,7 @@ abstract class Api {
 	 * @param {Key} id - Айди строки
 	 */
 	static async deleteLesson(id: Key) {
-		const { data, status } = await axios.post(`delete-lesson`, { id })
+		const { data, status } = await axios.delete(`lesson`, { id })
 
 		if (status !== HttpStatusCode.Ok) return null
 
@@ -85,7 +85,7 @@ abstract class Api {
 	 * @param {Key} id - Айди РПД
 	 */
 	static async fetchLessonControlTypes(rpdId: Key) {
-		const { data, status } = await axios.get(`control_types?rpd=${rpdId}`)
+		const { data, status } = await axios.get(`control-types?rpd=${rpdId}`)
 
 		if (status !== HttpStatusCode.Ok) return null
 
@@ -135,7 +135,7 @@ abstract class Api {
 	}
 
 	static async getLkUsers() {
-		const { data, status } = await axios.get(`get-lk-users`)
+		const { data, status } = await axios.get(`lk-users`)
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -143,7 +143,7 @@ abstract class Api {
 	}
 
 	static async updateApproveUser(userId: Key, value: boolean) {
-		const { data, status } = await axios.post(`update-approve-user`, {
+		const { data, status } = await axios.patch(`approve-user`, {
 			id_user: userId,
 			value,
 		})
@@ -154,7 +154,11 @@ abstract class Api {
 	}
 
 	static async getUser(token: string) {
-		const { data, status } = await axios.post(`getUser`, { token })
+		const { data, status } = await axios.get(`user`, {
+			params: {
+				token,
+			},
+		})
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -162,7 +166,7 @@ abstract class Api {
 	}
 
 	static async getGroups() {
-		const { data, status } = await axios.get(`getGroups`)
+		const { data, status } = await axios.get(`groups`)
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -170,7 +174,7 @@ abstract class Api {
 	}
 
 	static async getGrades(aup: Key, id: Key, group: string, semester: number) {
-		const { data, status } = await axios.get(`get-grades`, {
+		const { data, status } = await axios.get(`grades`, {
 			params: {
 				aup,
 				id,
@@ -191,13 +195,11 @@ abstract class Api {
 		group: string,
 		semester: number
 	) {
-		const { data, status } = await axios.get(`create-grade-table`, {
-			params: {
-				aup,
-				id,
-				group,
-				semester,
-			},
+		const { data, status } = await axios.post(`grade-table`, {
+			aup,
+			id,
+			group,
+			semester,
 		})
 
 		if (status !== HttpStatusCode.Ok) return false
@@ -211,7 +213,7 @@ abstract class Api {
 		colId: Key,
 		studentId: Key
 	) {
-		const { data, status } = await axios.post(`updateGrade`, {
+		const { data, status } = await axios.patch(`grade`, {
 			grade_table_id: gradeTableId,
 			value,
 			grade_column_id: colId,
@@ -224,7 +226,7 @@ abstract class Api {
 	}
 
 	static async updateGradeType(gradeType: any) {
-		const { data, status } = await axios.post(`update-grade-type`, gradeType)
+		const { data, status } = await axios.patch(`grade-type`, gradeType)
 
 		if (status !== HttpStatusCode.Ok) return {}
 
@@ -232,7 +234,7 @@ abstract class Api {
 	}
 
 	static async createGradeType(gradeTypeSettings: any, gradeTableId: Key) {
-		const { data, status } = await axios.post(`create-grade-type`, {
+		const { data, status } = await axios.post(`grade-type`, {
 			name: gradeTypeSettings.name,
 			table_id: gradeTableId,
 		})
@@ -243,7 +245,7 @@ abstract class Api {
 	}
 
 	static async uploadGroups(formdata) {
-		const { data, status } = await axios.post(`uploadGroups`, formdata)
+		const { data, status } = await axios.patch(`groups`, formdata)
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -251,7 +253,7 @@ abstract class Api {
 	}
 
 	static async getFaculties() {
-		const { data, status } = await axios.get(`get-faculties`)
+		const { data, status } = await axios.get(`faculties`)
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -259,7 +261,7 @@ abstract class Api {
 	}
 
 	static async getDepartments() {
-		const { data, status } = await axios.get(`get-departments`)
+		const { data, status } = await axios.get(`departments`)
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -267,7 +269,7 @@ abstract class Api {
 	}
 
 	static async getStaff(division: string) {
-		const { data, status } = await axios.get(`get-staff`, {
+		const { data, status } = await axios.get(`staff`, {
 			params: {
 				division,
 			},
@@ -279,7 +281,7 @@ abstract class Api {
 	}
 
 	static async getBells() {
-		const { data, status } = await axios.get(`get-bells`)
+		const { data, status } = await axios.get(`bells`)
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -287,13 +289,13 @@ abstract class Api {
 	}
 
 	static async updateBells(bells) {
-		const { data, status } = await axios.post(`update-bells`, bells)
+		const { data, status } = await axios.patch(`bells`, bells)
 		if (status !== HttpStatusCode.Ok) return {}
 		return data
 	}
 
 	static async getReport(aup: Key, id: Key, group: string) {
-		const { data, status } = await axios.get(`get-report`, {
+		const { data, status } = await axios.get(`report`, {
 			params: {
 				aup,
 				id,
