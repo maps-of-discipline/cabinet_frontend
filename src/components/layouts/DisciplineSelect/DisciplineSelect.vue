@@ -6,8 +6,8 @@
 				:label="lessonsStore.title"
 			/>
 
-			<!-- v-if="userStore.isAdmin" -->
 			<Button
+				v-if="userStore.isTeacher"
 				class="DisciplineSelectActivator DisciplineSelectActivator--dev"
 				icon="mdi mdi-alert"
 				v-tooltip.bottom="{
