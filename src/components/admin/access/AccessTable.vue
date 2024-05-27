@@ -64,14 +64,14 @@
 			</Column>
 
 			<Column
-				field=""
-				header="Роль"
+				field="roles"
+				header="Роли"
 				style="max-width: 200px; width: 200px"
 				headerClass="column-header-center"
 				bodyClass="column-cell-center"
 			>
 				<template #body="{ data, field }">
-					<span>{{ 1 }}</span>
+					<span>{{ data[field].map(role => role.name_role).join(', ') }}</span>
 				</template>
 			</Column>
 		</DataTable>
