@@ -42,7 +42,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 			disciplineStore.selectedGroup === null ||
 			disciplineStore.selectedSemester === null
 		)
-			return
+			return []
 
 		const semester: number = disciplineStore.selectedSemester
 		const group: IStudyGroup = disciplineStore.selectedGroup

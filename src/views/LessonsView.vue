@@ -3,7 +3,10 @@
 		<HeaderTable class="Lessons__header" :title="lessonsStore.title">
 			<AddTask @add="onAddRow" />
 
-			<div class="HeaderTable__editMode">
+			<div
+				v-if="lessonsStore.filteredLessons.length"
+				class="HeaderTable__editMode"
+			>
 				<ViewSelect />
 				<LoadViewSelect />
 			</div>
