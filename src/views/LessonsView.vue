@@ -62,7 +62,6 @@ const onAddRow = async () => {
 	height: calc(100vh - 16px - 16px);
 
 	gap: 12px;
-	transition: 0.25s ease;
 
 	display: grid;
 	grid-template-rows: 70px calc(100% - 70px - 12px);

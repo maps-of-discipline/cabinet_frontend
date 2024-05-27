@@ -56,7 +56,7 @@ const onCloseDevBlock = () => uiStore.setIsHideLeftMenuDevBlock(true)
 	display: grid;
 	grid-template-rows: 70px 1fr auto;
 	grid-template-columns: 100%;
-	transition: all 0.25s ease;
+	transition: max-width 0.25s ease;
 	position: relative;
 
 	&__switcher {
