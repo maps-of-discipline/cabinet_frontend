@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from 'unplugin-vue-components/resolvers'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,24 @@ export default defineConfig({
 
 		Components({
 			resolvers: [PrimeVueResolver()],
+		}),
+
+		VitePWA({
+			registerType: 'autoUpdate',
+			outDir: 'dist',
+			manifest: {
+				name: 'Успеваемость',
+				short_name: 'Успеваемость',
+				description: 'Приложение для учета успеваемости. Московский Политех.',
+				theme_color: '#333',
+				icons: [
+					{
+						src: 'favicon.png',
+						sizes: '150x150',
+						type: 'image/png',
+					},
+				],
+			},
 		}),
 	],
 	resolve: {
