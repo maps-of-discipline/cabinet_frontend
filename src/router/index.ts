@@ -54,7 +54,7 @@ const routes = [
 		meta: {
 			title: 'Профиль · Успеваемость',
 			layout: MainLayout,
-			access: [RolesEnum.Admin],
+			access: ['*'],
 		},
 	},
 	{
@@ -65,6 +65,7 @@ const routes = [
 			title: 'Панель администратора · Успеваемость',
 			layout: MainLayout,
 			useBubbleBg: true,
+			access: [RolesEnum.Admin],
 		},
 		children: [
 			{
@@ -195,7 +196,10 @@ router.beforeEach((to, from) => {
 
 	if (
 		to.meta?.access &&
-		!to.meta.access.some(access => userStore.roles.has(access))
+		!to.meta.access.some(
+			access =>
+				userStore.roles.has(access) || userStore.roles.has(RolesEnum.Admin)
+		)
 	) {
 		return { path: '/404' }
 	}

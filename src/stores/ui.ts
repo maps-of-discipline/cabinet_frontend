@@ -69,7 +69,10 @@ export const useUi = defineStore('ui', () => {
 
 	const checkAccessNav = nav => {
 		if (!nav?.access) return true
-		return nav.access.some(access => userStore.roles.has(access))
+		return nav.access.some(
+			access =>
+				userStore.roles.has(access) || userStore.roles.has(RolesEnum.Admin)
+		)
 	}
 
 	const filteredLeftMenuNavItems = computed(() => {
