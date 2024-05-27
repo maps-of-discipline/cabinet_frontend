@@ -70,7 +70,7 @@ const routes = [
 		children: [
 			{
 				path: 'groups',
-				component: import('../views/admin/groups/GroupsView.vue'),
+				component: () => import('../views/admin/groups/GroupsView.vue'),
 
 				meta: {
 					title: 'Группы · Успеваемость',
@@ -79,7 +79,7 @@ const routes = [
 			},
 			{
 				path: 'tutors',
-				component: import('../views/admin/tutors/TutorsView.vue'),
+				component: () => import('../views/admin/tutors/TutorsView.vue'),
 
 				meta: {
 					title: 'Тьюторы · Успеваемость',
@@ -88,7 +88,7 @@ const routes = [
 			},
 			{
 				path: 'bells',
-				component: import('../views/admin/bells/BellsView.vue'),
+				component: () => import('../views/admin/bells/BellsView.vue'),
 
 				meta: {
 					title: 'Звонки · Успеваемость',
@@ -97,7 +97,7 @@ const routes = [
 			},
 			{
 				path: 'access',
-				component: import('../views/admin/access/AccessView.vue'),
+				component: () => import('../views/admin/access/AccessView.vue'),
 
 				meta: {
 					title: 'Доступ к системе · Успеваемость',
