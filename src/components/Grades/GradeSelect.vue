@@ -15,7 +15,7 @@
 <script setup>
 import GradeTag from '@components/Grades/GradeTag.vue'
 
-import { ref, defineEmits, computed } from 'vue'
+import { ref, computed } from 'vue'
 
 const emit = defineEmits(['input'])
 
