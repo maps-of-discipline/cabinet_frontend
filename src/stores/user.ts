@@ -1,7 +1,7 @@
 import { ref, computed, type Ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { RolesEnum } from '@models/auth/RolesEnum'
+import { RolesEnumNames } from '@models/auth/RolesEnum'
 
 import Api from '@services/Api'
 import { useAuth } from './auth'
@@ -26,7 +26,7 @@ export const useUser = defineStore('user', () => {
 
 	const status = computed(() =>
 		Array.from(roles.value)
-			.map(role => RolesEnum[role])
+			.map(role => RolesEnumNames[role])
 			.join(', ')
 	)
 

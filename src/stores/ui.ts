@@ -1,7 +1,11 @@
 import { ref, computed, type Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { RolesEnum } from '@models/auth/RolesEnum'
+import { useUser } from '@stores/user'
 
 export const useUi = defineStore('ui', () => {
+	const userStore = useUser()
+
 	const leftMenuMiniMode = ref(
 		localStorage.getItem('leftMenuMiniMode') === 'true'
 	)
@@ -20,21 +24,25 @@ export const useUi = defineStore('ui', () => {
 					label: 'Успеваемость',
 					route: '/grades',
 					icon: 'mdi-book-open-page-variant',
+					access: [RolesEnum.Student],
 				},
 				{
 					label: 'Задания',
 					route: '/lessons',
 					icon: 'mdi-table',
+					access: [RolesEnum.Student],
 				},
 				{
 					label: 'Отчеты',
 					route: '/report',
 					icon: 'mdi-chart-bar',
+					access: [RolesEnum.Tutor],
 				},
 				{
 					label: 'Управление',
 					route: '/admin',
 					icon: 'mdi-cog',
+					access: [RolesEnum.Admin],
 				},
 			],
 		},
@@ -59,6 +67,20 @@ export const useUi = defineStore('ui', () => {
 		},
 	])
 
+	const checkAccessNav = nav => {
+		if (!nav?.access) return true
+		return nav.access.some(access => userStore.roles.has(access))
+	}
+
+	const filteredLeftMenuNavItems = computed(() => {
+		return leftMenuNavItems.value.map(block => {
+			return {
+				...block,
+				items: block.items.filter(checkAccessNav),
+			}
+		})
+	})
+
 	const isHideLeftMenuDevBlock = ref(
 		sessionStorage.getItem('isHideLeftMenuDevBlock') === 'true'
 	)
@@ -71,7 +93,7 @@ export const useUi = defineStore('ui', () => {
 		leftMenuMiniMode,
 		setLeftMenuMiniMode,
 
-		leftMenuNavItems,
+		filteredLeftMenuNavItems,
 
 		/* dev */
 		isHideLeftMenuDevBlock,

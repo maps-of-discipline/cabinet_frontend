@@ -9,7 +9,7 @@
 
 		<LeftMenuNav
 			class="LeftMenu__nav"
-			:data="uiStore.leftMenuNavItems"
+			:data="uiStore.filteredLeftMenuNavItems"
 			:mini="uiStore.leftMenuMiniMode"
 		/>
 
