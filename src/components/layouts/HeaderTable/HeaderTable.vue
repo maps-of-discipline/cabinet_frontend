@@ -5,7 +5,7 @@
 			<GroupSelect />
 			<SemesterSelect />
 			<template v-if="disciplineStore.selectedDisciplineId">
-				<EditModeSwitcher />
+				<EditModeSwitcher v-if="userStore.hasRole(RolesEnum.Admin)" />
 				<OpenPlanButton />
 			</template>
 		</div>
@@ -17,6 +17,8 @@
 </template>
 
 <script setup>
+import { RolesEnum } from '@models/auth/RolesEnum'
+
 import DisciplineSelect from '@components/layouts/DisciplineSelect/DisciplineSelect.vue'
 
 import GroupSelect from '@components/layouts/HeaderTable/GroupSelect.vue'
@@ -25,8 +27,10 @@ import EditModeSwitcher from '@components/layouts/HeaderTable/EditModeSwitcher.v
 import OpenPlanButton from '@components/layouts/HeaderTable/OpenPlanButton.vue'
 
 import { useDisciplineStore } from '@/stores/discipline'
+import { useUser } from '@/stores/user'
 
 const disciplineStore = useDisciplineStore()
+const userStore = useUser()
 
 defineProps({
 	title: {

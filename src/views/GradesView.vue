@@ -4,7 +4,7 @@
 		:class="{ isShowSettings: gradesStore.isShowSettings, isOpenLeftMenu }"
 	>
 		<HeaderTable class="Grades__header">
-			<template v-if="gradesStore.gradeTableIsNotExist">
+			<template v-if="gradesStore.grades.length">
 				<TypeGradeSelect />
 
 				<GradeFilterDropdown />

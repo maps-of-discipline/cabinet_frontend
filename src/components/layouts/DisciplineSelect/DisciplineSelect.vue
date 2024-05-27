@@ -6,8 +6,8 @@
 				:label="lessonsStore.title"
 			/>
 
+			<!-- v-if="userStore.hasRole(RolesEnum.Admin)" -->
 			<Button
-				v-if="userStore.hasRole(RolesEnum.Admin)"
 				class="DisciplineSelectActivator DisciplineSelectActivator--dev"
 				icon="mdi mdi-alert"
 				v-tooltip.bottom="{
