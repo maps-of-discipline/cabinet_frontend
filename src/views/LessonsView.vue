@@ -31,7 +31,7 @@ import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import AddTask from '@components/Lessons/AddTask.vue'
 
-import { computed } from 'vue'
+import { computed, nextTick } from 'vue'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
 
@@ -39,6 +39,18 @@ const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
 
 const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
+
+const onAddRow = async () => {
+	lessonsStore.createLocalLesson()
+
+	await nextTick()
+	const scrollTableEl = document.querySelector('.p-datatable-wrapper')
+
+	scrollTableEl.scrollTo({
+		top: scrollTableEl.scrollHeight,
+		behavior: 'smooth',
+	})
+}
 </script>
 
 <style lang="scss">

@@ -67,7 +67,7 @@ abstract class Api {
 	 * @param {Key} id - Айди строки
 	 */
 	static async deleteLesson(id: Key) {
-		const { data, status } = await axios.delete(`lesson`, { id })
+		const { data, status } = await axios.delete(`lesson`, { params: { id } })
 
 		if (status !== HttpStatusCode.Ok) return null
 

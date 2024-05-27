@@ -357,17 +357,7 @@ const onEditField = (data, value, field) => {
 }
 
 const table = ref()
-const onAddRow = async () => {
-	lessonsStore.createLocalLesson()
 
-	await nextTick()
-	const scrollTableEl = document.querySelector('.p-datatable-wrapper')
-
-	scrollTableEl.scrollTo({
-		top: scrollTableEl.scrollHeight,
-		behavior: 'smooth',
-	})
-}
 const onDeleteRow = id => lessonsStore.deleteLesson(id)
 const onRowClick = e => console.log({ ...e.data })
 
