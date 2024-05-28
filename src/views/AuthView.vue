@@ -48,12 +48,7 @@
 				</div>
 
 				<div class="AuthForm__checkbox-block">
-					<Checkbox
-						v-model="keepAuthModel"
-						inputId="keep_auth"
-						name="pizza"
-						value="Cheese"
-					/>
+					<Checkbox v-model="keepAuthModel" inputId="keep_auth" binary />
 
 					<label for="keep_auth" style="user-select: none; cursor: pointer">
 						Оставаться в системе
