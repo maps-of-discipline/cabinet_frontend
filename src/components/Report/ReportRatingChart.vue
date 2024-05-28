@@ -157,17 +157,18 @@ const chartOptions = ref({
 			text: undefined,
 		},
 
+		opposite: true,
+
 		labels: {
 			show: true,
 			minWidth: 200,
 			maxWidth: 400,
 			formatter: value => `${mapOrderByName.value[value]}. ${value}`,
 			style: {
-				fontSize: '.9rem',
+				fontSize: '16px',
 				fontFamily: 'inherit',
 				fontWeight: 400,
-
-				cssClass: 'asis-label',
+				colors: '#fff',
 			},
 		},
 	},
