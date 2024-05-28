@@ -1,6 +1,7 @@
 <template>
 	<Button
 		class="GradeSettingsButton"
+		:class="{ isOpen: gradesStore.isShowSettings }"
 		icon="mdi mdi-cog"
 		v-tooltip.bottom="{
 			value: 'Настройки учета успеваемости',
@@ -38,7 +39,7 @@ const onClick = () => {
 	}
 
 	&:hover,
-	&:focus {
+	&.isOpen {
 		border: none;
 		outline: $focusOutline;
 		color: $shade000;
