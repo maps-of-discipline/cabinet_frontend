@@ -1,5 +1,6 @@
 <template>
 	<ToggleButton
+		class="LoadViewSelect"
 		v-model="value"
 		onLabel=""
 		offLabel=""
@@ -26,4 +27,26 @@ const value = computed({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+@import '@styles/_variables.scss';
+
+.LoadViewSelect {
+	background-color: $shade950;
+	color: $shade400;
+	border-radius: $borderRadius;
+
+	outline: $focusOutlineTransparent;
+	transition: outline 0.2s, color 0.2s;
+
+	&:hover,
+	&:focus {
+		border: none;
+		outline: $focusOutline;
+		color: $shade000;
+
+		.p-multiselect-label.p-placeholder {
+			color: #fff;
+		}
+	}
+}
+</style>
