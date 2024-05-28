@@ -85,7 +85,7 @@ const router = useRouter()
 const loginModel = ref('')
 const passwordModel = ref('')
 const isLoadingSubmit = ref(false)
-const keepAuthModel = ref(false)
+const keepAuthModel = ref(true)
 const showDevBlock = ref(false)
 
 const onLogin = async () => {
