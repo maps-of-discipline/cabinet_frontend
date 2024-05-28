@@ -50,14 +50,14 @@ const filters = computed(() => gradesStore.filters)
 		border: none;
 		outline: $focusOutline;
 		color: $shade000;
+
+		.p-multiselect-label.p-placeholder {
+			color: #fff;
+		}
 	}
 
 	.p-multiselect-label {
 		transition-duration: 0s;
-	}
-
-	.p-multiselect-label.p-placeholder {
-		color: #fff;
 	}
 
 	.p-multiselect-trigger {
