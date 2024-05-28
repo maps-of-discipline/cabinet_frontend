@@ -12,7 +12,7 @@ const routes = [
 		name: 'auth',
 		component: () => import('../views/AuthView.vue'),
 		meta: {
-			title: 'Вход · Успеваемость',
+			title: 'Вход ',
 			layout: EmptyLayout,
 		},
 	},
@@ -21,7 +21,7 @@ const routes = [
 		name: 'grades',
 		component: () => import('../views/GradesView.vue'),
 		meta: {
-			title: 'Успеваемость · Успеваемость',
+			title: 'Успеваемость',
 			layout: MainLayout,
 			useBubbleBg: true,
 		},
@@ -31,7 +31,7 @@ const routes = [
 		name: 'lessons',
 		component: () => import('../views/LessonsView.vue'),
 		meta: {
-			title: 'Темы занятий · Успеваемость',
+			title: 'Темы занятий',
 			layout: MainLayout,
 			useBubbleBg: true,
 		},
@@ -42,7 +42,7 @@ const routes = [
 		component: () => import('../views/ReportView.vue'),
 		meta: {
 			layout: MainLayout,
-			title: 'Отчеты · Успеваемость',
+			title: 'Отчеты',
 			useBubbleBg: true,
 			access: [RolesEnum.Tutor],
 		},
@@ -52,7 +52,7 @@ const routes = [
 		name: 'profile',
 		component: () => import('../views/ProfileView.vue'),
 		meta: {
-			title: 'Профиль · Успеваемость',
+			title: 'Профиль',
 			layout: MainLayout,
 			access: ['*'],
 		},
@@ -62,7 +62,7 @@ const routes = [
 		name: 'admin',
 		component: () => import('../views/admin/AdminView.vue'),
 		meta: {
-			title: 'Панель администратора · Успеваемость',
+			title: 'Панель администратора',
 			layout: MainLayout,
 			useBubbleBg: true,
 			access: [RolesEnum.Admin],
@@ -73,7 +73,7 @@ const routes = [
 				component: () => import('../views/admin/groups/GroupsView.vue'),
 
 				meta: {
-					title: 'Группы · Успеваемость',
+					title: 'Группы',
 					useBubbleBg: false,
 				},
 			},
@@ -82,7 +82,7 @@ const routes = [
 				component: () => import('../views/admin/tutors/TutorsView.vue'),
 
 				meta: {
-					title: 'Тьюторы · Успеваемость',
+					title: 'Тьюторы',
 					useBubbleBg: false,
 				},
 			},
@@ -91,7 +91,7 @@ const routes = [
 				component: () => import('../views/admin/bells/BellsView.vue'),
 
 				meta: {
-					title: 'Звонки · Успеваемость',
+					title: 'Звонки',
 					useBubbleBg: false,
 				},
 			},
@@ -100,7 +100,7 @@ const routes = [
 				component: () => import('../views/admin/access/AccessView.vue'),
 
 				meta: {
-					title: 'Доступ к системе · Успеваемость',
+					title: 'Доступ к системе',
 					useBubbleBg: false,
 				},
 			},
@@ -111,7 +111,7 @@ const routes = [
 		name: 'notfound',
 		component: () => import('../views/NotFoundView.vue'),
 		meta: {
-			title: '404 · Успеваемость',
+			title: '404',
 			layout: MainLayout,
 		},
 	},
