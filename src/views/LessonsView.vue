@@ -7,6 +7,7 @@
 				v-if="lessonsStore.filteredLessons.length"
 				class="HeaderTable__editMode"
 			>
+				<ApButton label="Скачать" icon="mdi mdi-download" />
 				<ViewSelect />
 				<LoadViewSelect />
 			</div>
@@ -27,6 +28,7 @@ import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 import LessonsTable from '@components/Lessons/LessonsTable.vue'
 import DisciplineSelectLeftMenu from '@components/layouts/DisciplineSelect/DisciplineSelectLeftMenu.vue'
 
+import ApButton from '@components/ui/ApButton.vue'
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import AddTask from '@components/Lessons/AddTask.vue'

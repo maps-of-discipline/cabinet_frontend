@@ -4,7 +4,10 @@
 		:class="{ isShowSettings: gradesStore.isShowSettings, isOpenLeftMenu }"
 	>
 		<HeaderTable class="Grades__header">
-			<TypeGradeSelect v-if="gradesStore.grades.length" />
+			<template v-if="gradesStore.grades.length">
+				<ApButton label="Скачать" icon="mdi mdi-download" />
+				<TypeGradeSelect />
+			</template>
 
 			<template v-if="gradesStore.grades.length && userStore.isTeacher">
 				<GradeFilterDropdown />
@@ -36,6 +39,7 @@ import TypeGradeSelect from '@components/Grades/TypeGradeSelect.vue'
 import GradeSettingsButton from '@components/Grades/GradeSettingsButton.vue'
 import GradeFilterDropdown from '@components/Grades/GradeFilterDropdown.vue'
 import GradeSettings from '@components/Grades/GradeSettings.vue'
+import ApButton from '@components/ui/ApButton.vue'
 
 import DisciplineSelectLeftMenu from '@components/layouts/DisciplineSelect/DisciplineSelectLeftMenu.vue'
 
