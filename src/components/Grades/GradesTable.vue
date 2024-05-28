@@ -54,8 +54,7 @@
 									value: col.name,
 								}"
 							>
-								<!-- {{ col.grade_type.type !== 'tasks' ? col.name : index + 1 }} -->
-								{{ col.id }}
+								{{ col.grade_type.type !== 'tasks' ? col.name : index + 1 }}
 							</span>
 						</template>
 					</Column>

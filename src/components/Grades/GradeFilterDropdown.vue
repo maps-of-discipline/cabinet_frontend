@@ -35,7 +35,27 @@ const filters = computed(() => gradesStore.filters)
 </script>
 
 <style lang="scss">
+@import '@styles/_variables.scss';
+
 .GradeFilterDropdown {
+	background-color: $shade950;
+	color: $shade400;
+
+	outline: $focusOutlineTransparent;
+	transition: outline 0.2s, color 0.2s;
+
+	&:hover,
+	&:focus,
+	&.p-inputwrapper-focus {
+		border: none;
+		outline: $focusOutline;
+		color: $shade000;
+	}
+
+	.p-multiselect-label {
+		transition-duration: 0s;
+	}
+
 	.p-multiselect-label.p-placeholder {
 		color: #fff;
 	}
