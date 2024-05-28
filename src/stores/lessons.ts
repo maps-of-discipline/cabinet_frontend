@@ -197,6 +197,34 @@ export const useLessonsStore = defineStore('lessons', () => {
 		return data
 	}
 
+	/* filters */
+
+	const defaultShowColFilters = [
+		{ label: 'Дата', name: 'date' },
+		{ label: 'Время', name: 'time' },
+		{ label: 'Вид', name: 'control' },
+		{ label: 'Глава', name: 'chapter' },
+		{ label: 'Задание', name: 'task' },
+		{ label: 'Загрузка задания', name: 'completedTask' },
+		{ label: 'Срок выполнения', name: 'dateFinish' },
+	]
+
+	const showColFilters = ref(defaultShowColFilters)
+
+	const selectedShowColFilters = ref(
+		localStorage.getItem('lessonsFilters')
+			? JSON.parse(localStorage.getItem('lessonsFilters') || '[]')
+			: defaultShowColFilters
+	)
+	const selectedShowColFiltersSet = computed(
+		() => new Set(selectedShowColFilters.value.map(filter => filter.name))
+	)
+
+	const setSelectedShowColFilters = filters => {
+		selectedShowColFilters.value = filters
+		localStorage.setItem('lessonsFilters', JSON.stringify(filters))
+	}
+
 	return {
 		lessons,
 		controlTypes,
@@ -240,5 +268,11 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		bells,
 		fetchBells,
+
+		/* filters */
+		showColFilters,
+		selectedShowColFilters,
+		selectedShowColFiltersSet,
+		setSelectedShowColFilters,
 	}
 })

@@ -66,6 +66,7 @@ declare module 'vue' {
     LeftMenuLink: typeof import('./src/components/layouts/Main/LeftMenu/LeftMenuLink.vue')['default']
     LeftMenuNav: typeof import('./src/components/layouts/Main/LeftMenu/LeftMenuNav.vue')['default']
     LeftMenuSwitcher: typeof import('./src/components/layouts/Main/LeftMenu/LeftMenuSwitcher.vue')['default']
+    LessonsFilterDropdown: typeof import('./src/components/Lessons/LessonsFilterDropdown.vue')['default']
     LessonsLoadSelect: typeof import('./src/components/Lessons/common/LessonsLoadSelect.vue')['default']
     LessonsTable: typeof import('./src/components/Lessons/LessonsTable.vue')['default']
     LessonTimeRangeEditor: typeof import('./src/components/Lessons/LessonTimeRangeEditor.vue')['default']

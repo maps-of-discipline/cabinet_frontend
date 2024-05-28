@@ -49,6 +49,7 @@
 							class="column-header--center"
 							headerStyle="width: 136px;"
 							:colspan="1"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('date')"
 						/>
 
 						<Column
@@ -56,6 +57,7 @@
 							class="column-header--center"
 							headerStyle="width: 140px;"
 							:colspan="1"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('time')"
 						/>
 
 						<Column
@@ -63,6 +65,7 @@
 							class="column-header--center"
 							headerStyle="width: 120px"
 							:colspan="1"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('control')"
 						/>
 
 						<Column
@@ -80,25 +83,39 @@
 							header="Глава"
 							headerStyle="min-width: 500px"
 							:colspan="1"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('chapter')"
 						/>
 
-						<Column header="Тема" headerStyle="min-width: 500px" :colspan="1" />
+						<Column
+							header="Тема"
+							headerStyle="min-width: 500px"
+							:colspan="1"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('topic')"
+						/>
 
 						<Column
 							header="Задание"
 							:colspan="1"
 							headerStyle="min-width: 200px"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('task')"
 						/>
+
 						<Column
 							header="Загрузка задания"
 							:colspan="1"
 							headerStyle="width: 200px"
+							:hidden="
+								!lessonsStore.selectedShowColFiltersSet.has('completedTask')
+							"
 						/>
 
 						<Column
 							header="Срок выполнения"
 							:colspan="1"
 							headerStyle="width: 200px"
+							:hidden="
+								!lessonsStore.selectedShowColFiltersSet.has('dateFinish')
+							"
 						/>
 
 						<Column :colspan="1" headerStyle="width: 75px" />
@@ -123,7 +140,12 @@
 				</Column>
 
 				<!-- Дата -->
-				<Column v-if="!nestedViewMode" field="date" header="Дата">
+				<Column
+					v-if="!nestedViewMode"
+					field="date"
+					header="Дата"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('date')"
+				>
 					<template #body="{ data, field }">
 						<CalendarTagEditor
 							class="LessonsTable__date-editor"
@@ -135,7 +157,13 @@
 				</Column>
 
 				<!-- Время -->
-				<Column v-if="!nestedViewMode" field="spr_bells_id" header="Время">
+				<Column
+					v-if="!nestedViewMode"
+					field="spr_bells_id"
+					header="Время"
+					bodyClass="column-cell-center"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('time')"
+				>
 					<template #body="{ data, field }">
 						<LessonTimeRangeEditor
 							class="LessonsTable__timerange-editor"
@@ -153,6 +181,7 @@
 					headerClass="column-header-center"
 					bodyClass="column-cell-center"
 					field="id_type_control"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('control')"
 				>
 					<template #body="{ data, field }">
 						<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
@@ -199,6 +228,7 @@
 					field="chapter"
 					header="Глава"
 					headerStyle="width: 50%"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('chapter')"
 				>
 					<template #body="{ data, field }">
 						<span>
@@ -211,7 +241,12 @@
 				</Column>
 
 				<!-- Тема -->
-				<Column field="topic" header="Тема" headerStyle="width: 50%">
+				<Column
+					field="topic"
+					header="Тема"
+					headerStyle="width: 50%"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('topic')"
+				>
 					<template #body="{ data, field }">
 						<span>
 							{{ data[field] }}
@@ -223,7 +258,11 @@
 				</Column>
 
 				<!-- Задание -->
-				<Column field="task_link" header="Задание">
+				<Column
+					field="task_link"
+					header="Задание"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('task')"
+				>
 					<template #body="{ data, field }">
 						<AttachLinkButton
 							v-if="data[field] || disciplineStore.editMode"
@@ -234,7 +273,11 @@
 				</Column>
 
 				<!-- Загрузка задания -->
-				<Column field="completed_task_link" header="Загрузка задания">
+				<Column
+					field="completed_task_link"
+					header="Загрузка задания"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('completedTask')"
+				>
 					<template #body="{ data, field }">
 						<AttachLinkButton
 							v-if="data[field] || disciplineStore.editMode"
@@ -244,7 +287,10 @@
 					</template>
 				</Column>
 
-				<Column field="date_task_finish">
+				<Column
+					field="date_task_finish"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('dateFinish')"
+				>
 					<template #body="{ data, field }">
 						<CalendarTagEditor
 							class="LessonsTable__date-editor"
@@ -517,7 +563,12 @@ onMounted(() => {
 	}
 
 	&__timerange-editor {
-		width: 100%;
+		width: 120px;
+	}
+
+	&__date-editor {
+		display: flex;
+		justify-content: center;
 	}
 
 	&.isEmpty {

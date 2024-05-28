@@ -10,6 +10,7 @@
 				<ApButton label="Скачать" icon="mdi mdi-download" />
 				<ViewSelect />
 				<LoadViewSelect />
+				<LessonsFilterDropdown />
 			</div>
 		</HeaderTable>
 
@@ -32,6 +33,7 @@ import ApButton from '@components/ui/ApButton.vue'
 import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import AddTask from '@components/Lessons/AddTask.vue'
+import LessonsFilterDropdown from '@components/Lessons/LessonsFilterDropdown.vue'
 
 import { computed, nextTick } from 'vue'
 import { useDisciplineStore } from '@/stores/discipline'
