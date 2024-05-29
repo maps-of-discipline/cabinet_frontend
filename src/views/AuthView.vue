@@ -19,7 +19,10 @@
 				</a>
 			</InlineMessage>
 
-			<div class="AuthForm__logo">Успеваемость</div>
+			<div class="AuthForm__logo-block" to="/">
+				<img class="AuthForm__logo" src="@assets/logo.png" alt="" />
+				<div class="AuthForm__logo-title">Успеваемость</div>
+			</div>
 
 			<div class="AuthForm__main">
 				<div class="AuthForm__title">Вход</div>
@@ -63,10 +66,14 @@
 				:loading="isLoadingSubmit"
 			/>
 		</form>
+
+		<PwaBanner />
 	</div>
 </template>
 
 <script setup>
+import PwaBanner from '@components/layouts/PwaBanner.vue'
+
 import { ref } from 'vue'
 
 import app from '@/main.ts'
@@ -145,7 +152,18 @@ const onLogin = async () => {
 		gap: 16px;
 	}
 
+	&__logo-block {
+		display: flex;
+		align-items: center;
+		position: relative;
+	}
+
 	&__logo {
+		width: 36px;
+		margin-right: 16px;
+	}
+
+	&__logo-title {
 		font-size: 1.2rem;
 		font-weight: 600;
 	}

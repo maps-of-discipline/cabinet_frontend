@@ -77,6 +77,7 @@ declare module 'vue' {
     OpenPlanButton: typeof import('./src/components/layouts/HeaderTable/OpenPlanButton.vue')['default']
     OverlayPanel: typeof import('primevue/overlaypanel')['default']
     ProgressSpinner: typeof import('primevue/progressspinner')['default']
+    PwaBanner: typeof import('./src/components/layouts/PwaBanner.vue')['default']
     ReportAreaByGradeType: typeof import('./src/components/Report/ReportAreaByGradeType.vue')['default']
     ReportRadialsBars: typeof import('./src/components/Report/ReportRadialsBars.vue')['default']
     ReportRatingChart: typeof import('./src/components/Report/ReportRatingChart.vue')['default']
