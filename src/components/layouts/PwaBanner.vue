@@ -1,27 +1,29 @@
 <template>
-	<div class="PwaBanner" v-if="isVisible">
-		<div class="PwaBanner__icon">✨</div>
+	<Transition name="fade">
+		<div class="PwaBanner" v-if="isVisible">
+			<div class="PwaBanner__icon">✨</div>
 
-		<div class="PwaBanner__content">
-			<div class="PwaBanner__title">Успеваемость</div>
-			<div class="PwaBanner__subtitle">
-				Приложение доступно теперь для установки!
+			<div class="PwaBanner__content">
+				<div class="PwaBanner__title">Успеваемость</div>
+				<div class="PwaBanner__subtitle">
+					Приложение доступно теперь для установки!
+				</div>
+			</div>
+
+			<div class="PwaBanner__buttons">
+				<Button
+					class="PwaBanner__button PwaBanner__button--outlined"
+					label="Не сейчас"
+					@click="closeBanner"
+				/>
+				<Button
+					class="PwaBanner__button PwaBanner__button--active"
+					label="Установить"
+					@click="onInstallPwa"
+				/>
 			</div>
 		</div>
-
-		<div class="PwaBanner__buttons">
-			<Button
-				class="PwaBanner__button PwaBanner__button--outlined"
-				label="Не сейчас"
-				@click="closeBanner"
-			/>
-			<Button
-				class="PwaBanner__button PwaBanner__button--active"
-				label="Установить"
-				@click="onInstallPwa"
-			/>
-		</div>
-	</div>
+	</Transition>
 </template>
 
 <script setup>
