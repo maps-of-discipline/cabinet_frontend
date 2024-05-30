@@ -92,6 +92,14 @@ abstract class Api {
 		return data
 	}
 
+	static async fetchPlace() {
+		const { data, status } = await axios.get(`place`)
+
+		if (status !== HttpStatusCode.Ok) return null
+
+		return data
+	}
+
 	static async fetchAupsBySearch(value: string) {
 		const { data, status } = await axios.get(`aup?search=${value}`)
 

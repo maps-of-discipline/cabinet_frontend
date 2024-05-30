@@ -1,5 +1,8 @@
 <template>
-	<div class="PlaceTag">
+	<div
+		class="PlaceTag"
+		:class="{ isEmpty, isEditMode: editMode, isLink: selectedPlaceIsOnline }"
+	>
 		<Button
 			class="PlaceTag__activator"
 			:label="_label"
@@ -10,20 +13,20 @@
 		<OverlayPanel ref="opRef" @hide="onHidePanel">
 			<div class="PlaceTag__panel">
 				<div class="PlaceTag__input-block">
-					<label for="selectedPlaceType"> Место: </label>
+					<label for="placeTypeModel"> Место: </label>
 
 					<Dropdown
-						v-model="selectedPlaceType"
-						:options="placeTypeOptions"
-						optionLabel="fullname"
-						inputId="selectedPlaceType"
+						v-model="placeTypeModel"
+						:options="placeOptions"
+						optionLabel="name"
+						inputId="placeTypeModel"
 						:highlightOnSelect="false"
 						placeholder="Укажите место"
 						class="PlaceTag__select-place-dropdown"
 					>
 						<template #value="{ value }">
 							<span>
-								{{ value?.name }}
+								{{ value?.prefix }}
 							</span>
 						</template>
 					</Dropdown>
@@ -50,69 +53,95 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import colorById from '@services/helpers/colorById'
 
 const emit = defineEmits(['input'])
 
 const props = defineProps({
-	label: {
+	places: {
+		type: Array,
+		default: () => [],
+	},
+
+	placeId: {
+		type: [String, Number],
+		default: null,
+	},
+
+	placeNote: {
 		type: String,
-		default: '',
+		default: null,
+	},
+
+	editMode: {
+		type: Boolean,
+		default: false,
 	},
 })
 
 /* other */
-const _label = computed(() => props.label || 'NoPlace')
+const _label = computed(() => {
+	if (selectedPlace.value) {
+		if (selectedPlace.value.is_online) {
+			return selectedPlace.value?.name
+		} else {
+			return selectedPlace.value.prefix + props.placeNote
+		}
+	} else {
+		return 'Место'
+	}
+})
+const isEmpty = computed(() => !props.placeId)
 
-const backgroundColor = computed(
-	() => selectedPlaceType.value?.color || '#363636'
-)
+const backgroundColor = computed(() => {
+	return selectedPlace.value?.color || '#363636'
+})
 
 /* inputs */
+const placeTypeModel = ref(null)
 const placeModel = ref('')
-const selectedPlaceType = ref(null)
-const placeTypeOptions = ref([
-	{
-		name: 'W',
-		fullname: 'Webinar',
-		type: 'online',
-		color: 'red',
-	},
-	{
-		name: 'Пр',
-		fullname: 'Прянишникова',
-		type: 'audience',
-		color: 'blue',
-	},
-	{
-		name: 'Бс',
-		fullname: 'Большая Семёновская',
-		type: 'audience',
-		color: 'green',
-	},
-	{
-		name: 'ав',
-		fullname: 'Автозаводская',
-		type: 'audience',
-		color: 'yellow',
-	},
-])
 
-const selectedPlaceIsOnline = computed(
-	() => selectedPlaceType.value?.type == 'online'
+const placeOptions = computed(() => {
+	return props.places.map(place => ({ ...place, color: colorById[place.id] }))
+})
+
+const selectedPlaceIsOnline = computed(() => placeTypeModel.value?.is_online)
+
+const selectedPlace = computed(() =>
+	placeOptions.value.find(p => p.id === props.placeId)
 )
 
 /* panel */
 const opRef = ref()
-const togglePanel = event => opRef.value?.toggle(event)
+const togglePanel = event => {
+	if (props.editMode) opRef.value?.toggle(event)
+	else if (selectedPlaceIsOnline.value) window.open(props.placeNote, '_blank')
+}
 
 const onHidePanel = () => {
-	console.log({
-		place: placeModel.value,
-		type: selectedPlaceType.value,
+	emit('input', {
+		placeId: placeTypeModel.value.id,
+		placeNote: placeModel.value,
 	})
-	emit('input', {})
 }
+
+watch(
+	() => props.placeId,
+	placeId => {
+		placeTypeModel.value = placeOptions.value.find(p => p.id === placeId)
+	},
+	{ immediate: true }
+)
+
+watch(
+	() => props.placeNote,
+	placeNote => {
+		console.log(1)
+		placeModel.value = placeNote
+	},
+	{ immediate: true }
+)
 </script>
 
 <style lang="scss">
@@ -123,9 +152,42 @@ const onHidePanel = () => {
 		height: 35px;
 		border: none;
 		outline: none;
+		cursor: default;
+
+		.p-ink {
+			display: none;
+		}
 
 		&.p-disabled {
 			opacity: 1;
+		}
+	}
+
+	&.isEmpty {
+		.PlaceTag {
+			&__activator {
+				color: $shade400;
+			}
+		}
+	}
+
+	&.isLink {
+		.PlaceTag {
+			&__activator {
+				cursor: pointer;
+
+				.p-ink {
+					display: inline-block;
+				}
+			}
+		}
+	}
+
+	&.isEditMode {
+		.PlaceTag {
+			&__activator {
+				cursor: pointer;
+			}
 		}
 	}
 

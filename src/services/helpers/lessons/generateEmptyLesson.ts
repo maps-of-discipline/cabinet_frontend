@@ -16,6 +16,8 @@ const generateEmptyLesson = (
 		completed_task_link: '',
 		completed_task_link_name: '',
 		topic: '',
+		place_note: '',
+		spr_place_id: null,
 		semester,
 		study_group_id,
 	}

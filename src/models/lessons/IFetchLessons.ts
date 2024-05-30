@@ -7,4 +7,5 @@ export interface IFetchLessons {
 	title: string
 	topics: ILesson[]
 	groups: IStudyGroup[]
+	places: IStudyGroup[]
 }

@@ -29,6 +29,9 @@ export const useLessonsStore = defineStore('lessons', () => {
 	const rpdId: Ref<Key | null> = ref(null)
 	const title: Ref<string> = ref('')
 
+	const places = ref([])
+	const setPlaces = data => (places.value = data)
+
 	const isLoadingLessons: Ref<boolean> = ref(false)
 	const isLoadingControlTypes: Ref<boolean> = ref(false)
 
@@ -144,6 +147,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 			if (!data) return []
 
 			setLessonItems(data.topics)
+			setPlaces(data.places)
 			disciplineStore.setStudyGroups(data.groups)
 
 			aup.value = aupCode
@@ -268,6 +272,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		bells,
 		fetchBells,
+		places,
 
 		/* filters */
 		showColFilters,

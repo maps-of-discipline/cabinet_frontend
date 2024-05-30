@@ -157,16 +157,15 @@
 				</Column>
 
 				<!-- Место -->
-				<Column
-					v-if="!nestedViewMode"
-					field="place"
-					header="Место"
-					:hidden="false"
-				>
+				<Column v-if="!nestedViewMode" header="Место" :hidden="false">
 					<template #body="{ data, field }">
 						<PlaceTag
-							v-if="data[field] || disciplineStore.editMode"
-							:label="data[field]"
+							v-if="data.spr_place_id || disciplineStore.editMode"
+							:places="lessonsStore.places"
+							:placeId="data.spr_place_id"
+							:placeNote="data.place_note"
+							:editMode="disciplineStore.editMode"
+							@input="onEditPlace(data, $event)"
 						/>
 					</template>
 				</Column>
@@ -348,7 +347,7 @@
 					:hidden="false"
 				>
 					<template #body="{ data, field }">
-						<span> Note test </span>
+						<span>{{ data[field] }}</span>
 					</template>
 					<template #editor="{ data, field }">
 						<CellEditor v-model="data[field]" />
@@ -433,6 +432,14 @@ const onEditField = (data, value, field) => {
 	console.log(value, field)
 	const newLesson = Object.assign({}, data)
 	newLesson[field] = value
+	lessonsStore.editLesson(newLesson)
+}
+
+const onEditPlace = (data, { placeId, placeNote }) => {
+	console.log({ placeId, placeNote })
+	const newLesson = Object.assign({}, data)
+	newLesson.spr_place_id = placeId
+	newLesson.place_note = placeNote
 	lessonsStore.editLesson(newLesson)
 }
 

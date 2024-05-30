@@ -78,6 +78,8 @@ const selectedControlId = computed({
 
 <style lang="scss">
 .LessonsLoadSelect {
+	height: 35px;
+
 	&__wrapper {
 		display: inline-block;
 		cursor: pointer;
