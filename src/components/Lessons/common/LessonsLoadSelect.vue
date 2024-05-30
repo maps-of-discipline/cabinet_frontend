@@ -20,9 +20,9 @@
 			:style="{ backgroundColor }"
 		>
 			<template #value="{ value }">
-				<span class="LessonsLoadSelect__value">{{
-					getControlType(value)?.shortname
-				}}</span>
+				<span class="LessonsLoadSelect__value">
+					{{ getControlType(value)?.shortname }}
+				</span>
 			</template>
 		</Dropdown>
 	</div>
