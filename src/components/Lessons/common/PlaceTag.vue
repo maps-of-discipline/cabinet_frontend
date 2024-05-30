@@ -148,6 +148,10 @@ watch(
 @import '@styles/_variables.scss';
 
 .PlaceTag {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	&__activator {
 		height: 35px;
 		border: none;
