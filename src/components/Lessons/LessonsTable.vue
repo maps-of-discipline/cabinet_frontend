@@ -45,6 +45,14 @@
 						/>
 
 						<Column
+							header="Место"
+							class="column-header--center"
+							headerStyle="width: 136px;"
+							:colspan="1"
+							:hidden="false"
+						/>
+
+						<Column
 							header="Дата"
 							class="column-header--center"
 							headerStyle="width: 136px;"
@@ -118,6 +126,15 @@
 							"
 						/>
 
+						<Column
+							v-if="!nestedViewMode"
+							field="note"
+							header="Примечание"
+							headerStyle="min-width: 300px"
+							:colspan="1"
+							:hidden="false"
+						/>
+
 						<Column :colspan="1" headerStyle="width: 75px" />
 					</Row>
 				</ColumnGroup>
@@ -137,6 +154,21 @@
 					<template v-if="lessonsStore.loadViewMode" #footer>{{
 						lessonsStore.rowsCount
 					}}</template>
+				</Column>
+
+				<!-- Место -->
+				<Column
+					v-if="!nestedViewMode"
+					field="place"
+					header="Место"
+					:hidden="false"
+				>
+					<template #body="{ data, field }">
+						<PlaceTag
+							v-if="data[field] || disciplineStore.editMode"
+							:label="data[field]"
+						/>
+					</template>
 				</Column>
 
 				<!-- Дата -->
@@ -287,6 +319,7 @@
 					</template>
 				</Column>
 
+				<!-- Срок выполнения -->
 				<Column
 					field="date_task_finish"
 					:hidden="!lessonsStore.selectedShowColFiltersSet.has('dateFinish')"
@@ -303,6 +336,22 @@
 								onEditField(data, $event, 'date_task_finish_include')
 							"
 						/>
+					</template>
+				</Column>
+
+				<!-- Примечание -->
+				<Column
+					v-if="!nestedViewMode"
+					field="note"
+					header="Примечание"
+					headerStyle="width: 100%"
+					:hidden="false"
+				>
+					<template #body="{ data, field }">
+						<span> Note test </span>
+					</template>
+					<template #editor="{ data, field }">
+						<CellEditor v-model="data[field]" />
 					</template>
 				</Column>
 
@@ -352,6 +401,7 @@ import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
 import AttachLinkButton from '@components/Lessons/common/AttachLinkButton.vue'
 import LessonTimeRangeEditor from '@components/Lessons/LessonTimeRangeEditor.vue'
 import CalendarTagEditor from '@components/Lessons/common/CalendarTagEditor.vue'
+import PlaceTag from '@components/Lessons/common/PlaceTag.vue'
 
 import { useLessonsStore } from '@/stores/lessons'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -379,22 +429,6 @@ const onCellEditComplete = event => {
 	}
 }
 
-/* const onInputDate = (data, value) => {
-	const newLesson = Object.assign({}, data)
-	newLesson.date = value
-	lessonsStore.editLesson(newLesson)
-}
-
-const onChangeLessonRange = (data, value) => {
-	const newLesson = Object.assign({}, data)
-	newLesson.lesson_order = value
-	lessonsStore.editLesson(newLesson)
-}
-
-const onChangeControlType = (data, id) => {
-
-}
- */
 const onEditField = (data, value, field) => {
 	console.log(value, field)
 	const newLesson = Object.assign({}, data)
@@ -465,27 +499,6 @@ const onSaveLink = payload => {
 		attachDialogModel.value = false
 	})
 }
-
-/* FIX PRIMEVUE BUG
-   https://github.com/primefaces/primevue/issues/3685
-*/
-/* const addColspanToHeader = () => {
-	const groupHeaders = document.querySelectorAll(
-		'table tbody .p-rowgroup-header td'
-	)
-
-	for (let item of groupHeaders) {
-		const newColspan = parseInt(item.colSpan) + 1
-		item.colSpan = newColspan
-	}
-}
-
-watch([disciplineStore.editMode, lessonsStore.loadViewMode, nestedViewMode], () => {
-	setTimeout(() => {
-		addColspanToHeader()
-	}, 0)
-}) */
-/*  */
 
 const aupCode = disciplineStore.selectedAup
 const idDiscipline = disciplineStore.selectedDisciplineId
