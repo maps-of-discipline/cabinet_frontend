@@ -122,6 +122,11 @@ const selectedRangeId = computed({
 
 	&.isEmpty {
 		opacity: 0.7;
+		color: $shade400;
+
+		.LessonTimeRangeEditor__value {
+			font-weight: 300;
+		}
 	}
 }
 </style>
