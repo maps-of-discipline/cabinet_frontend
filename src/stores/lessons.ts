@@ -204,6 +204,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 	/* filters */
 
 	const defaultShowColFilters = [
+		{ label: 'Место', name: 'place' },
 		{ label: 'Дата', name: 'date' },
 		{ label: 'Время', name: 'time' },
 		{ label: 'Вид', name: 'control' },
@@ -211,6 +212,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 		{ label: 'Задание', name: 'task' },
 		{ label: 'Загрузка задания', name: 'completedTask' },
 		{ label: 'Срок выполнения', name: 'dateFinish' },
+		{ label: 'Примечание', name: 'note' },
 	]
 
 	const showColFilters = ref(defaultShowColFilters)

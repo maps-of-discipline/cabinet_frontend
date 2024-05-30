@@ -49,7 +49,7 @@
 							class="column-header--center"
 							headerStyle="width: 136px;"
 							:colspan="1"
-							:hidden="false"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('place')"
 						/>
 
 						<Column
@@ -132,7 +132,7 @@
 							header="Примечание"
 							headerStyle="min-width: 300px"
 							:colspan="1"
-							:hidden="false"
+							:hidden="!lessonsStore.selectedShowColFiltersSet.has('note')"
 						/>
 
 						<Column :colspan="1" headerStyle="width: 75px" />
@@ -157,7 +157,11 @@
 				</Column>
 
 				<!-- Место -->
-				<Column v-if="!nestedViewMode" header="Место" :hidden="false">
+				<Column
+					v-if="!nestedViewMode"
+					header="Место"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('place')"
+				>
 					<template #body="{ data, field }">
 						<PlaceTag
 							v-if="data.spr_place_id || disciplineStore.editMode"
@@ -344,7 +348,7 @@
 					field="note"
 					header="Примечание"
 					headerStyle="width: 100%"
-					:hidden="false"
+					:hidden="!lessonsStore.selectedShowColFiltersSet.has('note')"
 				>
 					<template #body="{ data, field }">
 						<span>{{ data[field] }}</span>
@@ -583,7 +587,7 @@ onMounted(() => {
 	}
 
 	&__timerange-editor {
-		width: 120px;
+		width: 130px;
 	}
 
 	&__date-editor {

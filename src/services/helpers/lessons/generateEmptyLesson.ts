@@ -18,6 +18,7 @@ const generateEmptyLesson = (
 		topic: '',
 		place_note: '',
 		spr_place_id: null,
+		note: '',
 		semester,
 		study_group_id,
 	}

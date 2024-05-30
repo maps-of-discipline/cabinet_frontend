@@ -39,12 +39,13 @@
 
 					<InputText
 						class="PlaceTag__input"
+						v-model="placeModel"
 						inputId="placeLabel"
 						:useGrouping="false"
 						:placeholder="
 							selectedPlaceIsOnline ? 'Введите ссылку' : 'Введите аудиторию'
 						"
-						v-model="placeModel"
+						@keydown.enter="hidePanel"
 					/>
 				</div>
 			</div>
@@ -103,7 +104,10 @@ const placeTypeModel = ref(null)
 const placeModel = ref('')
 
 const placeOptions = computed(() => {
-	return props.places.map(place => ({ ...place, color: colorById[place.id] }))
+	return props.places.map(place => ({
+		...place,
+		color: place?.id ? colorById[place.id] : '#363636',
+	}))
 })
 
 const selectedPlaceIsOnline = computed(() => placeTypeModel.value?.is_online)
@@ -117,6 +121,10 @@ const opRef = ref()
 const togglePanel = event => {
 	if (props.editMode) opRef.value?.toggle(event)
 	else if (selectedPlaceIsOnline.value) window.open(props.placeNote, '_blank')
+}
+
+const hidePanel = event => {
+	opRef.value?.toggle(event)
 }
 
 const onHidePanel = () => {
