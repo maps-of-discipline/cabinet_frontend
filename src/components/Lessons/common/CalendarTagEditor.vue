@@ -3,6 +3,7 @@
 		<Button
 			v-if="value || editMode"
 			class="CalendarTagEditor__activator"
+			:class="{ isEmpty: !value }"
 			:label="label"
 			:icon="!value ? 'mdi mdi-calendar-blank' : ''"
 			@click="togglePanel"
@@ -100,6 +101,10 @@ const includeSelectedDayModel = computed({
 
 		&.p-disabled {
 			opacity: 1;
+		}
+
+		&.isEmpty {
+			color: $shade400;
 		}
 	}
 

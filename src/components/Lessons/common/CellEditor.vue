@@ -55,6 +55,12 @@ const setCaretToEnd = () => {
 	outline: none;
 	box-shadow: 0px 0px 0px 1px transparent;
 
+	&:empty {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
 	&:focus {
 		box-shadow: 0px 0px 0px 1px $blue000;
 	}
