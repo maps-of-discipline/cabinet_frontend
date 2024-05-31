@@ -86,12 +86,7 @@
 							:hidden="!lessonsStore.selectedShowColFiltersSet.has('chapter')"
 						/>
 
-						<Column
-							header="Тема"
-							headerStyle="min-width: 500px"
-							:colspan="1"
-							:hidden="!lessonsStore.selectedShowColFiltersSet.has('topic')"
-						/>
+						<Column header="Тема" headerStyle="min-width: 500px" :colspan="1" />
 
 						<Column
 							header="Задание"
@@ -269,12 +264,7 @@
 				</Column>
 
 				<!-- Тема -->
-				<Column
-					field="topic"
-					header="Тема"
-					headerStyle="width: 50%"
-					:hidden="!lessonsStore.selectedShowColFiltersSet.has('topic')"
-				>
+				<Column field="topic" header="Тема" headerStyle="width: 50%">
 					<template #body="{ data, field }">
 						<span>
 							{{ data[field] }}
