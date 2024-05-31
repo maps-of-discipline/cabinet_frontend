@@ -2,13 +2,12 @@ import type { Key } from '@models/Key'
 
 const generateEmptyLesson = (
 	prefixLocalId: string,
-	semester: number,
 	study_group_id: Key,
-	rpdId: Key
+	disciplineTableId: Key
 ) => {
 	const lesson = {
 		id: prefixLocalId + Date.now(),
-		id_rpd: rpdId,
+		discipline_table_id: disciplineTableId,
 		id_type_control: null,
 		chapter: '',
 		task_link: '',
@@ -19,7 +18,6 @@ const generateEmptyLesson = (
 		place_note: '',
 		spr_place_id: null,
 		note: '',
-		semester,
 		study_group_id,
 	}
 

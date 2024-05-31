@@ -1,15 +1,12 @@
 import type { Key } from '@models/Key'
 import type { IFetchLessons } from '@models/lessons/IFetchLessons'
 import type { ILesson } from '@models/lessons/ILesson'
-import type {
-	IFetchLessonControls,
-	ILessonControls,
-} from '@models/lessons/IFetchLessonControls'
+import type { IControlType } from '@models/lessons/IFetchLessonControls'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
 import type { Ref } from 'vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useDisciplineStore } from './discipline'
 
@@ -19,50 +16,31 @@ import generateEmptyLesson from '@services/helpers/lessons/generateEmptyLesson'
 export const useLessonsStore = defineStore('lessons', () => {
 	const disciplineStore = useDisciplineStore()
 
-	const lessons: Ref<ILesson[]> = ref([])
-	const controlTypes: Ref<ILessonControls> = ref([])
-
 	const prefixLocalId = 'local_'
 
-	const aup: Ref<Key | null> = ref(null)
-	const disciplineId: Ref<Key | null> = ref(null)
-	const rpdId: Ref<Key | null> = ref(null)
-	const title: Ref<string> = ref('')
+	const disciplineTableId: Ref<Key | null> = ref(null)
 
+	/* Строки занятий */
+	const lessons: Ref<ILesson[]> = ref([])
+	const setLessonItems = (data: ILesson[]) => (lessons.value = data)
+
+	/* Нагрузки */
+	const controlTypes: Ref<IControlType[]> = ref([])
+	const setControlTypes = (data: IControlType[]) => (controlTypes.value = data)
+
+	/* Места */
 	const places = ref([])
 	const setPlaces = data => (places.value = data)
 
+	/* Флаги загрузки */
 	const isLoadingLessons: Ref<boolean> = ref(false)
 	const isLoadingControlTypes: Ref<boolean> = ref(false)
 
-	const setLessonItems = (data: ILesson[]) => (lessons.value = data)
-	const setControlTypes = (data: ILessonControls) => (controlTypes.value = data)
-
-	const semesters = computed(() => Object.keys(controlTypes.value))
-
 	const filteredLessons = computed(() => {
-		if (
-			disciplineStore.selectedGroup === null ||
-			disciplineStore.selectedSemester === null
-		)
-			return []
-
-		const semester: number = disciplineStore.selectedSemester
-		const group: IStudyGroup = disciplineStore.selectedGroup
-
-		return lessons.value.filter(
-			lesson =>
-				lesson.semester === semester && lesson.study_group_id === group.id
-		)
+		return lessons.value
 	})
 
 	const rowsCount = computed(() => filteredLessons.value?.length)
-
-	const controlTypesBySemester = computed(() => {
-		if (disciplineStore.selectedSemester === null) return []
-
-		return controlTypes.value[disciplineStore.selectedSemester]
-	})
 
 	const getSumLoadByControlType = id => {
 		return lessons.value.reduce((acc, value) => {
@@ -108,15 +86,14 @@ export const useLessonsStore = defineStore('lessons', () => {
 		if (
 			!disciplineStore.selectedSemester ||
 			!disciplineStore.selectedGroup ||
-			rpdId.value === null
+			disciplineTableId.value === null
 		)
 			return
 
 		const lesson = generateEmptyLesson(
 			prefixLocalId,
-			disciplineStore.selectedSemester,
 			disciplineStore.selectedGroup.id,
-			rpdId.value
+			disciplineTableId.value
 		)
 
 		lessons.value.push(lesson)
@@ -137,28 +114,32 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 	const isLocalLesson = (id: Key) => `${id}`.startsWith(prefixLocalId)
 
-	const fetchLessons = async (aupCode: Key, id: Key) => {
-		let data: IFetchLessons | null = null
+	const fetchLessons = async () => {
+		if (
+			!disciplineStore.selectedAupId ||
+			!disciplineStore.selectedDisciplineId ||
+			!disciplineStore.selectedGroup ||
+			!disciplineStore.selectedSemester
+		)
+			return
 
+		let data = null
 		try {
 			isLoadingLessons.value = true
-			data = await Api.fetchLessons(aupCode, id)
+			data = await Api.fetchLessons(
+				disciplineStore.selectedAupId,
+				disciplineStore.selectedDisciplineId,
+				disciplineStore.selectedGroup?.title,
+				disciplineStore.selectedSemester
+			)
 
 			if (!data) return []
 
 			setLessonItems(data.topics)
 			setPlaces(data.places)
-			disciplineStore.setStudyGroups(data.groups)
+			setControlTypes(data.control_types)
 
-			aup.value = aupCode
-			disciplineId.value = id
-			rpdId.value = data.rpd_id
-			title.value = data.title
-
-			await fetchControlTypes(data.rpd_id)
-
-			disciplineStore.setSelectedGroup(disciplineStore.groups[0])
-			disciplineStore.setSelectedSemester(semesters.value[0])
+			disciplineTableId.value = data.discipline_table_id
 		} catch (e) {
 			console.log(e)
 		} finally {
@@ -168,27 +149,13 @@ export const useLessonsStore = defineStore('lessons', () => {
 		return data?.topics || []
 	}
 
-	const fetchControlTypes = async id => {
-		isLoadingControlTypes.value = true
-		const data: IFetchLessonControls | null = await Api.fetchLessonControlTypes(
-			id
-		)
-		isLoadingControlTypes.value = false
-
-		if (!data) return []
-
-		setControlTypes(data.control_types)
-	}
-
 	const viewMode: Ref<ViewModesEnum> = ref(ViewModesEnum.Simple)
 	const setViewMode = (mode: ViewModesEnum) => {
 		viewMode.value = mode
 	}
 
 	const loadViewMode = ref(false)
-	function switchLoadViewMode() {
-		loadViewMode.value = !loadViewMode.value
-	}
+	const switchLoadViewMode = () => (loadViewMode.value = !loadViewMode.value)
 
 	const bells = ref([])
 	const fetchBells = async () => {
@@ -202,7 +169,6 @@ export const useLessonsStore = defineStore('lessons', () => {
 	}
 
 	/* filters */
-
 	const defaultShowColFilters = [
 		{ label: 'Место', name: 'place' },
 		{ label: 'Дата', name: 'date' },
@@ -234,10 +200,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 	return {
 		lessons,
 		controlTypes,
-		aup,
-		disciplineId,
-		rpdId,
-		title,
+
+		disciplineTableId,
 
 		isLoadingLessons,
 		isLoadingControlTypes,
@@ -245,10 +209,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 		setLessonItems,
 		setControlTypes,
 
-		semesters,
 		filteredLessons,
 		rowsCount,
-		controlTypesBySemester,
 
 		getSumLoadByControlType,
 
@@ -262,7 +224,6 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		isLocalLesson,
 
-		fetchControlTypes,
 		fetchLessons,
 
 		/*  */

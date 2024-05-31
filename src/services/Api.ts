@@ -13,11 +13,18 @@ abstract class Api {
 		return await axios('ping')
 	}
 
-	static async fetchLessons(aup: Key, id: Key) {
+	static async fetchLessons(
+		aup: Key,
+		id: Key,
+		group: string,
+		semester: number
+	) {
 		const { data } = await axios.get(`lessons`, {
 			params: {
 				aup,
 				id,
+				group,
+				semester,
 			},
 		})
 
@@ -84,8 +91,26 @@ abstract class Api {
 	 * Метод для получения доступных нагрузок РПД
 	 * @param {Key} id - Айди РПД
 	 */
-	static async fetchLessonControlTypes(rpdId: Key) {
-		const { data, status } = await axios.get(`control-types?rpd=${rpdId}`)
+	static async fetchLessonControlTypes(disciplineTableId: Key) {
+		const { data, status } = await axios.get(
+			`control-types?id=${disciplineTableId}`
+		)
+
+		if (status !== HttpStatusCode.Ok) return null
+
+		return data
+	}
+
+	static async fetchDisciplineInfo(id: Key) {
+		const { data, status } = await axios.get(`discipline?id=${id}`)
+
+		if (status !== HttpStatusCode.Ok) return null
+
+		return data
+	}
+
+	static async fetchGroups(aup: Key) {
+		const { data, status } = await axios.get(`groups?aup=${aup}`)
 
 		if (status !== HttpStatusCode.Ok) return null
 
@@ -100,8 +125,10 @@ abstract class Api {
 		return data
 	}
 
-	static async fetchAupsBySearch(value: string) {
-		const { data, status } = await axios.get(`aup?search=${value}`)
+	static async fetchAup({ search, aup }) {
+		const { data, status } = await axios.get(`aup`, {
+			params: { search, aup },
+		})
 
 		if (status !== HttpStatusCode.Ok) return []
 
@@ -192,7 +219,7 @@ abstract class Api {
 		})
 
 		if (status !== HttpStatusCode.Ok)
-			return { gradeTypes: [], gradeTableId: null, rows: [], columns: [] }
+			return { gradeTypes: [], disciplineTableId: null, rows: [], columns: [] }
 
 		return data
 	}
@@ -216,13 +243,13 @@ abstract class Api {
 	}
 
 	static async updateGrade(
-		gradeTableId: Key,
+		disciplineTableId: Key,
 		value: number,
 		colId: Key,
 		studentId: Key
 	) {
 		const { data, status } = await axios.patch(`grade`, {
-			grade_table_id: gradeTableId,
+			discipline_table_id: disciplineTableId,
 			value,
 			grade_column_id: colId,
 			student_id: studentId,
@@ -241,10 +268,10 @@ abstract class Api {
 		return data
 	}
 
-	static async createGradeType(gradeTypeSettings: any, gradeTableId: Key) {
+	static async createGradeType(gradeTypeSettings: any, disciplineTableId: Key) {
 		const { data, status } = await axios.post(`grade-type`, {
 			name: gradeTypeSettings.name,
-			table_id: gradeTableId,
+			table_id: disciplineTableId,
 		})
 
 		if (status !== HttpStatusCode.Ok) return {}

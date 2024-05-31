@@ -2,6 +2,7 @@
 	<Button
 		class="DisciplineSelectActivator"
 		:label="_label"
+		:loading="loading"
 		v-tooltip.bottom="{
 			value: tooltip,
 			showDelay: 500,
@@ -20,6 +21,10 @@ const disciplineStore = useDisciplineStore()
 const props = defineProps({
 	label: {
 		type: String,
+	},
+
+	loading: {
+		type: Boolean,
 	},
 })
 

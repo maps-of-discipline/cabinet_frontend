@@ -38,38 +38,7 @@
 				:id="aup.id_aup"
 				:label="aup.name_op.name_spec"
 				:tag="aup.year_beg"
-				@open="openDisciplineDialog(aup.num_aup)"
-			/>
-		</div>
-	</Dialog>
-
-	<Dialog
-		v-model:visible="disciplineDialogModel"
-		contentClass="DisciplineSelectDialog"
-		header="Поиск дисциплины"
-		:draggable="false"
-		modal
-		:style="{ width: '35rem' }"
-	>
-		<div
-			v-if="isLoadingDisciplines"
-			class="DisciplineSelectDialog__list"
-			style="overflow: hidden"
-		>
-			<Skeleton width="100%" height="50px" v-for="i in 10"></Skeleton>
-		</div>
-
-		<DisciplineSelectStub
-			v-else-if="disciplineStore.disciplinesDialogItems.length === 0"
-			message="Ничего не было найдено"
-		/>
-
-		<div v-else class="DisciplineSelectDialog__list">
-			<DisciplineSelectListItem
-				v-for="discipline in disciplineStore.disciplinesDialogItems"
-				:id="discipline.id"
-				:label="discipline.title"
-				@open="onSelectDiscipline(discipline.id)"
+				@open="onSelectDirection(aup.num_aup)"
 			/>
 		</div>
 	</Dialog>
@@ -86,7 +55,6 @@ import DisciplineSelectStub from '@components/layouts/DisciplineSelect/Disciplin
 
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
-const router = useRouter()
 
 const directionDialogModel = computed({
 	get() {
@@ -95,16 +63,6 @@ const directionDialogModel = computed({
 
 	set(val) {
 		disciplineStore.setDirectionDialogModel(val)
-	},
-})
-
-const disciplineDialogModel = computed({
-	get() {
-		return disciplineStore.disciplineDialogModel
-	},
-
-	set(val) {
-		disciplineStore.setDisciplineDialogModel(val)
 	},
 })
 
@@ -118,26 +76,10 @@ const searchModel = computed({
 	},
 })
 
-const isLoadingDisciplines = ref(false)
-
-const openDisciplineDialog = async aup => {
-	isLoadingDisciplines.value = true
-	disciplineDialogModel.value = true
+const onSelectDirection = aup => {
 	disciplineStore.setSelectedAup(aup)
-	await disciplineStore.fetchDisciplinesDialogItems(aup)
-	isLoadingDisciplines.value = false
-}
-
-const onSelectDiscipline = idDiscipline => {
-	disciplineDialogModel.value = false
 	directionDialogModel.value = false
-
-	disciplineStore.setSelectedDisciplineId(idDiscipline)
-
-	lessonsStore.fetchLessons(
-		disciplineStore.selectedAup,
-		disciplineStore.selectedDisciplineId
-	)
+	searchModel.value = ''
 }
 </script>
 

@@ -3,10 +3,10 @@
 		<div class="DisciplineSelect__activators">
 			<DisciplineSelectActivator
 				@open="openDisciplineColumn"
-				:label="lessonsStore.title"
+				:label="disciplineStore.disciplineTitle"
 			/>
 
-			<Button
+			<!-- 			<Button
 				v-if="userStore.isTeacher"
 				class="DisciplineSelectActivator DisciplineSelectActivator--dev"
 				icon="mdi mdi-alert"
@@ -16,25 +16,20 @@
 					showDelay: 500,
 				}"
 				@click="openPopup"
-			/>
+			/> -->
 		</div>
-
-		<DisciplineSelectDialog />
 	</div>
 </template>
 
 <script setup>
-import { RolesEnum } from '@models/auth/RolesEnum'
+import { ref, onMounted } from 'vue'
 
 import { useDisciplineStore } from '@/stores/discipline'
-import { useLessonsStore } from '@/stores/lessons'
 import { useUser } from '@/stores/user'
 
-import DisciplineSelectDialog from '@components/layouts/DisciplineSelect/DisciplineSelectDialog.vue'
 import DisciplineSelectActivator from '@components/layouts/DisciplineSelect/DisciplineSelectActivator.vue'
 
 const disciplineStore = useDisciplineStore()
-const lessonsStore = useLessonsStore()
 const userStore = useUser()
 
 const openPopup = () => disciplineStore.setDirectionDialogModel(true)

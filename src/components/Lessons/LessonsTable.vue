@@ -1,14 +1,5 @@
 <template>
 	<div class="LessonsTableView">
-		<!-- <HeaderTable :title="lessonsStore.title">
-			<AddTask @add="onAddRow" />
-
-			<div class="HeaderTable__editMode">
-				<ViewSelect />
-				<LoadViewSelect />
-			</div>
-		</HeaderTable> -->
-
 		<div class="LessonsTable__wrapper">
 			<DataTable
 				class="LessonsTable"
@@ -29,6 +20,7 @@
 				@cell-edit-complete="onCellEditComplete"
 				@row-click="onRowClick"
 			>
+				<!-- :virtualScrollerOptions="{ itemSize: 45 }" -->
 				<template v-if="nestedViewMode" #groupheader="slotProps">
 					<div class="LessonsTable__subheader flex align-items-center gap-2">
 						<span>{{ slotProps.data.chapter }}</span>
@@ -78,7 +70,7 @@
 
 						<Column
 							v-if="lessonsStore.loadViewMode"
-							v-for="controlType in lessonsStore.controlTypesBySemester"
+							v-for="controlType in lessonsStore.controlTypes"
 							:header="controlType.shortname.toUpperCase()"
 							class="column-header--center"
 							headerStyle="width: 50px"
@@ -216,13 +208,14 @@
 					headerClass="column-header-center"
 					bodyClass="column-cell-center"
 					field="id_type_control"
+					style="width: 120px"
 					:hidden="!lessonsStore.selectedShowColFiltersSet.has('control')"
 				>
 					<template #body="{ data, field }">
 						<!-- <Tag v-if="data[field]" :value="ControlIdsEnum[data[field]]"></Tag> -->
 						<LessonsLoadSelect
 							:editMode="disciplineStore.editMode"
-							:controlTypes="lessonsStore.controlTypesBySemester"
+							:controlTypes="lessonsStore.controlTypes"
 							:item="data"
 							@change="onEditField(data, $event, field)"
 						/>
@@ -235,7 +228,7 @@
 
 				<Column
 					v-if="lessonsStore.loadViewMode"
-					v-for="controlType in lessonsStore.controlTypesBySemester"
+					v-for="controlType in lessonsStore.controlTypes"
 					headerClass="column-header-index"
 					bodyClass="column-cell-index"
 					headerStyle="width: 65px"
@@ -511,16 +504,29 @@ const onSaveLink = payload => {
 	})
 }
 
-const aupCode = disciplineStore.selectedAup
-const idDiscipline = disciplineStore.selectedDisciplineId
-
-if (aupCode && idDiscipline) {
-	lessonsStore.fetchLessons(aupCode, idDiscipline)
-}
-
 onMounted(() => {
 	lessonsStore.fetchBells()
 })
+
+watch(
+	() => [
+		disciplineStore.selectedAupId,
+		disciplineStore.selectedDisciplineId,
+		disciplineStore.selectedGroup,
+		disciplineStore.selectedSemester,
+	],
+	() => {
+		if (
+			!disciplineStore.selectedAupId ||
+			!disciplineStore.selectedDisciplineId ||
+			!disciplineStore.selectedGroup ||
+			!disciplineStore.selectedSemester
+		)
+			return
+
+		lessonsStore.fetchLessons()
+	}
+)
 </script>
 
 <style lang="scss">
@@ -554,7 +560,7 @@ onMounted(() => {
 	border-radius: $borderRadius;
 	height: 100%;
 
-	$row-height: 60px;
+	$row-height: 65px;
 
 	tr {
 		height: $row-height;

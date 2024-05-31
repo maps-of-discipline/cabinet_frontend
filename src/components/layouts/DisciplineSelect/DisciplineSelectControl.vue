@@ -16,7 +16,6 @@
 				:loading="lessonsStore.isLoadingControlTypes"
 				:optionLabel="getLabel"
 				placeholder="Семестр"
-				:disabled="!disciplineStore.hasSelectedDiscipline"
 				emptyMessage="Выберите дисциплину"
 			>
 				<template #option="{ option }">

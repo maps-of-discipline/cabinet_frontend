@@ -5,28 +5,54 @@ import { defineStore } from 'pinia'
 import debounce from '@services/helpers/debounce'
 import Api from '@services/Api'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
+import type { Key } from '@models/Key'
 
 export const useDisciplineStore = defineStore('discipline', () => {
 	const aups: Ref<Array<any>> = ref([])
 	const isLoadingAups: Ref<boolean> = ref(false)
 
 	/* Выбранный АУП */
-	const selectedAup: Ref<string | null> = ref(
-		sessionStorage.getItem('selectedAup')
-	)
+	const selectedAup = ref(null)
+	const selectedAupId: Ref<string | null> = ref()
+
+	const aupTitle = computed(() => {
+		return selectedAup.value?.title
+	})
+
 	const setSelectedAup = async (value: string) => {
-		selectedAup.value = value
-		sessionStorage.setItem('selectedAup', value)
+		selectedAupId.value = value
+		sessionStorage.setItem('selectedAupId', value)
+
+		const aup = await Api.fetchAup({ aup: value })
+		selectedAup.value = aup
+
 		await fetchDisciplines()
+		await fetchGroups(value)
+
+		setSelectedSemester(semesters.value[0])
 	}
 
+	const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
+	if (selectedAupIdByStorage) setSelectedAup(selectedAupIdByStorage)
+
 	/* Выбранная дисциплина */
+
 	const selectedDisciplineId: Ref<string | null> = ref(
 		sessionStorage.getItem('selectedDisciplineId')
 	)
 	const setSelectedDisciplineId = (value: string) => {
 		selectedDisciplineId.value = value
 		sessionStorage.setItem('selectedDisciplineId', value)
+
+		fetchDisciplineInfo(value)
+	}
+
+	const disciplineTitle: Ref<string | null> = ref('')
+	const fetchDisciplineInfo = async (id: Key) => {
+		if (selectedDisciplineId.value) id = selectedDisciplineId.value
+
+		const data = await Api.fetchDisciplineInfo(id)
+		disciplineTitle.value = data?.title || 'Error'
 	}
 
 	const hasSelectedDiscipline = computed(() => !!selectedDisciplineId.value)
@@ -42,6 +68,14 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	const groups: Ref<IStudyGroup[]> = ref([])
 	const setStudyGroups = (data: IStudyGroup[]) => {
 		groups.value = data
+	}
+
+	const fetchGroups = async aup => {
+		if (selectedAupId.value) aup = selectedAupId.value
+
+		const data = await Api.fetchGroups(aup)
+		setStudyGroups(data)
+		setSelectedGroup(data[0])
 	}
 	/*  */
 
@@ -66,12 +100,12 @@ export const useDisciplineStore = defineStore('discipline', () => {
 			return
 		}
 
-		fetchAupsBySearch(value)
+		fetchAup(value)
 	}
 
-	const fetchAupsBySearch = debounce(async value => {
+	const fetchAup = debounce(async value => {
 		isLoadingAups.value = true
-		const data = await Api.fetchAupsBySearch(value)
+		const data = await Api.fetchAup({ search: value })
 		aups.value = data
 		isLoadingAups.value = false
 	}, 500)
@@ -81,16 +115,6 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	const directionDialogModel = ref(false)
 	const setDirectionDialogModel = value => (directionDialogModel.value = value)
 
-	const disciplineDialogModel = ref(false)
-	const setDisciplineDialogModel = value =>
-		(disciplineDialogModel.value = value)
-
-	const disciplinesDialogItems: Ref<Array<any>> = ref([])
-
-	const fetchDisciplinesDialogItems = async (aup: string) => {
-		const data = await Api.fetchDisciplinesByAup(aup)
-		disciplinesDialogItems.value = data
-	}
 	/*  */
 
 	/* Режим просмотра/редактирования */
@@ -103,12 +127,6 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	const isOpenDisciplineColumn = ref(false)
 	const setIsOpenDisciplineColumn = async value => {
 		isOpenDisciplineColumn.value = value
-
-		if (!Object.keys(disciplinesByAup.value).length) {
-			isLoadingDisciplineLeftMenu.value = true
-			await fetchDisciplines()
-			isLoadingDisciplineLeftMenu.value = false
-		}
 	}
 
 	const disciplinesByAup = ref({})
@@ -119,10 +137,12 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	})
 
 	const fetchDisciplines = async () => {
-		if (!selectedAup.value) return
+		if (!selectedAupId.value) return
 
-		const data = await Api.fetchDisciplines(selectedAup.value)
+		isLoadingDisciplineLeftMenu.value = true
+		const data = await Api.fetchDisciplines(selectedAupId.value)
 		disciplinesByAup.value = data
+		isLoadingDisciplineLeftMenu.value = false
 		setSemesters(Object.keys(data))
 	}
 
@@ -130,23 +150,23 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		search,
 		setSearch,
 
+		disciplineTitle,
+		fetchDisciplineInfo,
+		fetchGroups,
+
 		selectedDisciplineId,
 		setSelectedDisciplineId,
 		hasSelectedDiscipline,
 
 		aups,
 		selectedAup,
+		selectedAupId,
+		aupTitle,
 		setSelectedAup,
 		isLoadingAups,
 
 		directionDialogModel,
 		setDirectionDialogModel,
-
-		disciplineDialogModel,
-		setDisciplineDialogModel,
-
-		disciplinesDialogItems,
-		fetchDisciplinesDialogItems,
 
 		editMode,
 		switchMode,

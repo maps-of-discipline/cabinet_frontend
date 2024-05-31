@@ -3,7 +3,7 @@
 		<div class="HeaderTable__left">
 			<DisciplineSelect />
 			<GroupSelect />
-			<SemesterSelect />
+			<!-- <SemesterSelect /> -->
 			<template v-if="disciplineStore.selectedDisciplineId">
 				<EditModeSwitcher v-if="userStore.isTeacher" />
 				<OpenPlanButton />
@@ -31,13 +31,6 @@ import { useUser } from '@/stores/user'
 
 const disciplineStore = useDisciplineStore()
 const userStore = useUser()
-
-defineProps({
-	title: {
-		type: String,
-		default: '',
-	},
-})
 
 const emit = defineEmits(['add'])
 </script>

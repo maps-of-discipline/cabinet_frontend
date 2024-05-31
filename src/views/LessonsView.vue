@@ -1,6 +1,6 @@
 <template>
 	<div class="Lessons" :class="{ isOpenLeftMenu }">
-		<HeaderTable class="Lessons__header" :title="lessonsStore.title">
+		<HeaderTable class="Lessons__header">
 			<AddTask @add="onAddRow" />
 
 			<div
@@ -11,6 +11,7 @@
 				<ViewSelect />
 				<LoadViewSelect />
 				<LessonsFilterDropdown />
+				<LessonsLoadInfo />
 			</div>
 		</HeaderTable>
 
@@ -34,6 +35,7 @@ import ViewSelect from '@components/Lessons/ViewSelect.vue'
 import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
 import AddTask from '@components/Lessons/AddTask.vue'
 import LessonsFilterDropdown from '@components/Lessons/LessonsFilterDropdown.vue'
+import LessonsLoadInfo from '@components/Lessons/LessonsLoadInfo.vue'
 
 import { computed, nextTick } from 'vue'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -58,8 +60,6 @@ const onAddRow = async () => {
 </script>
 
 <style lang="scss">
-@import '@styles/_variables.scss';
-
 @import '@styles/_variables.scss';
 
 .Lessons {

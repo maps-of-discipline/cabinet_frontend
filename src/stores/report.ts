@@ -29,7 +29,7 @@ export const useReportStore = defineStore('report', () => {
 
 	const fetchReport = async () => {
 		if (
-			!disciplineStore.selectedAup ||
+			!disciplineStore.selectedAupId ||
 			!disciplineStore.selectedDisciplineId ||
 			!disciplineStore.selectedGroup?.title
 		)
@@ -38,7 +38,7 @@ export const useReportStore = defineStore('report', () => {
 		isLoading.value = true
 
 		const data = await Api.getReport(
-			disciplineStore.selectedAup,
+			disciplineStore.selectedAupId,
 			disciplineStore.selectedDisciplineId,
 			disciplineStore.selectedGroup.title
 		)

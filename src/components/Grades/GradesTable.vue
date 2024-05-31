@@ -51,10 +51,17 @@
 							<span
 								class="GradesTable__topic-header"
 								v-tooltip.right="{
-									value: col.name,
+									value:
+										col.grade_type.type == 'tasks'
+											? col.topic.task_link_name
+											: formateDate(col.topic.date, true),
 								}"
 							>
-								{{ col.grade_type.type !== 'tasks' ? col.name : index + 1 }}
+								{{
+									col.grade_type.type == 'tasks'
+										? index + 1
+										: formateDate(col.topic.date)
+								}}
 							</span>
 						</template>
 					</Column>
@@ -176,6 +183,8 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
+import moment from 'moment'
+import 'moment/dist/locale/ru'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -252,15 +261,36 @@ const getSummaryGrade = values => {
 
 const onRowClick = e => console.log({ ...e.data })
 
-const aupCode = disciplineStore.selectedAup
-const idDiscipline = disciplineStore.selectedDisciplineId
+const formateDate = (date, isLabel) => {
+	date = new Date(date)
 
-onMounted(async () => {
-	if (aupCode && idDiscipline) {
-		await lessonsStore.fetchLessons(aupCode, idDiscipline)
-		await gradesStore.fetchGrades()
+	const localeMoment = moment(date).locale('ru')
+	console.log(date)
+
+	if (isLabel) return localeMoment.format('D MMMM, dddd')
+
+	return localeMoment.format('DD.MM')
+}
+
+watch(
+	() => [
+		disciplineStore.selectedAupId,
+		disciplineStore.selectedDisciplineId,
+		disciplineStore.selectedGroup,
+		disciplineStore.selectedSemester,
+	],
+	() => {
+		if (
+			!disciplineStore.selectedAupId ||
+			!disciplineStore.selectedDisciplineId ||
+			!disciplineStore.selectedGroup ||
+			!disciplineStore.selectedSemester
+		)
+			return
+
+		gradesStore.fetchGrades()
 	}
-})
+)
 </script>
 
 <style lang="scss">

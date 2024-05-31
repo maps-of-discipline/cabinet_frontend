@@ -1,7 +1,22 @@
 <template>
 	<Transition name="fade">
-		<div v-if="isOpenLeftMenu" class="DisciplineSelectLeftMenu__wrapper">
-			<div v-if="!isLoading" class="DisciplineSelectLeftMenu">
+		<div v-if="isOpenLeftMenu" class="DisciplineSelectLeftMenu">
+			<div class="DisciplineSelectLeftMenu__header">
+				<Button
+					class="DisciplineSelectLeftMenu__aup-select"
+					:label="disciplineStore.aupTitle || 'Выбор направления'"
+					v-tooltip.bottom="{
+						value:
+							'Выбор дисциплины. Интерфейс для разработки и выбора любого направления и дисциплины',
+						showDelay: 500,
+					}"
+					@click="openPopup"
+				/>
+
+				<GroupSelect />
+			</div>
+
+			<div v-if="!isLoading" class="DisciplineSelectLeftMenu__inner">
 				<DisciplineSelectControl />
 
 				<div class="DisciplineSelectLeftMenu__list-wrapper">
@@ -30,6 +45,8 @@
 			<Stub v-else>
 				<ApLoadingSpinner />
 			</Stub>
+
+			<DisciplineSelectDialog />
 		</div>
 	</Transition>
 </template>
@@ -40,6 +57,8 @@ import { computed, watch } from 'vue'
 import DisciplineSelectControl from '@components/layouts/DisciplineSelect/DisciplineSelectControl.vue'
 import Stub from '@components/layouts/Stub.vue'
 import ApLoadingSpinner from '@components/ui/ApLoadingSpinner.vue'
+import DisciplineSelectDialog from '@components/layouts/DisciplineSelect/DisciplineSelectDialog.vue'
+import GroupSelect from '@components/layouts/HeaderTable/GroupSelect.vue'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -58,29 +77,60 @@ const disciplines = computed(() => disciplineStore.disciplinesBySemester)
 
 const onSelectDiscipline = discipline => {
 	disciplineStore.setSelectedDisciplineId(discipline.id)
-
-	lessonsStore.fetchLessons(
-		disciplineStore.selectedAup,
-		disciplineStore.selectedDisciplineId
-	)
 }
+
+const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 </script>
 
 <style lang="scss">
 @import '@styles/_variables.scss';
 
 .DisciplineSelectLeftMenu {
+	min-width: 300px;
 	background-color: $shade900;
 	border-radius: $borderRadius;
 	padding: 16px;
 	display: grid;
 	grid-template-rows: auto 1fr;
-	width: 100%;
-	height: 100%;
-	transition: 0.25s ease;
 
-	&__wrapper {
-		min-width: 300px;
+	&__header {
+		display: grid;
+		grid-template-rows: auto auto;
+		gap: 12px;
+		margin-bottom: 8px;
+	}
+
+	&__inner {
+		display: grid;
+		grid-template-rows: auto auto 1fr;
+		width: 100%;
+		height: 100%;
+		transition: 0.25s ease;
+		overflow: hidden;
+		padding-top: 6px;
+	}
+
+	&__aup-select {
+		width: 100%;
+		background-color: $shade950;
+		height: 37px;
+		max-width: 300px;
+
+		.p-button-label {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
+		outline: $focusOutlineTransparent;
+		border: none;
+		transition: outline 0.2s;
+
+		&:hover,
+		&:focus {
+			border: none;
+			outline: $focusOutline;
+		}
 	}
 
 	&__semester {

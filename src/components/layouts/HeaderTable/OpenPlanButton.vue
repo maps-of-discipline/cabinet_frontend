@@ -20,7 +20,7 @@ const disciplineStore = useDisciplineStore()
 
 const onClick = () => {
 	const rootKdUrl = import.meta.env.VITE_KD_ROOT
-	const url = `${rootKdUrl}/?aup=${disciplineStore.selectedAup}`
+	const url = `${rootKdUrl}/?aup=${disciplineStore.selectedAupId}`
 
 	window.open(url, '_blank').focus()
 }

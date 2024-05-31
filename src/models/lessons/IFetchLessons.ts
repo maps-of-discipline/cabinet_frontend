@@ -3,9 +3,10 @@ import type { ILesson } from './ILesson'
 import type { IStudyGroup } from './IStudyGroup'
 
 export interface IFetchLessons {
-	rpd_id: Key
+	discipline_table_id: Key
 	title: string
 	topics: ILesson[]
 	groups: IStudyGroup[]
-	places: IStudyGroup[]
+	places: any[]
+	control_types: any[]
 }

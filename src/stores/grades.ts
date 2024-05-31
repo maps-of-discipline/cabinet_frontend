@@ -26,7 +26,7 @@ interface IGradeRow {
 export const useGradesStore = defineStore('grades', () => {
 	const disciplineStore = useDisciplineStore()
 
-	const gradeTableId: Ref<Key | null> = ref(null)
+	const disciplineTableId: Ref<Key | null> = ref(null)
 	const gradeTableIsNotExist = ref(false)
 
 	// Виды оценивания
@@ -59,7 +59,7 @@ export const useGradesStore = defineStore('grades', () => {
 
 		const data: any = await Api.createGradeType(
 			gradeTypeSettings,
-			gradeTableId.value
+			disciplineTableId.value
 		)
 
 		typesGrade.value.push(data)
@@ -95,9 +95,9 @@ export const useGradesStore = defineStore('grades', () => {
 	const filteredColumnsBySelectedType = computed(() => {
 		if (isAllGradeType.value) return columns
 
-		return columns.value.filter(
-			column => column.grade_type_id === selectedTypeGrade.value.id
-		)
+		return [...columns.value]
+			.filter(column => column.grade_type_id === selectedTypeGrade.value.id)
+			.sort((a, b) => a.topic.id - b.topic.id)
 	})
 
 	const showFullname = ref(true)
@@ -110,7 +110,7 @@ export const useGradesStore = defineStore('grades', () => {
 
 	const fetchGrades = async () => {
 		if (
-			!disciplineStore.selectedAup ||
+			!disciplineStore.selectedAupId ||
 			!disciplineStore.selectedDisciplineId ||
 			!disciplineStore.selectedGroup?.title ||
 			!disciplineStore.selectedSemester
@@ -120,7 +120,7 @@ export const useGradesStore = defineStore('grades', () => {
 		isLoading.value = true
 
 		const data = await Api.getGrades(
-			disciplineStore.selectedAup,
+			disciplineStore.selectedAupId,
 			disciplineStore.selectedDisciplineId,
 			disciplineStore.selectedGroup.title,
 			disciplineStore.selectedSemester
@@ -136,7 +136,7 @@ export const useGradesStore = defineStore('grades', () => {
 			setTypesGrade(data.gradeTypes)
 			setSelectedTypeGrade(availableTypesGrade.value[0])
 
-			gradeTableId.value = data.gradeTableId
+			disciplineTableId.value = data.disciplineTableId
 
 			gradeTableIsNotExist.value = false
 			isLoading.value = false
@@ -144,10 +144,10 @@ export const useGradesStore = defineStore('grades', () => {
 	}
 
 	const updateGrade = async (value: number, colId: Key, studentId: Key) => {
-		if (gradeTableId.value === null) return
+		if (disciplineTableId.value === null) return
 
 		const data = await Api.updateGrade(
-			gradeTableId.value,
+			disciplineTableId.value,
 			value,
 			colId,
 			studentId
@@ -156,33 +156,6 @@ export const useGradesStore = defineStore('grades', () => {
 		const neededIndex = grades.value.findIndex(row => row.id === studentId)
 		grades.value[neededIndex].values[colId] = value
 	}
-
-	const createGradeTable = async () => {
-		if (
-			!disciplineStore.selectedAup ||
-			!disciplineStore.selectedDisciplineId ||
-			!disciplineStore.selectedGroup?.title ||
-			!disciplineStore.selectedSemester
-		)
-			return
-
-		const data = await Api.createGradeTable(
-			disciplineStore.selectedAup,
-			disciplineStore.selectedDisciplineId,
-			disciplineStore.selectedGroup.title,
-			disciplineStore.selectedSemester
-		)
-
-		gradeTableIsNotExist.value = false
-		fetchGrades()
-	}
-
-	watch(
-		() => [disciplineStore.selectedGroup, disciplineStore.selectedSemester],
-		(count, prevCount) => {
-			fetchGrades()
-		}
-	)
 
 	/* filters */
 	const filters = ref([
@@ -201,7 +174,7 @@ export const useGradesStore = defineStore('grades', () => {
 		setIsShowSettings,
 		isLoading,
 
-		gradeTableId,
+		disciplineTableId,
 		gradeTableIsNotExist,
 
 		grades,
@@ -227,7 +200,6 @@ export const useGradesStore = defineStore('grades', () => {
 		setShowFullname,
 
 		fetchGrades,
-		createGradeTable,
 		updateGrade,
 
 		/* filters */

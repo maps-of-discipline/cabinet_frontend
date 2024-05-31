@@ -8,8 +8,7 @@
 		<Dropdown
 			class="SemesterSelect"
 			v-model="selectedSemestr"
-			:options="lessonsStore.semesters"
-			:loading="lessonsStore.isLoadingControlTypes"
+			:options="disciplineStore.semesters"
 			:optionLabel="getLabel"
 			placeholder="Семестр"
 			:disabled="!disciplineStore.hasSelectedDiscipline"

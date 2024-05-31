@@ -10,16 +10,14 @@
 			v-model="selectedGroup"
 			:options="disciplineStore.groups"
 			:optionLabel="getLabel"
-			:loading="lessonsStore.isLoadingLessons"
 			placeholder="Группа"
-			:disabled="!disciplineStore.hasSelectedDiscipline"
-			emptyMessage="Выберите дисциплину"
+			emptyMessage="Выберите направление"
 		/>
 	</div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@stores/lessons'
 
@@ -46,6 +44,8 @@ const getLabel = value => {
 
 .GroupSelect {
 	height: 37px;
+	width: 100%;
+
 	align-items: center;
 	transition: outline 0.2s;
 	outline: $focusOutlineTransparent;

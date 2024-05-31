@@ -1,23 +1,10 @@
 <template>
 	<Stub class="NotExistGradeTableStub">
-		<div>Данная таблица отсутствует</div>
-		<Button
-			class="NotExistGradeTableStub__create-button"
-			label="Создать"
-			@click="onClick"
-		/>
+		<div>Данные отсутствуют</div>
 	</Stub>
 </template>
 
-<script setup>
-import { useGradesStore } from '@/stores/grades'
-
-const gradesStore = useGradesStore()
-
-const onClick = () => {
-	gradesStore.createGradeTable()
-}
-</script>
+<script setup></script>
 
 <style lang="scss">
 .NotExistGradeTableStub {
