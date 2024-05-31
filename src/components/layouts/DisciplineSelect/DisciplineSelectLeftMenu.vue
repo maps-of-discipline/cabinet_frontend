@@ -30,6 +30,7 @@
 							}"
 							:style="{
 								backgroundColor: discipline.color,
+								color: determinateTextColor(discipline.color) ? '#333' : '#fff',
 								'--shade-color': shadeColor(discipline.color, -35),
 							}"
 							@click="onSelectDiscipline(discipline)"
@@ -64,6 +65,7 @@ import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
 
+import determinateTextColor from '@services/helpers/determinateTextColor'
 import shadeColor from '@services/helpers/shadeColor'
 
 const gradesStore = useGradesStore()
@@ -160,6 +162,7 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 		align-items: center;
 		text-align: center;
 		user-select: none;
+		font-weight: 500;
 
 		&.isActive {
 			box-shadow: 0px 0px 0px 5px var(--shade-color) inset;
