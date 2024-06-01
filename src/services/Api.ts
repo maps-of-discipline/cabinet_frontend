@@ -125,7 +125,7 @@ abstract class Api {
 		return data
 	}
 
-	static async fetchAup({ search, aup }) {
+	static async fetchAup({ search, aup }: { search?: string; aup?: Key }) {
 		const { data, status } = await axios.get(`aup`, {
 			params: { search, aup },
 		})

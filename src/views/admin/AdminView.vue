@@ -41,7 +41,7 @@ const categories = ref([
 	},
 	{
 		id: 2,
-		label: 'Справочник тьюторов',
+		label: 'Тьюторы',
 		to: '/admin/tutors',
 		icon: 'mdi mdi-human-male-board',
 		color: 'rgb(238, 158, 68)',

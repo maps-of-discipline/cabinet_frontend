@@ -1,13 +1,16 @@
 import type { Ref } from 'vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 import debounce from '@services/helpers/debounce'
 import Api from '@services/Api'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 import type { Key } from '@models/Key'
+import { useUser } from '@stores/user'
 
 export const useDisciplineStore = defineStore('discipline', () => {
+	const userStore = useUser()
+
 	const aups: Ref<Array<any>> = ref([])
 	const isLoadingAups: Ref<boolean> = ref(false)
 
@@ -32,8 +35,24 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		setSelectedSemester(semesters.value[0])
 	}
 
-	const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
-	if (selectedAupIdByStorage) setSelectedAup(selectedAupIdByStorage)
+	const selectDataByStudent = async studentPermissions => {
+		const aup: string = studentPermissions.aup
+
+		selectedAupId.value = aup
+		sessionStorage.setItem('selectedAupId', aup)
+
+		const aupData = await Api.fetchAup({ aup })
+		selectedAup.value = aupData
+
+		await fetchDisciplines()
+		setStudyGroups([studentPermissions.group])
+		setSelectedGroup(studentPermissions.group)
+
+		setSelectedSemester(semesters.value[0])
+	}
+
+	/* const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
+	if (selectedAupIdByStorage) setSelectedAup(selectedAupIdByStorage) */
 
 	/* Выбранная дисциплина */
 
@@ -165,6 +184,7 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		selectedAupId,
 		aupTitle,
 		setSelectedAup,
+		selectDataByStudent,
 		isLoadingAups,
 
 		directionDialogModel,

@@ -277,14 +277,15 @@ watch(
 		disciplineStore.selectedAupId,
 		disciplineStore.selectedDisciplineId,
 		disciplineStore.selectedGroup,
-		disciplineStore.selectedSemester,
 	],
 	() => {
 		gradesStore.fetchGrades()
 	}
 )
 
-gradesStore.fetchGrades()
+onMounted(() => {
+	gradesStore.fetchGrades()
+})
 </script>
 
 <style lang="scss">

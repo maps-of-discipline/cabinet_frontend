@@ -5,10 +5,12 @@ import { RolesEnum, RolesNamesEnum } from '@models/auth/RolesEnum'
 
 import Api from '@services/Api'
 import { useAuth } from './auth'
+import { useDisciplineStore } from '@stores/discipline'
 import { jwtDecode } from 'jwt-decode'
 
 export const useUser = defineStore('user', () => {
 	const authStore = useAuth()
+	const disciplineStore = useDisciplineStore()
 
 	const userData: Ref<any> = ref(null)
 
@@ -32,6 +34,11 @@ export const useUser = defineStore('user', () => {
 	const isStudent = computed(
 		() => roles.value.has(RolesEnum.Student) || isAdmin.value
 	)
+
+	const studentPermisions = computed(
+		() => userData.value?.permissions?.[RolesEnum.Student]
+	)
+
 	const isTeacher = computed(
 		() => roles.value.has(RolesEnum.Teacher) || isAdmin.value
 	)
@@ -44,8 +51,14 @@ export const useUser = defineStore('user', () => {
 
 	const fetchUser = async () => {
 		if (!authStore.tokens.token) return null
-		const { user } = await Api.getUser(authStore.tokens.token)
+		const user = await Api.getUser(authStore.tokens.token)
 		if (!user) return null
+
+		if (user?.permissions[RolesEnum.Student]) {
+			const studentPermissions = user?.permissions[RolesEnum.Student]
+
+			disciplineStore.selectDataByStudent(studentPermissions)
+		}
 
 		userData.value = user
 	}
@@ -58,6 +71,7 @@ export const useUser = defineStore('user', () => {
 		name,
 		status,
 		fetchUser,
+		studentPermisions,
 
 		isAdmin,
 		isStudent,

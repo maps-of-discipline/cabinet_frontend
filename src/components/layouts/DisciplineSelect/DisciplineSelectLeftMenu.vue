@@ -1,7 +1,7 @@
 <template>
 	<Transition name="fade">
 		<div v-if="isOpenLeftMenu" class="DisciplineSelectLeftMenu">
-			<div class="DisciplineSelectLeftMenu__header">
+			<div class="DisciplineSelectLeftMenu__header" v-if="userStore.isAdmin">
 				<Button
 					class="DisciplineSelectLeftMenu__aup-select"
 					:label="disciplineStore.aupTitle || 'Выбор направления'"
@@ -66,10 +66,11 @@ import { useLessonsStore } from '@/stores/lessons'
 
 import determinateTextColor from '@services/helpers/determinateTextColor'
 import shadeColor from '@services/helpers/shadeColor'
+import { useUser } from '@stores/user'
 
 const gradesStore = useGradesStore()
 const disciplineStore = useDisciplineStore()
-const lessonsStore = useLessonsStore()
+const userStore = useUser()
 
 const isLoading = computed(() => disciplineStore.isLoadingDisciplineLeftMenu)
 
@@ -91,8 +92,7 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 	background-color: $shade900;
 	border-radius: $borderRadius;
 	padding: 16px;
-	display: grid;
-	grid-template-rows: auto minmax(0px, 1fr);
+	height: 100%;
 
 	&__header {
 		display: grid;
@@ -103,7 +103,7 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 
 	&__inner {
 		display: grid;
-		grid-template-rows: auto auto 1fr;
+		grid-template-rows: auto minmax(0px, 1fr);
 		width: 100%;
 		height: 100%;
 		transition: 0.25s ease;

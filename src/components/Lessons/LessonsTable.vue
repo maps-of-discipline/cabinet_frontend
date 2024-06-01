@@ -503,14 +503,15 @@ watch(
 		disciplineStore.selectedAupId,
 		disciplineStore.selectedDisciplineId,
 		disciplineStore.selectedGroup,
-		disciplineStore.selectedSemester,
 	],
 	() => {
 		lessonsStore.fetchLessons()
 	}
 )
 
-lessonsStore.fetchLessons()
+onMounted(() => {
+	lessonsStore.fetchLessons()
+})
 </script>
 
 <style lang="scss">

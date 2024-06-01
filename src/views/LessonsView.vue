@@ -9,9 +9,9 @@
 			>
 				<!-- <ApButton label="Скачать" icon="mdi mdi-download" /> -->
 				<ViewSelect />
-				<LoadViewSelect />
+				<LoadViewSelect v-if="userStore.isTeacher" />
 				<LessonsFilterDropdown />
-				<LessonsLoadInfo />
+				<LessonsLoadInfo v-if="userStore.isTeacher" />
 			</div>
 		</HeaderTable>
 
@@ -40,9 +40,11 @@ import LessonsLoadInfo from '@components/Lessons/LessonsLoadInfo.vue'
 import { computed, nextTick } from 'vue'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
+import { useUser } from '@/stores/user'
 
 const disciplineStore = useDisciplineStore()
 const lessonsStore = useLessonsStore()
+const userStore = useUser()
 
 const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
 
