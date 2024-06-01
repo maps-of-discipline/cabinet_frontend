@@ -10,7 +10,15 @@
 		</div>
 
 		<div class="LeftMenuAccount__detail">
-			<div class="LeftMenuAccount__name">{{ userStore.name }}</div>
+			<div
+				class="LeftMenuAccount__name"
+				v-tooltip.bottom="{
+					value: userStore.name,
+					showDelay: 500,
+				}"
+			>
+				{{ userStore.name }}
+			</div>
 			<div class="LeftMenuAccount__role">{{ userStore.status }}</div>
 		</div>
 
@@ -46,7 +54,7 @@ const imageUrl = computed(() => userStore.userData?.avatar || '')
 
 .LeftMenuAccount {
 	display: grid;
-	grid-template-columns: auto 1fr auto;
+	grid-template-columns: auto minmax(0px, 1fr) auto;
 	align-items: center;
 	white-space: nowrap;
 	overflow: hidden;
@@ -75,6 +83,10 @@ const imageUrl = computed(() => userStore.userData?.avatar || '')
 
 	&__name {
 		font-size: 1rem;
+
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 
 	&__role {

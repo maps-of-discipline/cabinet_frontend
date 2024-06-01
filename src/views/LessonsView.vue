@@ -7,7 +7,7 @@
 				v-if="lessonsStore.filteredLessons.length"
 				class="HeaderTable__editMode"
 			>
-				<ApButton label="Скачать" icon="mdi mdi-download" />
+				<!-- <ApButton label="Скачать" icon="mdi mdi-download" /> -->
 				<ViewSelect />
 				<LoadViewSelect />
 				<LessonsFilterDropdown />

@@ -280,17 +280,13 @@ watch(
 		disciplineStore.selectedSemester,
 	],
 	() => {
-		if (
-			!disciplineStore.selectedAupId ||
-			!disciplineStore.selectedDisciplineId ||
-			!disciplineStore.selectedGroup ||
-			!disciplineStore.selectedSemester
-		)
-			return
-
 		gradesStore.fetchGrades()
 	}
 )
+
+onMounted(() => {
+	gradesStore.fetchGrades()
+})
 </script>
 
 <style lang="scss">

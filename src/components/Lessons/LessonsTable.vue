@@ -506,17 +506,13 @@ watch(
 		disciplineStore.selectedSemester,
 	],
 	() => {
-		if (
-			!disciplineStore.selectedAupId ||
-			!disciplineStore.selectedDisciplineId ||
-			!disciplineStore.selectedGroup ||
-			!disciplineStore.selectedSemester
-		)
-			return
-
 		lessonsStore.fetchLessons()
 	}
 )
+
+onMounted(() => {
+	lessonsStore.fetchLessons()
+})
 </script>
 
 <style lang="scss">

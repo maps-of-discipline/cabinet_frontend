@@ -25,8 +25,7 @@
 							v-for="discipline in disciplines"
 							class="DisciplineSelectLeftMenu__block"
 							:class="{
-								isActive:
-									`${discipline.id}` === disciplineStore.selectedDisciplineId,
+								isActive: discipline.id == disciplineStore.selectedDisciplineId,
 							}"
 							:style="{
 								backgroundColor: discipline.color,
@@ -93,7 +92,7 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 	border-radius: $borderRadius;
 	padding: 16px;
 	display: grid;
-	grid-template-rows: auto 1fr;
+	grid-template-rows: auto minmax(0px, 1fr);
 
 	&__header {
 		display: grid;
@@ -108,7 +107,6 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 		width: 100%;
 		height: 100%;
 		transition: 0.25s ease;
-		overflow: hidden;
 		padding-top: 6px;
 	}
 
@@ -163,9 +161,11 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 		text-align: center;
 		user-select: none;
 		font-weight: 500;
+		border: 5px solid transparent;
+		transition: border 0.25s ease;
 
 		&.isActive {
-			box-shadow: 0px 0px 0px 5px var(--shade-color) inset;
+			border: 5px solid var(--shade-color);
 		}
 	}
 }

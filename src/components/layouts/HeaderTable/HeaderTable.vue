@@ -2,11 +2,11 @@
 	<div class="HeaderTable">
 		<div class="HeaderTable__left">
 			<DisciplineSelect />
-			<GroupSelect />
+			<!-- <GroupSelect /> -->
 			<!-- <SemesterSelect /> -->
 			<template v-if="disciplineStore.selectedDisciplineId">
 				<EditModeSwitcher v-if="userStore.isTeacher" />
-				<OpenPlanButton />
+				<!-- <OpenPlanButton /> -->
 			</template>
 		</div>
 

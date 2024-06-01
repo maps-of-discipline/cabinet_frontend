@@ -41,6 +41,8 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		sessionStorage.getItem('selectedDisciplineId')
 	)
 	const setSelectedDisciplineId = (value: string) => {
+		if (selectedDisciplineId.value == value) return
+
 		selectedDisciplineId.value = value
 		sessionStorage.setItem('selectedDisciplineId', value)
 

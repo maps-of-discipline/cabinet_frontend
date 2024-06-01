@@ -7,16 +7,19 @@
 				v-if="showDevBlock"
 				severity="warn"
 				style="font-size: 0.9rem"
+				class="AuthForm__dev-msg"
 			>
-				Приложение находится в режиме разработки. Для доступа необходимо
-				получить одобрение администратора. Telegram:
-				<a
-					class="AuthForm__contact-link"
-					href="https://t.me/KirillovDP"
-					target="_blank"
-				>
-					@KirillovDP
-				</a>
+				<span>Приложение находится в режиме разработки.</span>
+				<span>
+					Для доступа необходимо пройти модерацию. Telegram:
+					<a
+						class="AuthForm__contact-link"
+						href="https://t.me/KirillovDP"
+						target="_blank"
+					>
+						@KirillovDP
+					</a>
+				</span>
 			</InlineMessage>
 
 			<div class="AuthForm__logo-block" to="/">
@@ -97,12 +100,12 @@ const onLogin = async () => {
 	const res = await authStore.login(loginModel.value, passwordModel.value)
 
 	if (res.data?.approved === false) {
-		app.config.globalProperties.$toast.add({
+		/* app.config.globalProperties.$toast.add({
 			severity: 'warn',
 			summary:
 				'Система находится в разработке. Для получения доступа обратитесь к администратору',
 			life: 4000,
-		})
+		}) */
 
 		showDevBlock.value = true
 	} else if (res.error) {
@@ -144,6 +147,15 @@ const onLogin = async () => {
 
 	&__contact-link {
 		text-decoration: underline;
+	}
+
+	&__dev-msg {
+		.p-inline-message-text {
+			font-size: 1rem;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
 	}
 
 	&__main {

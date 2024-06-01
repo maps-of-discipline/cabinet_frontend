@@ -5,7 +5,7 @@
 	>
 		<HeaderTable class="Grades__header">
 			<template v-if="gradesStore.grades.length">
-				<ApButton label="Скачать" icon="mdi mdi-download" />
+				<!-- <ApButton label="Скачать" icon="mdi mdi-download" /> -->
 				<TypeGradeSelect />
 			</template>
 
