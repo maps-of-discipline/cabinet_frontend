@@ -510,9 +510,7 @@ watch(
 	}
 )
 
-onMounted(() => {
-	lessonsStore.fetchLessons()
-})
+lessonsStore.fetchLessons()
 </script>
 
 <style lang="scss">

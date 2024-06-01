@@ -284,9 +284,7 @@ watch(
 	}
 )
 
-onMounted(() => {
-	gradesStore.fetchGrades()
-})
+gradesStore.fetchGrades()
 </script>
 
 <style lang="scss">
