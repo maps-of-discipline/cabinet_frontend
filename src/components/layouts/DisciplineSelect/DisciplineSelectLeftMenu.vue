@@ -1,24 +1,26 @@
 <template>
 	<Transition name="fade">
 		<div v-if="isOpenLeftMenu" class="DisciplineSelectLeftMenu">
-			<div class="DisciplineSelectLeftMenu__header" v-if="userStore.isAdmin">
-				<Button
-					class="DisciplineSelectLeftMenu__aup-select"
-					:label="disciplineStore.aupTitle || 'Выбор направления'"
-					v-tooltip.bottom="{
-						value:
-							'Выбор дисциплины. Интерфейс для разработки и выбора любого направления и дисциплины',
-						showDelay: 500,
-					}"
-					@click="openPopup"
-				/>
+			<div class="DisciplineSelectLeftMenu__header">
+				<template v-if="userStore.isAdmin">
+					<Button
+						class="DisciplineSelectLeftMenu__aup-select"
+						:label="disciplineStore.aupTitle || 'Выбор направления'"
+						v-tooltip.bottom="{
+							value:
+								'Выбор дисциплины. Интерфейс для разработки и выбора любого направления и дисциплины',
+							showDelay: 500,
+						}"
+						@click="openPopup"
+					/>
 
-				<GroupSelect />
+					<GroupSelect />
+				</template>
+
+				<DisciplineSelectControl v-if="!isLoading" />
 			</div>
 
 			<div v-if="!isLoading" class="DisciplineSelectLeftMenu__inner">
-				<DisciplineSelectControl />
-
 				<div class="DisciplineSelectLeftMenu__list-wrapper">
 					<div class="DisciplineSelectLeftMenu__list">
 						<div
@@ -93,12 +95,12 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 	border-radius: $borderRadius;
 	padding: 16px;
 	height: 100%;
+	display: grid;
+	grid-template-rows: auto minmax(0px, 1fr);
 
 	&__header {
 		display: grid;
-		grid-template-rows: auto auto;
 		gap: 12px;
-		margin-bottom: 8px;
 	}
 
 	&__inner {
@@ -107,7 +109,6 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 		width: 100%;
 		height: 100%;
 		transition: 0.25s ease;
-		padding-top: 6px;
 	}
 
 	&__aup-select {

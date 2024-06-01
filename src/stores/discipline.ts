@@ -57,7 +57,7 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	/* Выбранная дисциплина */
 
 	const selectedDisciplineId: Ref<string | null> = ref(
-		sessionStorage.getItem('selectedDisciplineId')
+		null // sessionStorage.getItem('selectedDisciplineId')
 	)
 	const setSelectedDisciplineId = (value: string) => {
 		if (selectedDisciplineId.value == value) return
