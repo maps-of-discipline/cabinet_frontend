@@ -1,126 +1,252 @@
 <template>
 	<div class="TutorsForm">
-		<div class="TutorsForm__title">Утверждение тьюторов</div>
+		<div class="TutorsForm__title">Назначение тьюторов</div>
 
 		<div class="TutorsForm__header-block">
-			<Dropdown
-				class="TutorsForm__faculty-select"
-				v-model="selectedFaculty"
-				:options="faculties"
-				:optionDisabled="isDisabledDepartmentOption"
-				:loading="isLoading"
-				placeholder="Выберите факультет"
-				optionLabel="name_faculty"
-			/>
+			<div class="TutorsForm__input-block">
+				<label for="tutorsDate">Факультет:</label>
 
+				<Dropdown
+					class="TutorsForm__faculty-select"
+					:modelValue="selectedFaculty"
+					:options="faculties"
+					:optionDisabled="isDisabledDepartmentOption"
+					:loading="isLoading"
+					placeholder="Выберите факультет"
+					optionLabel="name_faculty"
+					@update:modelValue="onSelectFaculty"
+				/>
+			</div>
+
+			<div class="TutorsForm__input-block">
+				<label for="tutorsDate">Год обучения:</label>
+
+				<Dropdown
+					placeholder="Выберите год"
+					:modelValue="selectedYear"
+					:options="avaliableYears"
+					:disabled="!selectedFaculty"
+					style="width: 170px"
+					@update:modelValue="onSelectYear"
+				/>
+			</div>
+
+			<div class="TutorsForm__input-block">
+				<label for="tutorsDate">Форма обучения:</label>
+
+				<Dropdown
+					placeholder="Выберите форму обучения"
+					optionLabel="form"
+					:modelValue="selectedFormOfEducation"
+					:options="allFormsOfEducation"
+					:disabled="!selectedFaculty"
+					style="width: 170px"
+					@update:modelValue="onSelectFormOfEducation"
+				/>
+			</div>
+
+			<!-- <Button label="Создать распоряжение" /> -->
+
+			<!-- <ApEditMode v-model="editMode" :disabled="!selectedFaculty" /> -->
+		</div>
+
+		<TutorsTabs :empty="!selectedFaculty">
+			<TutorsTab title="Преамбула">
+				<TutorsMetaForm
+					v-model:formModel="formModel"
+					:formsOfEducation="allFormsOfEducation"
+				/>
+			</TutorsTab>
+
+			<TutorsTab title="Тьюторы">
+				<div v-if="editMode" class="TutorsForm__header-block">
+					<Dropdown
+						class="TutorsForm__dep-select"
+						panelClass="TutorsForm__dep-select-panel"
+						v-model="selectedDepartment"
+						:options="departments"
+						:optionDisabled="isDisabledDepartmentOption"
+						:loading="isLoading"
+						placeholder="Выберите кафедру"
+						optionLabel="name_department"
+					>
+						<template #option="{ option }">
+							<span
+								class="TutorsForm__dep-select-option"
+								v-tooltip.bottom="{
+									value: option.name_department,
+									showDelay: 500,
+								}"
+							>
+								{{ option.name_department }}
+							</span>
+						</template>
+					</Dropdown>
+
+					<Button
+						label="Добавить кафедру"
+						icon="mdi mdi-plus"
+						:disabled="!selectedDepartment"
+						@click="onAddDepartment"
+					/>
+				</div>
+
+				<div class="TutorsForm__body">
+					<div v-if="departmentsItems.length" class="TutorsForm__table-wrapper">
+						<div
+							class="TutorsForm__table"
+							v-for="(department, i) in departmentsItems"
+						>
+							<TutorsDepartmentTable
+								:order="i + 1"
+								:department="department"
+								:editMode="editMode"
+								@addRow="onAddRow"
+								@deleteRow="onDeleteRow"
+								@editStudyGroups="onEditStudyGroups"
+								@editTutor="onEditTutor"
+							/>
+						</div>
+					</div>
+
+					<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
+						Выберите факультет
+					</div>
+
+					<div
+						v-else-if="!departmentsItems.length && editMode"
+						class="TutorsForm__table-empty"
+					>
+						Добавьте кафедру
+					</div>
+
+					<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
+				</div>
+			</TutorsTab>
+		</TutorsTabs>
+
+		<div class="TutorsForm__footer">
 			<Button
 				label="Скачать"
-				:disabled="!selectedFaculty || !departmentsItems.length"
+				:disabled="!selectedOrder"
 				:loading="isDownloadLoading"
 				icon="mdi mdi-download"
 				@click="onClickDownload"
 			/>
 
-			<ApEditMode v-model="editMode" :disabled="!selectedFaculty" />
-		</div>
-
-		<div v-if="editMode" class="TutorsForm__header-block">
-			<Dropdown
-				class="TutorsForm__dep-select"
-				panelClass="TutorsForm__dep-select-panel"
-				v-model="selectedDepartment"
-				:options="departments"
-				:optionDisabled="isDisabledDepartmentOption"
-				:loading="isLoading"
-				placeholder="Выберите кафедру"
-				optionLabel="name_department"
-			>
-				<template #option="{ option }">
-					<span
-						class="TutorsForm__dep-select-option"
-						v-tooltip.bottom="{
-							value: option.name_department,
-							showDelay: 500,
-						}"
-					>
-						{{ option.name_department }}
-					</span>
-				</template>
-			</Dropdown>
-
 			<Button
-				label="Добавить кафедру"
-				icon="mdi mdi-plus"
-				:disabled="!selectedDepartment"
-				@click="onAddDepartment"
+				label="Сохранить"
+				:loading="isSaveLoading"
+				:disabled="!selectedOrder"
+				@click="onSave"
 			/>
 		</div>
-
-		<div class="TutorsForm__body">
-			<div v-if="departmentsItems.length" class="TutorsForm__table-wrapper">
-				<div
-					class="TutorsForm__table"
-					v-for="(department, i) in departmentsItems"
-				>
-					<TutorsDepartmentTable
-						:order="i + 1"
-						:department="department"
-						:editMode="editMode"
-						@addRow="onAddRow"
-						@deleteRow="onDeleteRow"
-						@editStudyGroups="onEditStudyGroups"
-						@editTutor="onEditTutor"
-					/>
-				</div>
-			</div>
-
-			<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
-				Выберите факультет
-			</div>
-
-			<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
-				Выберите факультет
-			</div>
-
-			<div
-				v-else-if="!departmentsItems.length && editMode"
-				class="TutorsForm__table-empty"
-			>
-				Добавьте кафедру
-			</div>
-
-			<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
-
-			<TutorsMetaForm v-if="selectedFaculty" />
-		</div>
-
-		<!-- <div class="TutorsForm__footer">
-			<Button v-if="editMode" label="Скачать" @click="onClickDownload" />
-		</div> -->
 	</div>
 </template>
 
 <script setup>
 import TutorsDepartmentTable from '@components/admin/tutors/TutorsDepartmentTable.vue'
 import TutorsMetaForm from '@components/admin/tutors/TutorsMetaForm.vue'
+import TutorsTabs from '@components/admin/tutors/TutorsTabs.vue'
+import TutorsTab from '@components/admin/tutors/TutorsTab.vue'
 import Api from '@services/Api'
 
 import { ref, computed, onMounted, watch, toRaw } from 'vue'
 
 const isLoading = ref(false)
 const isDownloadLoading = ref(false)
+const isSaveLoading = ref(false)
+
+const avaliableOrders = ref([])
+const selectedOrder = ref(null)
+
+const allFormsOfEducation = ref([])
+const selectedFormOfEducation = ref(null)
+const onSelectFormOfEducation = value => {
+	selectedFormOfEducation.value = value
+	onChangeOrder()
+}
+
+const emptyForm = {
+	date: null,
+	order: null,
+	year: null,
+	executor: null,
+	signer: null,
+}
+
+const formModel = ref(emptyForm)
+
+const onChangeOrder = () => {
+	const foundOrder = avaliableOrders.value.find(
+		order =>
+			order.year === selectedYear.value &&
+			order.form_education.id_form === selectedFormOfEducation.value.id_form
+	)
+
+	console.log('new selectedOrder')
+	console.log(selectedOrder)
+
+	if (foundOrder) {
+		formModel.value = {
+			date: new Date(foundOrder.date),
+			order: foundOrder.num_order,
+			year: foundOrder.year,
+			signer: foundOrder.signer,
+			executor: foundOrder.executor,
+		}
+
+		selectedOrder.value = foundOrder
+	} else {
+		formModel.value = emptyForm
+	}
+}
 
 const faculties = ref([])
 const selectedFaculty = ref(null)
+const onSelectFaculty = async value => {
+	try {
+		selectedFaculty.value = value
+		const orders = await Api.fetchTutorOrders({ id: 1 })
+		avaliableOrders.value = orders
+		selectedYear.value = avaliableYears.value?.[0]
+
+		if (!selectedFormOfEducation.value)
+			selectedFormOfEducation.value = allFormsOfEducation.value?.[0]
+		onChangeOrder()
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+const avaliableYears = computed(() =>
+	avaliableOrders.value.map(order => order.year)
+)
+const selectedYear = ref(null)
+const onSelectYear = value => {
+	selectedYear.value = value
+	onChangeOrder()
+}
 
 const selectedDepartment = ref(null)
-const departments = computed(() => selectedFaculty.value.departments)
+const departments = computed(() => selectedFaculty.value?.departments || [])
 
-const meta = ref({
-	date: '',
-})
+const editMode = ref(true)
 
-const editMode = ref(false)
+const onSave = async () => {
+	try {
+		isSaveLoading.value = true
+		await Api.editTutorOrder({
+			id: selectedOrder.value.id,
+			meta: formModel.value,
+			body: [],
+		})
+	} catch (e) {
+		console.log(e)
+	} finally {
+		isSaveLoading.value = false
+	}
+}
 
 const departmentsItemsMap = ref({})
 const departmentsItems = computed(() =>
@@ -223,6 +349,7 @@ onMounted(async () => {
 	try {
 		isLoading.value = true
 		faculties.value = await Api.getFaculties()
+		allFormsOfEducation.value = await Api.fetchFormOfEducations()
 		isLoading.value = false
 	} catch (e) {
 		console.log(e)
@@ -237,7 +364,6 @@ onMounted(async () => {
 	background-color: $view-bg;
 	border-radius: 8px;
 	padding: 16px;
-	min-width: 1000px;
 
 	&__title {
 		font-weight: 600;
@@ -245,21 +371,32 @@ onMounted(async () => {
 		margin-bottom: 12px;
 	}
 
+	&__input-row {
+		display: grid;
+		grid-auto-columns: 1fr;
+		grid-auto-flow: column;
+		gap: 12px;
+	}
+
+	&__input-block {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		gap: 6px;
+	}
+
 	&__header-block {
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-auto-columns: minmax(100px, auto);
-		grid-template-rows: 37px;
 		grid-auto-flow: column;
-		gap: 8px;
+		gap: 16px;
 		margin-bottom: 12px;
 	}
 
 	&__body {
-		margin-top: 12px;
-		max-height: 60vh;
-		overflow: auto;
-		padding: 16px 16px 16px;
+		height: 100%;
+		width: 100%;
 	}
 
 	&__table-wrapper {
@@ -273,7 +410,7 @@ onMounted(async () => {
 
 	&__table-empty {
 		margin-bottom: 12px;
-		min-height: 300px;
+		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -284,6 +421,7 @@ onMounted(async () => {
 		margin-top: 12px;
 		display: flex;
 		justify-content: flex-end;
+		gap: 12px;
 	}
 
 	&__dep-select {

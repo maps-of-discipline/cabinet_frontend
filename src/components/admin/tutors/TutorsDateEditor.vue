@@ -1,22 +1,13 @@
 <template>
-	<div class="TutorsDateEditor">
-		<Button
-			class="TutorsDateEditor__activator"
-			:label="label"
-			:icon="!date ? 'mdi mdi-calendar-blank' : ''"
-			@click="togglePanel"
+	<div class="TutorsForm__input-block">
+		<label for="tutorsDate">Дата распоряжения:</label>
+		<Calendar
+			:modelValue="date"
+			@update:modelValue="onInputDate"
+			placeholder="Выберите дату"
+			dateFormat="dd.mm.yy"
+			inputId="tutorsDate"
 		/>
-
-		<OverlayPanel ref="opRef">
-			<Calendar
-				selectionMode="single"
-				inline
-				dateFormat="dd.mm.yy"
-				:modelValue="date"
-				@update:modelValue="onInputDate"
-			>
-			</Calendar>
-		</OverlayPanel>
 	</div>
 </template>
 
@@ -25,15 +16,6 @@ import { ref, computed } from 'vue'
 
 const date = ref(null)
 const onInputDate = value => (date.value = value)
-
-const opRef = ref()
-const togglePanel = event => opRef.value.toggle(event)
-
-const label = computed(() => {
-	return date.value
-		? new Date(date.value).toLocaleDateString('ru-RU')
-		: 'Указать'
-})
 </script>
 
 <style lang="scss">

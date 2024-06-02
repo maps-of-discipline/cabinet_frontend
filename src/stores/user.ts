@@ -50,17 +50,21 @@ export const useUser = defineStore('user', () => {
 	)
 
 	const fetchUser = async () => {
-		if (!authStore.tokens.token) return null
-		const user = await Api.getUser(authStore.tokens.token)
-		if (!user) return null
+		try {
+			if (!authStore.tokens.token) return null
+			const user = await Api.getUser(authStore.tokens.token)
+			if (!user) return null
 
-		if (user?.permissions[RolesEnum.Student]) {
-			const studentPermissions = user?.permissions[RolesEnum.Student]
+			if (user?.permissions[RolesEnum.Student]) {
+				const studentPermissions = user?.permissions[RolesEnum.Student]
 
-			disciplineStore.selectDataByStudent(studentPermissions)
+				disciplineStore.selectDataByStudent(studentPermissions)
+			}
+
+			userData.value = user
+		} catch (e) {
+			authStore.logout()
 		}
-
-		userData.value = user
 	}
 
 	return {

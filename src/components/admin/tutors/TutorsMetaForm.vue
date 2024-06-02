@@ -1,110 +1,118 @@
 <template>
 	<div class="TutorsMetaForm">
-		<TutorsDateEditor />
+		<div class="TutorsForm__input-row">
+			<div class="TutorsForm__input-block">
+				<label for="tutorsDate">Дата распоряжения:</label>
+				<Calendar
+					v-model="formModel.date"
+					placeholder="Выберите дату"
+					dateFormat="dd.mm.yy"
+					inputId="tutorsDate"
+				/>
+			</div>
 
-		<InputNumber placeholder="Номер распоряжения" />
+			<div class="TutorsForm__input-block">
+				<label for="numOrder">Номер распоряжения:</label>
+				<InputNumber
+					v-model="formModel.order"
+					placeholder="Укажите номер"
+					inputId="numOrder"
+				/>
+			</div>
 
-		<Dropdown
-			:options="formsOfEducation"
-			v-model="selectedFormOfEducation"
-			placeholder="Форма обучения"
-			optionLabel="form"
-		/>
+			<div class="TutorsForm__input-block">
+				<label for="year">Год обучения:</label>
 
-		<Dropdown
-			:options="rangeYears"
-			v-model="selectedRangeYears"
-			placeholder="Форма обучения"
-			optionLabel="label"
-		/>
+				<InputNumber
+					v-model="formModel.year"
+					placeholder="Укажите год обучения"
+					:useGrouping="false"
+					:min="2019"
+					inputId="year"
+					:max="new Date().getFullYear() + 1"
+				/>
+			</div>
+		</div>
 
-		<Dropdown
-			:options="checks"
-			v-model="selectedCheck"
-			placeholder="Периодичность проверки"
-			optionLabel="label"
-		/>
+		<!-- <div class="TutorsForm__input-block">
+			<label for="tutorsDate">Форма обучения:</label>
+			<Dropdown
+				:options="formsOfEducation"
+				v-model="formModel.formEducation"
+				placeholder="Укажите форму обучения"
+				optionLabel="form"
+			/>
+		</div> -->
 
-		<InputNumber v-model="inDayModel" placeholder="В какой день?" />
-		<InputNumber v-model="executorModel" placeholder="Исполнитель" />
-		<InputNumber v-model="helperModel" placeholder="К кому обращаться?" />
-		<InputNumber
-			v-model="signerModel"
-			placeholder="Лицо, утверждающее распоряжение"
-		/>
+		<!-- <div class="TutorsForm__input-row">
+			<div class="TutorsForm__input-block">
+				<label for="tutorsDate">Периодичность провеки:</label>
+
+				<Dropdown
+					placeholder="Укажите периодичность проверки"
+					optionLabel="label"
+				/>
+			</div>
+
+			<div class="TutorsForm__input-block">
+				<label for="tutorsDate">День проверки:</label>
+
+				<InputNumber placeholder="Укажите день проверки" />
+			</div>
+		</div> -->
+
+		<div class="TutorsForm__input-row">
+			<div class="TutorsForm__input-block">
+				<label for="executor">Исполнитель:</label>
+
+				<InputText
+					v-model="formModel.executor"
+					id="executor"
+					placeholder="Укажите исполнителя"
+				/>
+			</div>
+
+			<div class="TutorsForm__input-block">
+				<label for="signer">Лицо, утверждающее распоряжение:</label>
+
+				<InputText
+					v-model="formModel.signer"
+					id="signer"
+					placeholder="Лицо, утверждающее распоряжение"
+				/>
+			</div>
+		</div>
+
+		<!-- <div class="TutorsForm__input-block">
+			<label for="tutorsDate">К кому обращаться:</label>
+
+			<InputNumber placeholder="К кому обращаться?" />
+		</div> -->
 	</div>
 </template>
 
 <script setup>
-import TutorsDateEditor from '@components/admin/tutors/TutorsDateEditor.vue'
+const props = defineProps({
+	formsOfEducation: {
+		type: Object,
+		default: () => [],
+	},
+})
 
-import { ref } from 'vue'
+const formModel = defineModel('formModel')
 
-const selectedFormOfEducation = ref(null)
-const formsOfEducation = ref([
-	{
-		id_form: 1,
-		form: 'Очная',
-	},
-	{
-		id_form: 2,
-		form: 'Очно-заочная',
-	},
-	{
-		id_form: 3,
-		form: 'Заочная',
-	},
-])
-
-const selectedRangeYears = ref(null)
-const rangeYears = ref([
-	{
-		value: 2022,
-		label: '2022/2023',
-	},
-	{
-		value: 2023,
-		label: '2023/2024',
-	},
-	{
-		value: 2024,
-		label: '2024/2025',
-	},
-	{
-		value: 2025,
-		label: '2025/2026',
-	},
-])
-
-const selectedCheck = ref(null)
-const checks = ref([
-	{
-		value: 1,
-		label: 'Раз в месяц',
-	},
-	{
-		value: 2,
-		label: 'Раз в два месяца',
-	},
-	{
-		value: 3,
-		label: 'Раз в три месяца',
-	},
-])
-
-const inDayModel = ref(null)
-
-const executorModel = ref(null)
-
-const helperModel = ref(null)
-const signerModel = ref(null)
+const rangeYears = [2021, 2022, 2023, 2024]
 </script>
 
 <style lang="scss">
 .TutorsMetaForm {
 	margin-top: 12px;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	gap: 12px;
+	gap: 16px;
+	padding: 0 30px;
+
+	input {
+		width: 100%;
+	}
 }
 </style>

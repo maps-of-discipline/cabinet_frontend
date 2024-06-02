@@ -368,6 +368,32 @@ abstract class Api {
 
 		return data
 	}
+
+	static async fetchTutorOrders({ id }: { id: Key }) {
+		const { data, status } = await axios.get(`tutor-orders`, {
+			params: { id },
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async editTutorOrder(payload: any) {
+		const { data, status } = await axios.patch(`tutor-order`, payload)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
+
+	static async fetchFormOfEducations() {
+		const { data, status } = await axios.get(`form-of-educations`)
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })
