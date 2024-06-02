@@ -51,13 +51,13 @@ export const useDisciplineStore = defineStore('discipline', () => {
 		setSelectedSemester(semesters.value[0])
 	}
 
-	/* const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
-	if (selectedAupIdByStorage) setSelectedAup(selectedAupIdByStorage) */
+	const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
+	if (selectedAupIdByStorage) setSelectedAup(selectedAupIdByStorage)
 
 	/* Выбранная дисциплина */
 
 	const selectedDisciplineId: Ref<string | null> = ref(
-		null // sessionStorage.getItem('selectedDisciplineId')
+		null // sessionStorage.getItem('selectedDisciplineId') bug
 	)
 	const setSelectedDisciplineId = (value: string) => {
 		if (selectedDisciplineId.value == value) return
@@ -139,13 +139,13 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	/*  */
 
 	/* Режим просмотра/редактирования */
-	const editMode = ref(false)
+	const editMode = ref(true)
 	const switchMode = () => (editMode.value = !editMode.value)
 
 	/* new */
 	const isLoadingDisciplineLeftMenu = ref(false)
 
-	const isOpenDisciplineColumn = ref(false)
+	const isOpenDisciplineColumn = ref(true)
 	const setIsOpenDisciplineColumn = async value => {
 		isOpenDisciplineColumn.value = value
 	}

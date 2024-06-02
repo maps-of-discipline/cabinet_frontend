@@ -1,12 +1,9 @@
 import type { Key } from '@models/Key'
-import type { IFetchLessons } from '@models/lessons/IFetchLessons'
-import type { ILesson } from '@models/lessons/ILesson'
-import type {
-	IFetchLessonControls,
-	ILessonControls,
-} from '@models/lessons/IFetchLessonControls'
-import type { IStudyGroup } from '@models/lessons/IStudyGroup'
-import ViewModesEnum from '@models/lessons/ViewModesEnum'
+
+import type { IGradeColumn } from '@models/grades/IGradeColumn'
+import type { IGradeTableRow } from '@models/grades/IGradeTableRow'
+import type { IGradeType } from '@models/grades/IGradeType'
+import type { IGradeTableFilters } from '@models/grades/IGradeTableFilters'
 
 import type { Ref } from 'vue'
 import { ref, computed, watch } from 'vue'
@@ -15,14 +12,6 @@ import { useDisciplineStore } from '@stores/discipline'
 
 import Api from '@services/Api'
 
-interface IGradeRow {
-	id: Key
-	name: string
-	values: {
-		[key: string]: number
-	}
-}
-
 export const useGradesStore = defineStore('grades', () => {
 	const disciplineStore = useDisciplineStore()
 
@@ -30,52 +19,53 @@ export const useGradesStore = defineStore('grades', () => {
 	const gradeTableIsNotExist = ref(false)
 
 	// Виды оценивания
-	const typesGrade = ref([])
+	const gradeTypes: Ref<IGradeType[]> = ref([])
 	const availableTypesGrade = computed(() =>
-		typesGrade.value.filter(typeGrade => !typeGrade.archived)
+		gradeTypes.value.filter(gradeType => !gradeType.archived)
 	)
-	const setTypesGrade = data => (typesGrade.value = data)
+	const setTypesGrade = data => (gradeTypes.value = data)
 
 	const updateGradeType = async gradeType => {
 		if (!gradeType) return
 
 		const data = await Api.updateGradeType(gradeType)
 
-		const indexToUpdate = typesGrade.value.findIndex(
+		const indexToUpdate = gradeTypes.value.findIndex(
 			item => item.id === data.id
 		)
 
 		if (indexToUpdate === -1) return null
 
-		typesGrade.value[indexToUpdate] = data
+		gradeTypes.value[indexToUpdate] = data
 
-		if (gradeType.id === selectedTypeGrade.value.id) {
-			setSelectedTypeGrade(availableTypesGrade.value[0])
+		if (gradeType.id === selectedGradeType.value?.id) {
+			setSelectedGradeType(availableTypesGrade.value[0])
 		}
 	}
 
 	const createGradeType = async gradeTypeSettings => {
-		if (!gradeTypeSettings) return
+		if (!gradeTypeSettings || !disciplineTableId.value) return
 
 		const data: any = await Api.createGradeType(
 			gradeTypeSettings,
 			disciplineTableId.value
 		)
 
-		typesGrade.value.push(data)
+		gradeTypes.value.push(data)
 	}
 
 	// Выбранный вид оценивания
-	const selectedTypeGrade = ref(null)
-	const setSelectedTypeGrade = value => (selectedTypeGrade.value = value)
+	const selectedGradeType: Ref<IGradeType | null> = ref(null)
+	const setSelectedGradeType = value => (selectedGradeType.value = value)
+
 	const isAllGradeType = ref(false)
 	const setIsAllGradeType = value => (isAllGradeType.value = value)
 
 	// Оценки
-	const grades: Ref<IGradeRow[]> = ref([])
-	const setGrades = (data: IGradeRow[]) => (grades.value = data)
+	const grades: Ref<IGradeTableRow[]> = ref([])
+	const setGrades = (data: IGradeTableRow[]) => (grades.value = data)
 
-	const columns = ref([])
+	const columns: Ref<IGradeColumn[]> = ref([])
 	const setColumns = data => (columns.value = data)
 
 	const setColumnsIdsBySelectedType = computed(() => {
@@ -84,7 +74,7 @@ export const useGradesStore = defineStore('grades', () => {
 		columns.value.forEach(col => {
 			if (
 				isAllGradeType.value ||
-				selectedTypeGrade.value.id === col.grade_type_id
+				selectedGradeType.value?.id === col.grade_type_id
 			)
 				set.add(col.id)
 		})
@@ -96,8 +86,8 @@ export const useGradesStore = defineStore('grades', () => {
 		if (isAllGradeType.value) return columns
 
 		return [...columns.value]
-			.filter(column => column.grade_type_id === selectedTypeGrade.value.id)
-			.sort((a, b) => a.topic.id - b.topic.id)
+			.filter(column => column.grade_type_id === selectedGradeType.value?.id)
+			.sort((a: IGradeColumn, b: IGradeColumn) => +a.topic.id - +b.topic.id)
 	})
 
 	const showFullname = ref(true)
@@ -134,7 +124,7 @@ export const useGradesStore = defineStore('grades', () => {
 			setColumns(data.columns)
 
 			setTypesGrade(data.gradeTypes)
-			setSelectedTypeGrade(availableTypesGrade.value[0])
+			setSelectedGradeType(availableTypesGrade.value[0])
 
 			disciplineTableId.value = data.disciplineTableId
 
@@ -158,16 +148,22 @@ export const useGradesStore = defineStore('grades', () => {
 	}
 
 	/* filters */
-	const filters = ref([
+	const filters: Ref<IGradeTableFilters[]> = ref([
 		{ label: 'Скрыть пустые столбцы', name: 'hideEmptyCols' },
 	])
 
-	const selectedFilters = ref([])
+	const selectedFilters: Ref<IGradeTableFilters[]> = ref([])
 	const setSelectedFilters = filters => (selectedFilters.value = filters)
 
 	const isHideEmptyCols = computed(() =>
 		selectedFilters.value.some(filter => filter.name === 'hideEmptyCols')
 	)
+
+	/* column filters */
+
+	const setSelectedColumnFilters = filters => {
+		console.log(filters)
+	}
 
 	return {
 		isShowSettings,
@@ -185,13 +181,13 @@ export const useGradesStore = defineStore('grades', () => {
 		setColumnsIdsBySelectedType,
 		filteredColumnsBySelectedType,
 
-		typesGrade,
+		gradeTypes,
 		availableTypesGrade,
 		updateGradeType,
 		createGradeType,
 
-		selectedTypeGrade,
-		setSelectedTypeGrade,
+		selectedGradeType,
+		setSelectedGradeType,
 
 		isAllGradeType,
 		setIsAllGradeType,
@@ -208,5 +204,8 @@ export const useGradesStore = defineStore('grades', () => {
 		setSelectedFilters,
 
 		isHideEmptyCols,
+
+		/* column filters */
+		setSelectedColumnFilters,
 	}
 })

@@ -77,7 +77,11 @@ const userStore = useUser()
 const isLoading = computed(() => disciplineStore.isLoadingDisciplineLeftMenu)
 
 const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
-const disciplines = computed(() => disciplineStore.disciplinesBySemester)
+const disciplines = computed(() =>
+	disciplineStore.disciplinesBySemester.sort((a, b) =>
+		a.name.localeCompare(b.name)
+	)
+)
 
 const onSelectDiscipline = discipline => {
 	disciplineStore.setSelectedDisciplineId(discipline.id)
@@ -153,7 +157,7 @@ const openPopup = () => disciplineStore.setDirectionDialogModel(true)
 	&__block {
 		cursor: pointer;
 		border-radius: $borderRadius;
-		height: 100px;
+		min-height: 70px;
 		display: flex;
 		font-size: 0.9rem;
 		padding: 8px;

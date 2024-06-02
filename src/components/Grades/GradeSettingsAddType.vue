@@ -1,14 +1,14 @@
 <template>
 	<div class="GradeSettingsAddType">
 		<div class="GradeSettingsAddType__label-block">
-			<label class="GradeSettingsAddType__label" for="typeGrade">
+			<label class="GradeSettingsAddType__label" for="gradeType">
 				Добавить вид оценивания
 			</label>
 
 			<InputText
 				v-model="nameModel"
 				class="GradeSettingsAddType__input"
-				inputId="typeGrade"
+				inputId="gradeType"
 				placeholder="Название"
 			/>
 		</div>

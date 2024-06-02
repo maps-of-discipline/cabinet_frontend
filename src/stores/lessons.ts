@@ -1,6 +1,6 @@
 import type { Key } from '@models/Key'
 import type { IFetchLessons } from '@models/lessons/IFetchLessons'
-import type { ILesson } from '@models/lessons/ILesson'
+import type { ITopic } from '@models/lessons/ITopic'
 import type { IControlType } from '@models/lessons/IFetchLessonControls'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
@@ -21,8 +21,8 @@ export const useLessonsStore = defineStore('lessons', () => {
 	const disciplineTableId: Ref<Key | null> = ref(null)
 
 	/* Строки занятий */
-	const lessons: Ref<ILesson[]> = ref([])
-	const setLessonItems = (data: ILesson[]) => (lessons.value = data)
+	const lessons: Ref<ITopic[]> = ref([])
+	const setLessonItems = (data: ITopic[]) => (lessons.value = data)
 
 	/* Нагрузки */
 	const controlTypes: Ref<IControlType[]> = ref([])
@@ -50,19 +50,19 @@ export const useLessonsStore = defineStore('lessons', () => {
 	}
 
 	/* Fetching */
-	const createLesson = async (lesson: ILesson) => {
+	const createLesson = async (lesson: ITopic) => {
 		if (!isLocalLesson(lesson.id)) return null
 
-		const createdLesson: ILesson | null = await Api.createLesson(lesson)
+		const createdLesson: ITopic | null = await Api.createLesson(lesson)
 		if (!createdLesson) return null
 
 		return editLocalLesson(lesson.id, createdLesson)
 	}
 
-	const editLesson = async (lesson: ILesson) => {
+	const editLesson = async (lesson: ITopic) => {
 		if (isLocalLesson(lesson.id)) return await createLesson(lesson)
 
-		const editedLesson: ILesson | null = await Api.editLesson(lesson)
+		const editedLesson: ITopic | null = await Api.editLesson(lesson)
 		if (!editedLesson) return null
 
 		return editLocalLesson(lesson.id, editedLesson)
@@ -73,7 +73,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 
 		if (isLocalLesson(id)) return deleteLocalLesson(id)
 
-		const data: ILesson | null = await Api.deleteLesson(id)
+		const data: ITopic | null = await Api.deleteLesson(id)
 		if (data) {
 			return deleteLocalLesson(id)
 		} else {
@@ -99,7 +99,7 @@ export const useLessonsStore = defineStore('lessons', () => {
 		lessons.value.push(lesson)
 	}
 
-	const editLocalLesson = (id: Key, newLesson: ILesson) => {
+	const editLocalLesson = (id: Key, newLesson: ITopic) => {
 		const indexToUpdate = lessons.value.findIndex(item => item.id === id)
 		if (indexToUpdate === -1) return null
 

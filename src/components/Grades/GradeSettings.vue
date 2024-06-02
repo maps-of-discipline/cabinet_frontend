@@ -146,15 +146,15 @@ const localGradeTypes = ref([])
 const isLoadingSave = ref(false)
 
 const setLocalGradeTypes = () => {
-	localGradeTypes.value = gradesStore.typesGrade.sort((a, b) =>
+	localGradeTypes.value = gradesStore.gradeTypes.sort((a, b) =>
 		a.name.localeCompare(b.name)
 	)
 }
 
 watch(
-	() => gradesStore.typesGrade,
+	() => gradesStore.gradeTypes,
 	() => {
-		setLocalGradeTypes(gradesStore.typesGrade)
+		setLocalGradeTypes(gradesStore.gradeTypes)
 	}
 )
 

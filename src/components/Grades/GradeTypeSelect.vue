@@ -6,7 +6,7 @@
 		}"
 	>
 		<Dropdown
-			class="TypeGradeSelect"
+			class="GradeTypeSelect"
 			v-model="selectedType"
 			:options="options"
 			:optionLabel="getLabel"
@@ -41,25 +41,14 @@ const options = computed(() => {
 
 const selectedType = computed({
 	get() {
-		return gradesStore.selectedTypeGrade
+		return gradesStore.selectedGradeType
 	},
 
 	set(type) {
 		if (type.value === 'all') gradesStore.setIsAllGradeType(true)
-
-		return gradesStore.setSelectedTypeGrade(type)
+		return gradesStore.setSelectedGradeType(type)
 	},
 })
-
-/* const selectedGroup = computed({
-	get() {
-		return disciplineStore.selectedGroup
-	},
-
-	set(val) {
-		disciplineStore.setSelectedGroup(val)
-	},
-}) */
 
 const getLabel = value => value.name
 </script>
@@ -67,7 +56,7 @@ const getLabel = value => value.name
 <style lang="scss">
 @import '@styles/_variables.scss';
 
-.TypeGradeSelect {
+.GradeTypeSelect {
 	height: 37px;
 	align-items: center;
 	transition: outline 0.2s;

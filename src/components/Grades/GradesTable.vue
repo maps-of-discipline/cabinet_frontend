@@ -43,12 +43,12 @@
 						v-for="(col, index) of columns"
 						headerClass="column-header-index"
 						bodyClass="column-cell-index"
-						style="min-width: 50px; width: 50px; max-width: 50px"
+						style="min-width: 75px"
 						:hidden="checkNeedHideCol(col)"
 						:key="col.id"
 					>
 						<template #header="{ column }">
-							<span
+							<div
 								class="GradesTable__topic-header"
 								v-tooltip.right="{
 									value:
@@ -57,12 +57,19 @@
 											: formateDate(col.topic.date, true),
 								}"
 							>
-								{{
-									col.grade_type.type == 'tasks'
-										? index + 1
-										: formateDate(col.topic.date)
-								}}
-							</span>
+								<span>
+									{{
+										col.grade_type.type == 'tasks'
+											? index + 1
+											: formateDate(col.topic.date)
+									}}
+								</span>
+
+								<!-- <GradeColumnFilters
+									v-if="disciplineStore.editMode"
+									:column="col"
+								/> -->
+							</div>
 						</template>
 					</Column>
 
@@ -135,13 +142,15 @@
 				:key="col.id"
 			>
 				<template #body="{ data }">
-					<span>{{ data.values[col.id] }}</span>
+					<span>
+						{{ data.values[col.id] }}
+					</span>
 				</template>
 
 				<template #editor="{ data }">
 					<GradeEditor
-						:min="gradesStore.selectedTypeGrade.min_grade"
-						:max="gradesStore.selectedTypeGrade.max_grade"
+						:min="gradesStore.selectedGradeType.min_grade"
+						:max="gradesStore.selectedGradeType.max_grade"
 						v-model="data.values[col.id]"
 						style="justify-content: center"
 					/>
@@ -196,6 +205,7 @@ import GradeTag from '@components/Grades/GradeTag.vue'
 import NotExistGradeTableStub from '@components/Grades/NotExistGradeTableStub.vue'
 import GradeNameHeaderColumn from '@components/Grades/columns/GradeNameHeaderColumn.vue'
 import GradeEditor from '@components/Grades/GradeEditor.vue'
+import GradeColumnFilters from '@components/Grades/GradeColumnFilters.vue'
 
 import getSurname from '@services/helpers/getSurname'
 
@@ -265,7 +275,6 @@ const formateDate = (date, isLabel) => {
 	date = new Date(date)
 
 	const localeMoment = moment(date).locale('ru')
-	console.log(date)
 
 	if (isLabel) return localeMoment.format('D MMMM, dddd')
 
@@ -314,6 +323,9 @@ onMounted(() => {
 		cursor: pointer;
 		font-size: 0.9rem;
 		white-space: nowrap;
+		display: flex;
+		gap: 8px;
+		align-items: center;
 	}
 
 	/* 	&__name-cell {
@@ -339,6 +351,10 @@ onMounted(() => {
 		.p-editable-column:not(.p-cell-editing) {
 			cursor: pointer;
 		}
+	}
+
+	.hiddenForStudents {
+		color: $shade400;
 	}
 }
 </style>

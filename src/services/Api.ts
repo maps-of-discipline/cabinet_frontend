@@ -1,5 +1,5 @@
 import type { Key } from '@models/Key'
-import type { ILesson } from '@models/lessons/ILesson'
+import type { ITopic } from '@models/lessons/ITopic'
 
 import { AxiosError, isAxiosError } from 'axios'
 import axios from './axios'
@@ -38,9 +38,9 @@ abstract class Api {
 	/**
 	 * Метод для сохранения строки
 	 * @param {Key} id - Айди строки
-	 * @param {ILesson} lesson - Обновленная строкоа
+	 * @param {ITopic} lesson - Обновленная строкоа
 	 */
-	static async editLesson(lesson: ILesson) {
+	static async editLesson(lesson: ITopic) {
 		const { data, status } = await axios.patch(`lesson`, {
 			lesson,
 		})
@@ -53,9 +53,9 @@ abstract class Api {
 	/**
 	 * Метод для создания строки
 	 * @param {Key} id - Айди строки
-	 * @param {ILesson} lesson - Обновленная строкоа
+	 * @param {ITopic} lesson - Обновленная строкоа
 	 */
-	static async createLesson(lesson: ILesson) {
+	static async createLesson(lesson: ITopic) {
 		const { data, status } = await axios.post(`lesson`, lesson)
 
 		if (status !== HttpStatusCode.Ok) return null

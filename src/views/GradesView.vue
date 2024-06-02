@@ -6,7 +6,7 @@
 		<HeaderTable class="Grades__header">
 			<template v-if="gradesStore.grades.length">
 				<!-- <ApButton label="Скачать" icon="mdi mdi-download" /> -->
-				<TypeGradeSelect />
+				<GradeTypeSelect />
 			</template>
 
 			<template v-if="gradesStore.grades.length && userStore.isTeacher">
@@ -35,7 +35,7 @@ import { computed } from 'vue'
 import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 
 import GradesTable from '@components/Grades/GradesTable.vue'
-import TypeGradeSelect from '@components/Grades/TypeGradeSelect.vue'
+import GradeTypeSelect from '@components/Grades/GradeTypeSelect.vue'
 import GradeSettingsButton from '@components/Grades/GradeSettingsButton.vue'
 import GradeFilterDropdown from '@components/Grades/GradeFilterDropdown.vue'
 import GradeSettings from '@components/Grades/GradeSettings.vue'
