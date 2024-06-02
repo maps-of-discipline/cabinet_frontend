@@ -394,6 +394,27 @@ abstract class Api {
 
 		return data
 	}
+
+	static async downloadLessonsExcel(
+		aup: Key,
+		id: Key,
+		group: string,
+		semester: number
+	) {
+		const { data, status } = await axios.get(`performance-excel`, {
+			params: {
+				aup,
+				id,
+				group,
+				semester,
+			},
+			responseType: 'blob',
+		})
+
+		if (status !== HttpStatusCode.Ok) return []
+
+		return data
+	}
 }
 
 Object.defineProperty(window, '_Api', { value: Api })

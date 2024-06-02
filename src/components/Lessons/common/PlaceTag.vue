@@ -145,7 +145,6 @@ watch(
 watch(
 	() => props.placeNote,
 	placeNote => {
-		console.log(1)
 		placeModel.value = placeNote
 	},
 	{ immediate: true }

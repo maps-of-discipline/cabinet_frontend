@@ -5,7 +5,12 @@
 	>
 		<HeaderTable class="Grades__header">
 			<template v-if="gradesStore.grades.length">
-				<!-- <ApButton label="Скачать" icon="mdi mdi-download" /> -->
+				<ApButton
+					label="Скачать"
+					icon="mdi mdi-download"
+					:loading="isLoadingExcel"
+					@click="onDownloadExcel"
+				/>
 				<GradeTypeSelect />
 			</template>
 
@@ -30,7 +35,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
 import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 
@@ -47,12 +52,33 @@ import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
 import { useUser } from '@/stores/user'
+import downloadAsFile from '@services/helpers/downloadAsFile'
+import Api from '@services/Api'
 
 const gradesStore = useGradesStore()
 const disciplineStore = useDisciplineStore()
 const userStore = useUser()
 
 const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
+
+const isLoadingExcel = ref(false)
+const onDownloadExcel = async () => {
+	try {
+		isLoadingExcel.value = true
+		const data = await Api.downloadLessonsExcel(
+			disciplineStore.selectedAupId,
+			disciplineStore.selectedDisciplineId,
+			disciplineStore.selectedGroup.title,
+			disciplineStore.selectedSemester
+		)
+
+		downloadAsFile(data, `${disciplineStore.disciplineTitle}.xlsx`)
+	} catch (e) {
+		console.log(e)
+	} finally {
+		isLoadingExcel.value = false
+	}
+}
 </script>
 
 <style lang="scss">

@@ -143,7 +143,7 @@
 			>
 				<template #body="{ data }">
 					<span>
-						{{ data.values[col.id] }}
+						{{ data.values[col.id] === 0 ? '' : data.values[col.id] }}
 					</span>
 				</template>
 

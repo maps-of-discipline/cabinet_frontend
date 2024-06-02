@@ -7,7 +7,6 @@
 				v-if="lessonsStore.filteredLessons.length"
 				class="HeaderTable__editMode"
 			>
-				<!-- <ApButton label="Скачать" icon="mdi mdi-download" /> -->
 				<ViewSelect />
 				<LoadViewSelect v-if="userStore.isTeacher" />
 				<LessonsFilterDropdown />
@@ -37,7 +36,7 @@ import AddTask from '@components/Lessons/AddTask.vue'
 import LessonsFilterDropdown from '@components/Lessons/LessonsFilterDropdown.vue'
 import LessonsLoadInfo from '@components/Lessons/LessonsLoadInfo.vue'
 
-import { computed, nextTick } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
 import { useUser } from '@/stores/user'
