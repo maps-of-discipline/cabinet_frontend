@@ -53,8 +53,13 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	}
 
 	const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
-	if (selectedAupIdByStorage && userStore.isAuth)
-		setSelectedAup(selectedAupIdByStorage)
+	watch(
+		() => userStore.isAuth,
+		() => {
+			if (selectedAupIdByStorage && userStore.isAuth)
+				setSelectedAup(selectedAupIdByStorage)
+		}
+	)
 
 	/* Выбранная дисциплина */
 

@@ -35,8 +35,8 @@
 		<div v-else class="DisciplineSelectDialog__list">
 			<DisciplineSelectListItem
 				v-for="aup in disciplineStore.aups"
-				:id="aup.id_aup"
-				:label="aup.name_op.name_spec"
+				:id="aup.id"
+				:label="aup.title"
 				:tag="aup.year_beg"
 				@open="onSelectDirection(aup.num_aup)"
 			/>

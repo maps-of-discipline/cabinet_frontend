@@ -16,6 +16,8 @@ import { computed } from 'vue'
 
 import { useDisciplineStore } from '@/stores/discipline'
 
+const emit = defineEmits(['open'])
+
 const disciplineStore = useDisciplineStore()
 
 const props = defineProps({
@@ -32,8 +34,6 @@ const _label = computed(() => props.label || 'Выбор дисциплины')
 const tooltip = computed(() =>
 	disciplineStore.hasSelectedDiscipline ? props.label : 'Выбор дисциплины'
 )
-
-const emit = defineEmits('open')
 
 const onClick = () => emit('open')
 </script>
