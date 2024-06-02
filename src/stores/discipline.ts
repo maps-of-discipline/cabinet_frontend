@@ -7,6 +7,7 @@ import Api from '@services/Api'
 import type { IStudyGroup } from '@models/lessons/IStudyGroup'
 import type { Key } from '@models/Key'
 import { useUser } from '@stores/user'
+import { useAuth } from '@stores/auth'
 
 export const useDisciplineStore = defineStore('discipline', () => {
 	const userStore = useUser()
@@ -52,7 +53,8 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	}
 
 	const selectedAupIdByStorage = sessionStorage.getItem('selectedAupId')
-	if (selectedAupIdByStorage) setSelectedAup(selectedAupIdByStorage)
+	if (selectedAupIdByStorage && userStore.isAuth)
+		setSelectedAup(selectedAupIdByStorage)
 
 	/* Выбранная дисциплина */
 

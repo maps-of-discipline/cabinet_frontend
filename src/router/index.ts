@@ -206,7 +206,8 @@ router.beforeEach((to, from) => {
 })
 
 router.beforeEach(async to => {
-	if (to.query.aup && to.query.id) {
+	const authStore = useAuth()
+	if (to.query.aup && to.query.id && authStore.isAuth) {
 		const disciplineStore = useDisciplineStore()
 
 		disciplineStore.setSelectedAup(to.query.aup as string)

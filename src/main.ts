@@ -12,12 +12,14 @@ import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
+import FocusTrap from 'primevue/focustrap'
 import VueApexCharts from 'vue3-apexcharts'
 
 const app = createApp(App)
 
 app.directive('tooltip', Tooltip)
 app.directive('ripple', Ripple)
+app.directive('focustrap', FocusTrap)
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {

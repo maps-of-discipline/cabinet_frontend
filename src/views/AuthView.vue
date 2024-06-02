@@ -2,7 +2,7 @@
 	<div class="AuthView">
 		<div class="AuthView__dev-block"></div>
 
-		<form class="AuthForm" @keydown.enter="onLogin">
+		<form class="AuthForm" v-focustrap @keydown.enter="onLogin">
 			<InlineMessage
 				v-if="showDevBlock"
 				severity="warn"
