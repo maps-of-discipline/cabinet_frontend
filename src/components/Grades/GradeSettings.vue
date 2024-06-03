@@ -35,17 +35,6 @@
 									}"
 									@click.stop="onClickShowSwitch(localGradeType)"
 								/>
-
-								<Button
-									v-if="localGradeType.type === 'custom'"
-									class="GradeTypeTab__delete-grade-type"
-									icon="mdi mdi-delete"
-									v-tooltip.left="{
-										value: 'Удалить вид оценивания',
-										showDelay: 500,
-									}"
-									@click.stop="onClickDelete(localGradeType)"
-								/>
 							</div>
 						</div>
 					</template>
@@ -229,15 +218,18 @@ const onClickSubmit = async gradeType => {
 
 		const visibleColsIds = gradeType.columns.map(col => col.id)
 		const hiddenColsIds = gradesStore.columnsByGradeTypeId[gradeType.id]
-			.filter(col => !visibleColsIds.includes(col.id))
+			?.filter(col => !visibleColsIds.includes(col.id))
 			.map(col => col.id)
 
 		await gradesStore.updateGradeType(gradeType)
-		await gradesStore.updateVisibleColumns(
-			gradeType.id,
-			visibleColsIds,
-			hiddenColsIds
-		)
+
+		if (visibleColsIds.length && hiddenColsIds.length) {
+			await gradesStore.updateVisibleColumns(
+				gradeType.id,
+				visibleColsIds,
+				hiddenColsIds
+			)
+		}
 	} catch (e) {
 		console.log(e)
 	} finally {
@@ -281,6 +273,7 @@ const onClickSubmit = async gradeType => {
 		align-items: center;
 		width: 100%;
 		font-weight: 400;
+		gap: 6px;
 	}
 
 	&__header-controls {
