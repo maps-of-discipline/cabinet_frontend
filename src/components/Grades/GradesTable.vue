@@ -66,6 +66,7 @@
 							] || []"
 							headerClass="column-header-index"
 							bodyClass="column-cell-index"
+							:class="{ isNear: isNearGradeColumn(gradeType, col) }"
 							style="min-width: 75px"
 							:hidden="checkNeedHideCol(col)"
 							:key="col.id"
@@ -434,7 +435,7 @@ onMounted(() => {
 	}
 
 	.isNear {
-		background: rgb(135, 206, 161, 0.2);
+		background: rgba(64, 197, 197, 0.1);
 	}
 
 	.hiddenForStudents {

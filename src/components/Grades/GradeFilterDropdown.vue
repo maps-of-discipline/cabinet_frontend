@@ -1,5 +1,5 @@
 <template>
-	<MultiSelect
+	<!-- <MultiSelect
 		v-model="selectedFilters"
 		:options="filters"
 		optionLabel="label"
@@ -11,7 +11,7 @@
 		<template #value>
 			<i class="mdi mdi-filter" />
 		</template>
-	</MultiSelect>
+	</MultiSelect> -->
 </template>
 
 <script setup>
