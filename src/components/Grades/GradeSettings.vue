@@ -193,8 +193,9 @@ const setLocalGradeTypes = () => {
 watch(
 	() => [gradesStore.gradeTypes, gradesStore.columns],
 	() => {
-		setLocalGradeTypes(gradesStore.gradeTypes)
-	}
+		setLocalGradeTypes()
+	},
+	{ deep: true }
 )
 
 const onClickShowSwitch = gradeType => {
@@ -220,8 +221,6 @@ const onClickSubmit = async gradeType => {
 		const hiddenColsIds = gradesStore.columnsByGradeTypeId[gradeType.id]
 			?.filter(col => !visibleColsIds.includes(col.id))
 			.map(col => col.id)
-
-		await gradesStore.updateGradeType(gradeType)
 
 		if (visibleColsIds.length && hiddenColsIds.length) {
 			await gradesStore.updateVisibleColumns(

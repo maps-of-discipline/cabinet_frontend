@@ -26,17 +26,17 @@ const disciplineStore = useDisciplineStore()
 const gradesStore = useGradesStore()
 
 const options = computed(() => {
-	/* const allTypes = {
-		name: 'Выбрать все',
-		value: 'all',
-		disabled: true,
-	} */
-
 	const availableTypes = gradesStore.availableTypesGrade.sort((a, b) =>
 		a.name.localeCompare(b.name)
 	)
 
-	return availableTypes
+	const selectAll = {
+		name: 'Выбрать все',
+		value: 'all',
+		type: 'all',
+	}
+
+	return [selectAll, ...availableTypes]
 })
 
 const selectedType = computed({
@@ -46,6 +46,8 @@ const selectedType = computed({
 
 	set(type) {
 		if (type.value === 'all') gradesStore.setIsAllGradeType(true)
+		else gradesStore.setIsAllGradeType(false)
+
 		return gradesStore.setSelectedGradeType(type)
 	},
 })

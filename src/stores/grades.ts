@@ -57,7 +57,6 @@ export const useGradesStore = defineStore('grades', () => {
 		gradeTypes.value.push(data)
 	}
 
-	// Выбранный вид оценивания
 	const selectedGradeType: Ref<IGradeType | null> = ref(null)
 	const setSelectedGradeType = value => (selectedGradeType.value = value)
 
@@ -96,7 +95,10 @@ export const useGradesStore = defineStore('grades', () => {
 	})
 
 	const filteredColumnsBySelectedType = computed(() => {
-		if (isAllGradeType.value) return columns
+		if (isAllGradeType.value)
+			return [...columns.value].sort(
+				(a: IGradeColumn, b: IGradeColumn) => +a.topic.id - +b.topic.id
+			)
 
 		return [...columns.value]
 			.filter(column => column.grade_type_id === selectedGradeType.value?.id)
@@ -111,6 +113,23 @@ export const useGradesStore = defineStore('grades', () => {
 		)
 
 		sortedColumns.forEach((col, index) => {
+			if (!map[col.grade_type_id]) map[col.grade_type_id] = []
+			map[col.grade_type_id].push({ ...col, index })
+		})
+
+		return map
+	})
+
+	const filteredColumnsByGradeTypeId = computed(() => {
+		const map = {}
+
+		const sortedColumns = [...columns.value].sort(
+			(a: IGradeColumn, b: IGradeColumn) => +a.topic.id - +b.topic.id
+		)
+
+		sortedColumns.forEach((col, index) => {
+			if (col.hidden) return
+
 			if (!map[col.grade_type_id]) map[col.grade_type_id] = []
 			map[col.grade_type_id].push({ ...col, index })
 		})
@@ -243,6 +262,7 @@ export const useGradesStore = defineStore('grades', () => {
 		filteredColumnsBySelectedType,
 		columnsByGradeTypeId,
 		visibleColumnsByGradeTypeId,
+		filteredColumnsByGradeTypeId,
 
 		gradeTypes,
 		availableTypesGrade,

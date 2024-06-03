@@ -19,18 +19,24 @@
 		>
 			<ColumnGroup type="header">
 				<Row>
+					<!-- № -->
 					<Column
 						header="#"
 						class="column-header--center"
 						headerStyle="width: 45px"
 						:colspan="1"
+						rowspan="2"
 						frozen
-					/>
+					>
+						<template #header="{ column }"></template>
+					</Column>
 
+					<!-- ФИО -->
 					<Column
 						headerClass="GradesTable__name-cell"
 						style="min-width: 400px; max-width: 400px"
 						:colspan="1"
+						rowspan="2"
 						field="name"
 						frozen
 					>
@@ -40,54 +46,72 @@
 					</Column>
 
 					<Column
-						v-for="(col, index) of columns"
-						headerClass="column-header-index"
-						bodyClass="column-cell-index"
-						style="min-width: 75px"
-						:hidden="checkNeedHideCol(col)"
-						:key="col.id"
+						v-for="(gradeType, index) of visibleGradeTypes"
+						:colspan="getCountColsByGradeTypeId(gradeType.id) + 1"
+						:hidden="getCountColsByGradeTypeId(gradeType.id) === 0"
+						rowspan="1"
 					>
-						<template #header="{ column }">
-							<div
-								class="GradesTable__topic-header"
-								v-tooltip.right="{
-									value:
-										col.grade_type.type == 'tasks'
-											? col.topic.task_link_name
-											: formatDateSimple(col.topic.date, true),
-								}"
-							>
-								<span>
-									{{
-										col.grade_type.type == 'tasks'
-											? index + 1
-											: formatDateSimple(col.topic.date)
-									}}
-								</span>
-
-								<!-- <GradeColumnFilters
-									v-if="disciplineStore.editMode"
-									:column="col"
-								/> -->
-							</div>
-						</template>
+						<template #header="{ column }">{{ gradeType.name }}</template>
 					</Column>
 
 					<Column style="width: 100%" />
-
-					<Column
-						class="column-header--center"
-						style="min-width: 70px; width: 70px; max-width: 70px"
-						headerClass="GradesTable__avg-cell"
-						:colspan="1"
-						alignFrozen="right"
-						frozen
-					>
-						<template #header>
-							<div class="column-header--pointer">Итого</div>
-						</template>
-					</Column>
 				</Row>
+
+				<Row>
+					<template v-for="(gradeType, index) of visibleGradeTypes">
+						<Column
+							v-for="(col, index) of gradesStore.filteredColumnsByGradeTypeId?.[
+								gradeType.id
+							] || []"
+							headerClass="column-header-index"
+							bodyClass="column-cell-index"
+							style="min-width: 75px"
+							:hidden="checkNeedHideCol(col)"
+							:key="col.id"
+						>
+							<template #header="{ column }">
+								<div
+									class="GradesTable__topic-header"
+									v-tooltip.right="{
+										value:
+											col.grade_type.type == 'tasks'
+												? col.topic.task_link_name
+												: formatDateSimple(col.topic.date, true),
+									}"
+								>
+									<span>
+										{{
+											col.grade_type.type == 'tasks'
+												? index + 1
+												: formatDateSimple(col.topic.date)
+										}}
+									</span>
+								</div>
+							</template>
+						</Column>
+
+						<Column style="width: 100%" v-if="!gradesStore.isAllGradeType" />
+
+						<Column
+							class="column-header--center"
+							style="min-width: 70px; width: 70px; max-width: 70px"
+							headerClass="GradesTable__avg-cell"
+							:colspan="1"
+							:hidden="getCountColsByGradeTypeId(gradeType.id) === 0"
+						>
+							<template #header>
+								<div class="column-header--pointer">Итого</div>
+							</template>
+						</Column>
+					</template>
+
+					<Column style="width: 100%" v-if="gradesStore.isAllGradeType" />
+				</Row>
+
+				<!-- <GradeColumnFilters
+									v-if="disciplineStore.editMode"
+									:column="col"
+								/> -->
 			</ColumnGroup>
 
 			<!-- # -->
@@ -133,47 +157,59 @@
 			</Column>
 
 			<!-- Столбцы -->
-			<Column
-				v-for="(col, index) of columns"
-				:field="`${col.id}`"
-				headerClass="column-header-index"
-				bodyClass="column-cell-index"
-				:hidden="checkNeedHideCol(col)"
-				:key="col.id"
-			>
-				<template #body="{ data }">
-					<span>
-						{{ data.values[col.id] === 0 ? '' : data.values[col.id] }}
-					</span>
-				</template>
+			<template v-for="(gradeType, index) of visibleGradeTypes">
+				<Column
+					v-for="(col, index) of gradesStore.filteredColumnsByGradeTypeId?.[
+						gradeType.id
+					] || []"
+					:field="`${col.id}`"
+					headerClass="column-header-index"
+					bodyClass="column-cell-index"
+					:hidden="
+						checkNeedHideCol(col) ||
+						getCountColsByGradeTypeId(gradeType.id) === 0
+					"
+					:key="col.id"
+				>
+					<template #body="{ data }">
+						<span>
+							{{ data.values[col.id] === 0 ? '' : data.values[col.id] }}
+						</span>
+					</template>
 
-				<template #editor="{ data }">
-					<GradeEditor
-						:min="gradesStore.selectedGradeType.min_grade"
-						:max="gradesStore.selectedGradeType.max_grade"
-						v-model="data.values[col.id]"
-						style="justify-content: center"
-					/>
-				</template>
-			</Column>
+					<template #editor="{ data }">
+						<GradeEditor
+							:min="gradeType.min_grade"
+							:max="gradeType.max_grade"
+							v-model="data.values[col.id]"
+							style="justify-content: center"
+						/>
+					</template>
+				</Column>
 
-			<!-- Пустой столбец -->
-			<Column>
+				<Column v-if="!gradesStore.isAllGradeType">
+					<template #body="{ data, field }">
+						<span> </span>
+					</template>
+				</Column>
+
+				<Column
+					bodyClass="column-cell-center GradesTable__avg-cell"
+					headerStyle="width: 45px"
+					:colspan="1"
+					alignFrozen="right"
+					:hidden="getCountColsByGradeTypeId(gradeType.id) === 0"
+				>
+					<!-- frozen -->
+					<template #body="{ data, index }">
+						{{ getSummaryGrade(gradeType, data.values) || '' }}
+					</template>
+				</Column>
+			</template>
+
+			<Column v-if="gradesStore.isAllGradeType">
 				<template #body="{ data, field }">
 					<span> </span>
-				</template>
-			</Column>
-
-			<!-- Итого-->
-			<Column
-				bodyClass="column-cell-center GradesTable__avg-cell"
-				headerStyle="width: 45px"
-				:colspan="1"
-				alignFrozen="right"
-				frozen
-			>
-				<template #body="{ data, index }">
-					{{ getSummaryGrade(data.values) || '' }}
 				</template>
 			</Column>
 		</DataTable>
@@ -221,6 +257,22 @@ const checkNeedHideCol = col => {
 	return false
 }
 
+const getCountColsByGradeTypeId = id => {
+	return Object.keys(gradesStore.filteredColumnsByGradeTypeId?.[id] || {})
+		?.length
+}
+
+const visibleGradeTypes = computed(() =>
+	gradesStore.gradeTypes.filter(gt => {
+		if (
+			(gt.id === gradesStore.selectedGradeType.id ||
+				gradesStore.isAllGradeType) &&
+			!gt.archived
+		)
+			return true
+	})
+)
+
 const existColIdsSet = computed(() => {
 	const setOfExistsColumns = new Set()
 
@@ -234,7 +286,7 @@ const existColIdsSet = computed(() => {
 })
 
 const columns = computed(() => {
-	return gradesStore.filteredColumnsBySelectedType.filter(col => !col.hidden)
+	return gradesStore.filteredColumnsBySelectedType
 })
 
 const showSelectDisciplineStub = computed(
@@ -259,11 +311,15 @@ const onCellEditComplete = event => {
 	gradesStore.updateGrade(grade, colId, studentId)
 }
 
-const getSummaryGrade = values => {
+const getSummaryGrade = (gradeType, values) => {
 	let sum = 0
 
 	gradesStore.setColumnsIdsBySelectedType.forEach(colId => {
-		if (values[colId] && !gradesStore.columnsById[colId]?.hidden)
+		if (
+			gradesStore.columnsById[colId].grade_type.id == gradeType.id &&
+			values[colId] &&
+			!gradesStore.columnsById[colId]?.hidden
+		)
 			sum += values[colId]
 	})
 
