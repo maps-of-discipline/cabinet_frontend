@@ -12,6 +12,7 @@
 			stripedRows
 			dataKey="id"
 			:rowClass="() => 'GradesTable__row'"
+			:virtualScrollerOptions="{ itemSize: 44 }"
 			:editMode="disciplineStore.editMode ? 'cell' : null"
 			:globalFilterFields="['name']"
 			@cell-edit-complete="onCellEditComplete"
