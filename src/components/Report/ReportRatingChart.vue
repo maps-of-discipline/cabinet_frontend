@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch, onUnmounted } from 'vue'
+import { computed, ref, watch, onUnmounted, onMounted } from 'vue'
 import apexchart from 'vue3-apexcharts'
 
 import { useReportStore } from '@stores/report'
@@ -190,6 +190,10 @@ watch(
 		reportStore.fetchReport()
 	}
 )
+
+onMounted(() => {
+	reportStore.fetchReport()
+})
 
 onUnmounted(() => {
 	chart.value?.updateOptions({

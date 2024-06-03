@@ -146,13 +146,13 @@ export const useDisciplineStore = defineStore('discipline', () => {
 	/*  */
 
 	/* Режим просмотра/редактирования */
-	const editMode = ref(true)
+	const editMode = ref(false)
 	const switchMode = () => (editMode.value = !editMode.value)
 
 	/* new */
 	const isLoadingDisciplineLeftMenu = ref(false)
 
-	const isOpenDisciplineColumn = ref(true)
+	const isOpenDisciplineColumn = ref(false)
 	const setIsOpenDisciplineColumn = async value => {
 		isOpenDisciplineColumn.value = value
 	}

@@ -375,12 +375,8 @@
 <script setup>
 import ViewModesEnum from '@models/lessons/ViewModesEnum'
 
-import HeaderTable from '@components/layouts/HeaderTable/HeaderTable.vue'
 import SelectDisciplineStub from '@components/layouts/SelectDisciplineStub.vue'
 
-import ViewSelect from '@components/Lessons/ViewSelect.vue'
-import LoadViewSelect from '@components/Lessons/LoadViewSelect.vue'
-import AddTask from '@components/Lessons/AddTask.vue'
 import AttachLinkDialog from '@components/Lessons/AttachLinkDialog.vue'
 import LessonsLoadSelect from '@components/Lessons/common/LessonsLoadSelect.vue'
 import CloudIconNotSaved from '@components/Lessons/common/CloudIconNotSaved.vue'
@@ -393,7 +389,6 @@ import { useLessonsStore } from '@/stores/lessons'
 import { useDisciplineStore } from '@/stores/discipline'
 
 import { ref, computed, nextTick, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
 
 const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()

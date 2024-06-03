@@ -4,6 +4,7 @@
 
 		<div class="GradeNameHeaderColumn__right">
 			<InputText
+				v-focustrap
 				class="GradeNameHeaderColumn__name-search"
 				placeholder="Поиск по ФИО"
 				type="text"

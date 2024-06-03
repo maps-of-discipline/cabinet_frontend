@@ -1,12 +1,11 @@
 <template>
 	<div class="Lessons" :class="{ isOpenLeftMenu }">
 		<HeaderTable class="Lessons__header">
-			<AddTask @add="onAddRow" />
-
 			<div
 				v-if="lessonsStore.filteredLessons.length"
 				class="HeaderTable__editMode"
 			>
+				<AddTask v-if="disciplineStore.editMode" @add="onAddRow" />
 				<ViewSelect />
 				<LoadViewSelect v-if="userStore.isTeacher" />
 				<LessonsFilterDropdown />
