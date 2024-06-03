@@ -39,7 +39,10 @@ export const useGradesStore = defineStore('grades', () => {
 		gradeTypes.value[indexToUpdate] = data
 
 		if (gradeType.id === selectedGradeType.value?.id) {
-			setSelectedGradeType(availableTypesGrade.value[0])
+			setSelectedGradeType(
+				availableTypesGrade.value.find(gt => gt.id == gradeType.id) ||
+					availableTypesGrade.value[0]
+			)
 		}
 	}
 
@@ -65,8 +68,18 @@ export const useGradesStore = defineStore('grades', () => {
 	const grades: Ref<IGradeTableRow[]> = ref([])
 	const setGrades = (data: IGradeTableRow[]) => (grades.value = data)
 
-	const columns: Ref<IGradeColumn[]> = ref([])
-	const setColumns = data => (columns.value = data)
+	const columnsById = ref({})
+	const columns: Ref<IGradeColumn[]> = computed(() =>
+		Object.values(columnsById.value)
+	)
+
+	const setColumns = data => {
+		const columnsMap = {}
+
+		data.forEach(col => (columnsMap[col.id] = col))
+
+		columnsById.value = columnsMap
+	}
 
 	const setColumnsIdsBySelectedType = computed(() => {
 		const set = new Set()
@@ -88,6 +101,35 @@ export const useGradesStore = defineStore('grades', () => {
 		return [...columns.value]
 			.filter(column => column.grade_type_id === selectedGradeType.value?.id)
 			.sort((a: IGradeColumn, b: IGradeColumn) => +a.topic.id - +b.topic.id)
+	})
+
+	const columnsByGradeTypeId = computed(() => {
+		const map = {}
+
+		const sortedColumns = [...columns.value].sort(
+			(a: IGradeColumn, b: IGradeColumn) => +a.topic.id - +b.topic.id
+		)
+
+		sortedColumns.forEach((col, index) => {
+			if (!map[col.grade_type_id]) map[col.grade_type_id] = []
+			map[col.grade_type_id].push({ ...col, index })
+		})
+
+		return map
+	})
+
+	const visibleColumnsByGradeTypeId = computed(() => {
+		const map = {}
+
+		for (const gradeTypeId in columnsByGradeTypeId.value) {
+			const filteredCols = columnsByGradeTypeId.value[gradeTypeId].filter(
+				col => !col.hidden
+			)
+
+			map[gradeTypeId] = filteredCols
+		}
+
+		return map
 	})
 
 	const showFullname = ref(true)
@@ -147,6 +189,24 @@ export const useGradesStore = defineStore('grades', () => {
 		grades.value[neededIndex].values[colId] = value
 	}
 
+	const updateVisibleColumns = async (
+		gradeTypeId: Key,
+		visibleIds: Key[],
+		hiddenIds: Key[]
+	) => {
+		const newCols = await Api.updateVisibleColumns(
+			gradeTypeId,
+			visibleIds,
+			hiddenIds
+		)
+
+		console.log(newCols)
+
+		newCols.forEach(col => {
+			columnsById.value[col.id] = col
+		})
+	}
+
 	/* filters */
 	const filters: Ref<IGradeTableFilters[]> = ref([
 		{ label: 'Скрыть пустые столбцы', name: 'hideEmptyCols' },
@@ -176,14 +236,18 @@ export const useGradesStore = defineStore('grades', () => {
 		grades,
 		setGrades,
 
+		columnsById,
 		columns,
 		setColumns,
 		setColumnsIdsBySelectedType,
 		filteredColumnsBySelectedType,
+		columnsByGradeTypeId,
+		visibleColumnsByGradeTypeId,
 
 		gradeTypes,
 		availableTypesGrade,
 		updateGradeType,
+		updateVisibleColumns,
 		createGradeType,
 
 		selectedGradeType,

@@ -118,6 +118,47 @@
 							<label :for="'binary' + i" class="ml-2"> Бинарная шкала </label>
 						</div>
 
+						<div>
+							<label class="GradeTypeTab__label" :for="'max' + i">
+								<span>Отображаемые столбцы</span>
+
+								<ApHint
+									hint="Скрытые столбцы не учитываются при подсчете итогового балла"
+								/>
+							</label>
+
+							<MultiSelect
+								class="GradeTypeTab__select-cols"
+								panelClass="GradeTypeTab__select-cols-panel"
+								:modelValue="localGradeType.columns"
+								dataKey="id"
+								:options="
+									gradesStore.columnsByGradeTypeId?.[localGradeType.id] || []
+								"
+								placeholder="Выберите столбцы"
+								@change="onChangeVisibleCol($event, +localGradeType.id)"
+							>
+								<template #option="{ option, index }">
+									<!-- <div class="GradeTypeTab__order-col">
+										{{ index + 1 }}
+									</div> -->
+
+									<span>
+										{{
+											option.grade_type.type === 'tasks'
+												? option.topic.task_link_name
+												: formatDateSimple(option.topic.date)
+										}}
+									</span>
+								</template>
+
+								<template #value="{ value }">
+									{{ localGradeType.columns.length }}
+									столбцов
+								</template>
+							</MultiSelect>
+						</div>
+
 						<Button
 							class="GradeTypeTab__submit"
 							label="Применить"
@@ -134,11 +175,14 @@
 </template>
 
 <script setup>
+import _ from 'lodash'
 import { ref, computed, watch } from 'vue'
 import { useGradesStore } from '@/stores/grades'
 
 import GradeSettingsAddType from '@components/Grades/GradeSettingsAddType.vue'
 import ApHint from '@components/ui/ApHint.vue'
+
+import formatDateSimple from '@services/helpers/formatDateSimple'
 
 const gradesStore = useGradesStore()
 
@@ -146,13 +190,19 @@ const localGradeTypes = ref([])
 const isLoadingSave = ref(false)
 
 const setLocalGradeTypes = () => {
-	localGradeTypes.value = gradesStore.gradeTypes.sort((a, b) =>
-		a.name.localeCompare(b.name)
-	)
+	localGradeTypes.value = gradesStore.gradeTypes
+		.sort((a, b) => a.name.localeCompare(b.name))
+		.map(gradeType => ({
+			...gradeType,
+			columns:
+				gradesStore.columnsByGradeTypeId[gradeType.id]?.filter(
+					col => !col.hidden
+				) || [],
+		}))
 }
 
 watch(
-	() => gradesStore.gradeTypes,
+	() => [gradesStore.gradeTypes, gradesStore.columns],
 	() => {
 		setLocalGradeTypes(gradesStore.gradeTypes)
 	}
@@ -163,10 +213,36 @@ const onClickShowSwitch = gradeType => {
 	gradesStore.updateGradeType(newGradeType)
 }
 
+const onClickDelete = gradeType => {
+	console.log(gradeType)
+	// gradesStore.deleteGradeType(gradeType)
+}
+
+const onChangeVisibleCol = (e, id) => {
+	const indexToUpdate = localGradeTypes.value.findIndex(item => item.id === id)
+	localGradeTypes.value[indexToUpdate].columns = e.value
+}
+
 const onClickSubmit = async gradeType => {
-	isLoadingSave.value = true
-	await gradesStore.updateGradeType(gradeType)
-	isLoadingSave.value = false
+	try {
+		isLoadingSave.value = true
+
+		const visibleColsIds = gradeType.columns.map(col => col.id)
+		const hiddenColsIds = gradesStore.columnsByGradeTypeId[gradeType.id]
+			.filter(col => !visibleColsIds.includes(col.id))
+			.map(col => col.id)
+
+		await gradesStore.updateGradeType(gradeType)
+		await gradesStore.updateVisibleColumns(
+			gradeType.id,
+			visibleColsIds,
+			hiddenColsIds
+		)
+	} catch (e) {
+		console.log(e)
+	} finally {
+		isLoadingSave.value = false
+	}
 }
 </script>
 
@@ -262,6 +338,29 @@ const onClickSubmit = async gradeType => {
 
 		.p-inputtext {
 			width: 100%;
+		}
+	}
+
+	&__select-cols {
+		width: 100%;
+	}
+
+	&__order-col {
+		min-width: 25px;
+		text-align: center;
+		background-color: $shade950;
+		border-radius: $borderRadius;
+		padding: 2px 2px;
+		transition: outline 0.2s;
+		outline: $focusOutlineTransparent;
+		margin-right: 6px;
+	}
+
+	&__select-cols-panel {
+		max-width: 400px;
+
+		.p-multiselect-header {
+			display: none;
 		}
 	}
 }

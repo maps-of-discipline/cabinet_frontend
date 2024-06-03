@@ -54,14 +54,14 @@
 									value:
 										col.grade_type.type == 'tasks'
 											? col.topic.task_link_name
-											: formateDate(col.topic.date, true),
+											: formatDateSimple(col.topic.date, true),
 								}"
 							>
 								<span>
 									{{
 										col.grade_type.type == 'tasks'
 											? index + 1
-											: formateDate(col.topic.date)
+											: formatDateSimple(col.topic.date)
 									}}
 								</span>
 
@@ -192,8 +192,6 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import moment from 'moment'
-import 'moment/dist/locale/ru'
 
 import { useGradesStore } from '@/stores/grades'
 import { useDisciplineStore } from '@/stores/discipline'
@@ -207,6 +205,7 @@ import GradeNameHeaderColumn from '@components/Grades/columns/GradeNameHeaderCol
 import GradeEditor from '@components/Grades/GradeEditor.vue'
 import GradeColumnFilters from '@components/Grades/GradeColumnFilters.vue'
 
+import formatDateSimple from '@services/helpers/formatDateSimple'
 import getSurname from '@services/helpers/getSurname'
 
 import { FilterMatchMode } from 'primevue/api'
@@ -216,6 +215,7 @@ const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
 
 const checkNeedHideCol = col => {
+	if (col.hidden) return true
 	if (gradesStore.isHideEmptyCols) return !existColIdsSet.value.has(col.id)
 
 	return false
@@ -234,7 +234,7 @@ const existColIdsSet = computed(() => {
 })
 
 const columns = computed(() => {
-	return gradesStore.filteredColumnsBySelectedType
+	return gradesStore.filteredColumnsBySelectedType.filter(col => !col.hidden)
 })
 
 const showSelectDisciplineStub = computed(
@@ -263,23 +263,14 @@ const getSummaryGrade = values => {
 	let sum = 0
 
 	gradesStore.setColumnsIdsBySelectedType.forEach(colId => {
-		if (values[colId]) sum += values[colId]
+		if (values[colId] && !gradesStore.columnsById[colId]?.hidden)
+			sum += values[colId]
 	})
 
 	return sum.toFixed(2)
 }
 
 const onRowClick = e => console.log({ ...e.data })
-
-const formateDate = (date, isLabel) => {
-	date = new Date(date)
-
-	const localeMoment = moment(date).locale('ru')
-
-	if (isLabel) return localeMoment.format('D MMMM, dddd')
-
-	return localeMoment.format('DD.MM')
-}
 
 watch(
 	() => [

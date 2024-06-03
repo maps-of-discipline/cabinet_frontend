@@ -21,7 +21,7 @@ export const useUi = defineStore('ui', () => {
 			hideInMini: false,
 			items: [
 				{
-					label: 'Успеваемость',
+					label: 'Посещения',
 					route: '/grades',
 					icon: 'mdi-book-open-page-variant',
 					access: [RolesEnum.Student],

@@ -260,6 +260,18 @@ abstract class Api {
 		return data
 	}
 
+	static async updateVisibleColumns(gradeTypeId, visibleIds, hiddenIds) {
+		const { data, status } = await axios.patch(`grade-column-visible`, {
+			id: gradeTypeId,
+			visible: visibleIds,
+			hidden: hiddenIds,
+		})
+
+		if (status !== HttpStatusCode.Ok) return {}
+
+		return data
+	}
+
 	static async updateGradeType(gradeType: any) {
 		const { data, status } = await axios.patch(`grade-type`, gradeType)
 
