@@ -141,6 +141,10 @@
 									</span>
 								</template>
 
+								<template #empty>
+									<span>Доступные столбцы отстутствуют</span>
+								</template>
+
 								<template #value="{ value }">
 									{{ localGradeType.columns.length }}
 									столбцов
@@ -152,7 +156,7 @@
 							class="GradeTypeTab__submit"
 							label="Применить"
 							:loading="isLoadingSave"
-							@click="onClickSubmit(localGradeType)"
+							@click.stop="onClickSubmit(localGradeType)"
 						/>
 					</div>
 				</AccordionTab>
@@ -222,7 +226,10 @@ const onClickSubmit = async gradeType => {
 			?.filter(col => !visibleColsIds.includes(col.id))
 			.map(col => col.id)
 
-		if (visibleColsIds.length && hiddenColsIds.length) {
+		await gradesStore.updateGradeType(gradeType)
+		console.log(visibleColsIds.length, hiddenColsIds.length)
+
+		if (visibleColsIds.length || hiddenColsIds.length) {
 			await gradesStore.updateVisibleColumns(
 				gradeType.id,
 				visibleColsIds,

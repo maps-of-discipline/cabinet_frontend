@@ -277,7 +277,7 @@
 
 				<!-- Задание -->
 				<Column
-					field="task_link"
+					field="task_link_name"
 					header="Задание"
 					:hidden="!lessonsStore.selectedShowColFiltersSet.has('task')"
 				>
@@ -292,7 +292,7 @@
 
 				<!-- Загрузка задания -->
 				<Column
-					field="completed_task_link"
+					field="completed_task_link_name"
 					header="Загрузка задания"
 					:hidden="!lessonsStore.selectedShowColFiltersSet.has('completedTask')"
 				>

@@ -128,6 +128,12 @@ const hidePanel = event => {
 }
 
 const onHidePanel = () => {
+	if (!placeTypeModel.value?.id || !placeModel.value) {
+		placeTypeModel.value = null
+		placeModel.value = ''
+		return
+	}
+
 	emit('input', {
 		placeId: placeTypeModel.value.id,
 		placeNote: placeModel.value,

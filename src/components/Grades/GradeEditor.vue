@@ -5,7 +5,7 @@
 		:min="props.min"
 		:max="props.max"
 		:useGrouping="false"
-		:modelValue="modelValue === 0 ? null : modelValue"
+		:modelValue="modelValue == 0 ? null : modelValue"
 		:maxFractionDigits="2"
 		@update:modelValue="handleInput"
 	/>

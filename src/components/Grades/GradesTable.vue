@@ -64,7 +64,7 @@
 							v-for="(col, index) of gradesStore.filteredColumnsByGradeTypeId?.[
 								gradeType.id
 							] || []"
-							headerClass="column-header-index"
+							headerClass="column-header-index GradesTable__topic-header-cell"
 							bodyClass="column-cell-index"
 							:class="{ isNear: isNearGradeColumn(gradeType, col) }"
 							style="min-width: 75px"
@@ -74,7 +74,7 @@
 							<template #header="{ column }">
 								<div
 									class="GradesTable__topic-header"
-									v-tooltip.right="{
+									v-tooltip.top="{
 										value:
 											col.grade_type.type == 'tasks'
 												? col.topic.task_link_name
@@ -401,12 +401,22 @@ onMounted(() => {
 		z-index: 2;
 	}
 
+	&__topic-header-cell {
+		padding: 0;
+
+		.p-column-header-content {
+			height: 100%;
+		}
+	}
+
 	&__topic-header {
 		cursor: pointer;
 		font-size: 0.9rem;
 		white-space: nowrap;
 		display: flex;
-		gap: 8px;
+		width: 100%;
+		height: 100%;
+		justify-content: center;
 		align-items: center;
 	}
 
