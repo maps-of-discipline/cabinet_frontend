@@ -259,6 +259,7 @@ const nearestDateColumn = computed(() => {
 
 	visibleGradeTypes.value.forEach(gradeType => {
 		const cols = gradesStore.filteredColumnsByGradeTypeId?.[gradeType.id]
+		if (!cols?.length) return
 
 		let minDiffCol = Infinity
 		let nearCol = null
