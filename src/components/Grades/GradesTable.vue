@@ -166,6 +166,7 @@
 					:field="`${col.id}`"
 					headerClass="column-header-index"
 					bodyClass="column-cell-index"
+					:class="{ isNear: isNearGradeColumn(gradeType, col) }"
 					:hidden="
 						checkNeedHideCol(col) ||
 						getCountColsByGradeTypeId(gradeType.id) === 0
@@ -244,6 +245,7 @@ import GradeColumnFilters from '@components/Grades/GradeColumnFilters.vue'
 
 import formatDateSimple from '@services/helpers/formatDateSimple'
 import getSurname from '@services/helpers/getSurname'
+import moment from 'moment'
 
 import { FilterMatchMode } from 'primevue/api'
 
@@ -251,9 +253,40 @@ const gradesStore = useGradesStore()
 const lessonsStore = useLessonsStore()
 const disciplineStore = useDisciplineStore()
 
+const nearestDateColumn = computed(() => {
+	const map = {}
+
+	visibleGradeTypes.value.forEach(gradeType => {
+		const cols = gradesStore.filteredColumnsByGradeTypeId?.[gradeType.id]
+
+		let minDiffCol = Infinity
+		let nearCol = null
+		const now = new Date()
+
+		cols.forEach(col => {
+			const colDate = new Date(col.topic.date)
+			const diff = now - colDate
+
+			if (diff >= 0 && diff < minDiffCol) {
+				minDiffCol = minDiffCol
+				nearCol = col
+			}
+		})
+
+		map[gradeType.id] = nearCol
+	})
+
+	return map
+})
+
+const isNearGradeColumn = (gradeType, col) => {
+	return col.id == nearestDateColumn.value[gradeType.id]?.id
+}
+
 const checkNeedHideCol = col => {
 	if (col.hidden) return true
 	if (gradesStore.isHideEmptyCols) return !existColIdsSet.value.has(col.id)
+	if (gradesStore.isRecentCols) return true
 
 	return false
 }
@@ -305,7 +338,6 @@ const onCellEditComplete = event => {
 	let { newData, field } = event
 
 	const grade = newData.values[field]
-	console.log(grade)
 	const colId = field
 	const studentId = newData.id
 
@@ -399,6 +431,10 @@ onMounted(() => {
 		.p-editable-column:not(.p-cell-editing) {
 			cursor: pointer;
 		}
+	}
+
+	.isNear {
+		background: rgb(135, 206, 161, 0.2);
 	}
 
 	.hiddenForStudents {

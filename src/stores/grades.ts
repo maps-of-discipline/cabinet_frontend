@@ -229,6 +229,7 @@ export const useGradesStore = defineStore('grades', () => {
 	/* filters */
 	const filters: Ref<IGradeTableFilters[]> = ref([
 		{ label: 'Скрыть пустые столбцы', name: 'hideEmptyCols' },
+		{ label: 'Отображать ближайшие столбцы', name: 'recentCols' },
 	])
 
 	const selectedFilters: Ref<IGradeTableFilters[]> = ref([])
@@ -236,6 +237,10 @@ export const useGradesStore = defineStore('grades', () => {
 
 	const isHideEmptyCols = computed(() =>
 		selectedFilters.value.some(filter => filter.name === 'hideEmptyCols')
+	)
+
+	const isRecentCols = computed(() =>
+		selectedFilters.value.some(filter => filter.name === 'recentCols')
 	)
 
 	/* column filters */
@@ -288,6 +293,7 @@ export const useGradesStore = defineStore('grades', () => {
 		setSelectedFilters,
 
 		isHideEmptyCols,
+		isRecentCols,
 
 		/* column filters */
 		setSelectedColumnFilters,
