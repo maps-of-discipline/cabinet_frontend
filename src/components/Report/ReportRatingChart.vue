@@ -185,8 +185,8 @@ const chartOptions = ref({
 })
 
 watch(
-	() => [disciplineStore.selectedGroup],
-	() => {
+	() => [disciplineStore.selectedGroup, disciplineStore.selectedDisciplineId],
+	async () => {
 		reportStore.fetchReport()
 	}
 )

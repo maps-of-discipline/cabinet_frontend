@@ -25,7 +25,7 @@ export const useReportStore = defineStore('report', () => {
 		ratingChartItemsRaw.value = value
 	}
 
-	const isLoading = ref(true)
+	const isLoading = ref(false)
 
 	const fetchReport = async () => {
 		if (
@@ -35,17 +35,21 @@ export const useReportStore = defineStore('report', () => {
 		)
 			return
 
-		isLoading.value = true
+		try {
+			isLoading.value = true
 
-		const data = await Api.getReport(
-			disciplineStore.selectedAupId,
-			disciplineStore.selectedDisciplineId,
-			disciplineStore.selectedGroup.title
-		)
+			const data = await Api.getReport(
+				disciplineStore.selectedAupId,
+				disciplineStore.selectedDisciplineId,
+				disciplineStore.selectedGroup.title
+			)
 
-		setRatingChartItems(Object.values(data.rating_chart))
-
-		isLoading.value = false
+			setRatingChartItems(Object.values(data.rating_chart))
+		} catch (e) {
+			console.log(e)
+		} finally {
+			isLoading.value = false
+		}
 	}
 
 	return {

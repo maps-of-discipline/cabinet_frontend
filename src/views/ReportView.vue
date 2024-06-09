@@ -1,12 +1,18 @@
 <template>
-	<div class="ReportView">
+	<div class="ReportView" :class="{ isOpenLeftMenu }">
 		<HeaderTable />
 
 		<div class="ReportView__body">
-			<ReportRatingChart class="ReportBlock ReportBlock-1" />
-			<ReportStudentsClassificationTable class="ReportBlock ReportBlock-2" />
-			<ReportRadialsBars class="ReportBlock ReportBlock-3" />
-			<ReportAreaByGradeType class="ReportBlock ReportBlock-4" />
+			<div class="ReportView__left">
+				<DisciplineSelectLeftMenu />
+			</div>
+
+			<div class="ReportView__charts">
+				<ReportRatingChart class="ReportBlock ReportBlock-1" />
+				<ReportStudentsClassificationTable class="ReportBlock ReportBlock-2" />
+				<ReportRadialsBars class="ReportBlock ReportBlock-3" />
+				<ReportAreaByGradeType class="ReportBlock ReportBlock-4" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -18,21 +24,37 @@ import ReportStudentsClassificationTable from '@components/Report/ReportStudents
 import ReportRadialsBars from '@components/Report/ReportRadialsBars.vue'
 import ReportRatingChart from '@components/Report/ReportRatingChart.vue'
 import ReportAreaByGradeType from '@components/Report/ReportAreaByGradeType.vue'
+import DisciplineSelectLeftMenu from '@components/layouts/DisciplineSelect/DisciplineSelectLeftMenu.vue'
+
+import { computed } from 'vue'
 
 import { useDisciplineStore } from '@/stores/discipline'
 import { useLessonsStore } from '@/stores/lessons'
+
+const disciplineStore = useDisciplineStore()
+
+const isOpenLeftMenu = computed(() => disciplineStore.isOpenDisciplineColumn)
 </script>
 
 <style lang="scss">
 @import '@styles/_variables.scss';
 
 .ReportView {
-	height: 100%;
-	display: grid;
-	grid-template-rows: 70px calc(100vh - 70px - 12px - 16px - 16px);
+	height: calc(100vh - 16px - 16px);
 	gap: 12px;
+	display: grid;
+	grid-template-rows: 70px calc(100% - 70px - 12px);
+	grid-template-columns: minmax(0px, 1fr);
 
 	&__body {
+		display: flex;
+		transition: all 0.3s;
+		overflow: auto;
+		height: 100%;
+		align-items: stretch;
+	}
+
+	&__charts {
 		width: 100%;
 		height: 100%;
 		display: grid;
@@ -42,6 +64,25 @@ import { useLessonsStore } from '@/stores/lessons'
 		overflow: auto;
 
 		padding-right: 16px;
+	}
+
+	&__left {
+		width: 0px;
+		height: 100%;
+		transition: 0.25s ease;
+		margin-left: 0px;
+		margin-right: 0px;
+		display: flex;
+		align-items: stretch;
+	}
+
+	&.isOpenLeftMenu {
+		.ReportView {
+			&__left {
+				width: 300px;
+				margin-right: 12px;
+			}
+		}
 	}
 
 	.asis-label {
