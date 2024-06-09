@@ -3,7 +3,7 @@
 		<div class="DisciplineSelect__activators">
 			<DisciplineSelectActivator
 				@open="openDisciplineColumn"
-				:label="disciplineStore.disciplineTitle"
+				:label="disciplineStore.selectedDiscipline?.name"
 				:color="disciplineStore.selectedDiscipline?.color"
 			/>
 

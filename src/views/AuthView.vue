@@ -115,7 +115,7 @@ const onLogin = async () => {
 			life: 2000,
 		})
 	} else {
-		router.push({ name: 'lessons' })
+		router.push({ name: 'grades' })
 	}
 
 	isLoadingSubmit.value = false

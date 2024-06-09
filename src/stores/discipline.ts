@@ -63,8 +63,9 @@ export const useDisciplineStore = defineStore('discipline', () => {
 
 	/* Выбранная дисциплина */
 	const selectedDiscipline = ref(null)
-	const setSelectedDiscipline = discipline =>
-		(selectedDiscipline.value = discipline)
+	const setSelectedDiscipline = discipline => {
+		selectedDiscipline.value = discipline
+	}
 
 	const selectedDisciplineId: Ref<string | null> = ref(
 		null // sessionStorage.getItem('selectedDisciplineId') bug

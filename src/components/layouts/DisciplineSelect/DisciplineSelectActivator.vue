@@ -63,7 +63,7 @@ const onClick = () => emit('open')
 
 	outline: $focusOutlineTransparent;
 	border: none;
-	transition: outline 0.2s;
+	transition: outline 0.2s, background-color 0.25s ease;
 
 	&:hover,
 	&:focus {
