@@ -302,6 +302,7 @@ const nearestDateColumn = computed(() => {
 
 	visibleGradeTypes.value.forEach(gradeType => {
 		const cols = gradesStore.filteredColumnsByGradeTypeId?.[gradeType.id]
+
 		if (!cols?.length) return
 
 		let minDiffCol = Infinity
@@ -310,10 +311,10 @@ const nearestDateColumn = computed(() => {
 
 		cols.forEach(col => {
 			const colDate = new Date(col.topic.date)
-			const diff = now - colDate
+			const diff = Math.abs(now - colDate)
 
-			if (diff >= 0 && diff < minDiffCol) {
-				minDiffCol = minDiffCol
+			if (diff < minDiffCol) {
+				minDiffCol = diff
 				nearCol = col
 			}
 		})
