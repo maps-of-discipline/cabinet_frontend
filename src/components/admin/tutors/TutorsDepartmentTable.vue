@@ -61,27 +61,27 @@
 						@update:modelValue="onEditTutor(data.id, $event)"
 						@before-show="fetchTutors"
 						:optionDisabled="checkIsSelectedTutor"
-						optionLabel="fio"
+						optionLabel="name"
 						filter
 						filterPlaceholder="Поиск по ФИО"
 					>
 						<template #value="{ value }">
-							<span v-if="value?.fio" style="color: #fff">
-								{{ value?.fio }}
+							<span v-if="value?.name" style="color: #fff">
+								{{ value?.name }}
 							</span>
 							<span v-else>Выберите тьютора</span>
 						</template>
 					</Dropdown>
 
-					<span v-else>{{ data[field].fio }}</span>
+					<span v-else>{{ data[field].name }}</span>
 				</template>
 			</Column>
 
-			<Column header="Должность" headerStyle="width: 300px">
+			<!-- <Column header="Должность" headerStyle="width: 300px">
 				<template #body="{ data, field }">
 					<span>{{ data.tutor?.post }}</span>
 				</template>
-			</Column>
+			</Column> -->
 
 			<Column v-if="editMode" headerStyle="width: 50px">
 				<template #body="{ data, field }">
@@ -98,7 +98,7 @@
 
 <script setup>
 import Api from '@services/Api'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const emit = defineEmits([
 	'addRow',
@@ -120,7 +120,7 @@ const props = defineProps({
 
 	editMode: {
 		type: Boolean,
-		default: false,
+		default: true,
 	},
 })
 
@@ -150,8 +150,8 @@ const onEditStudyGroups = (id, newGroups, oldGroups) => {
 }
 
 const onEditTutor = (id, newTutor) => {
+	console.log('onEditTutor', newTutor)
 	emit('editTutor', {
-		departmentId: props.department.id_department,
 		rowId: id,
 		newTutor,
 	})
@@ -189,50 +189,19 @@ const sortedTutorOptions = computed(() => [
 	...tutorOptions.value.sort((a, b) => {
 		if (!checkIsSelectedTutor(a) && checkIsSelectedTutor(b)) return -1
 	}),
+
+	/* {
+		name: 'Архангельский Вадим Юрьевич',
+		division:
+			'Кафедра "Аппаратурное оформление и автоматизация технологических производств имени профессора М.Б. Генералова"',
+		post: 'Профессор, д.н.',
+		id: '197573',
+		email: '',
+		avatar: '',
+	}, */
 ])
 
-const studyGroupsOptions = ref([
-	{
-		id: 1,
-		title: '201-321',
-	},
-	{
-		id: 2,
-		title: '201-322',
-	},
-	{
-		id: 3,
-		title: '201-323',
-	},
-	{
-		id: 4,
-		title: '201-324',
-	},
-	{
-		id: 5,
-		title: '201-325',
-	},
-	{
-		id: 6,
-		title: '201-326',
-	},
-	{
-		id: 7,
-		title: '201-327',
-	},
-	{
-		id: 8,
-		title: '201-328',
-	},
-	{
-		id: 9,
-		title: '201-329',
-	},
-	{
-		id: 10,
-		title: '201-3210',
-	},
-])
+const studyGroupsOptions = ref([])
 
 const getStudyGroupsOptions = selectedItemGroups => {
 	const selectedItemGroupsIds = new Set([...selectedItemGroups.map(s => s.id)])
@@ -261,23 +230,33 @@ const fetchTutors = async () => {
 	isLoadingTutors.value = true
 
 	const staff = await Api.getStaff(props.department.name_department)
-	staff.sort((a, b) => a.fio.localeCompare(b.fio))
+	staff.sort((a, b) => a.name.localeCompare(b.name))
 	tutorOptions.value = staff
 	isLoadingTutors.value = false
 }
+
+onMounted(async () => {
+	try {
+		const data = await Api.fetchGroups()
+		studyGroupsOptions.value = data
+	} catch (e) {
+		console.log(e)
+	} finally {
+	}
+})
 </script>
 
 <style lang="scss">
 .TutorsDepartmentTable {
 	&__header {
 		font-weight: 600;
-		margin-bottom: 12px;
+		margin-top: 6px;
+		margin-bottom: 6px;
 		display: grid;
 		grid-template-columns: 1fr minmax(200px, auto);
 		gap: 8px;
 		align-items: center;
 		justify-content: space-between;
-		height: 37px;
 	}
 
 	&__title {

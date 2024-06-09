@@ -110,7 +110,11 @@ abstract class Api {
 	}
 
 	static async fetchGroups(aup: Key) {
-		const { data, status } = await axios.get(`groups?aup=${aup}`)
+		const { data, status } = await axios.get('groups', {
+			params: {
+				aup,
+			},
+		})
 
 		if (status !== HttpStatusCode.Ok) return null
 

@@ -37,7 +37,7 @@
 		<!-- <div class="TutorsForm__input-block">
 			<label for="tutorsDate">Форма обучения:</label>
 			<Dropdown
-				:options="formsOfEducation"
+				:options="allFormsOfEducation"
 				v-model="formModel.formEducation"
 				placeholder="Укажите форму обучения"
 				optionLabel="form"
@@ -92,16 +92,24 @@
 </template>
 
 <script setup>
-const props = defineProps({
-	formsOfEducation: {
-		type: Object,
-		default: () => [],
-	},
-})
+import { ref, onMounted } from 'vue'
+
+import TutorsFormHeader from '@components/admin/tutors/TutorsFormHeader.vue'
+import Api from '@services/Api'
 
 const formModel = defineModel('formModel')
-
 const rangeYears = [2021, 2022, 2023, 2024]
+
+/* Формы обучения */
+const allallFormsOfEducation = ref([])
+
+onMounted(async () => {
+	try {
+		allallFormsOfEducation.value = await Api.fetchFormOfEducations()
+	} catch (e) {
+		console.log(e)
+	}
+})
 </script>
 
 <style lang="scss">

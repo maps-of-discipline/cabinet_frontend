@@ -2,126 +2,33 @@
 	<div class="TutorsForm">
 		<div class="TutorsForm__title">Назначение тьюторов</div>
 
-		<div class="TutorsForm__header-block">
-			<div class="TutorsForm__input-block">
-				<label for="tutorsDate">Факультет:</label>
+		<TutorsFormHeader
+			:orders="orders"
+			:order="selectedOrder"
+			:faculty="selectedFaculty"
+			@selectOrder="onSelectOrder"
+			@selectFaculty="onSelectFaculty"
+		/>
 
-				<Dropdown
-					class="TutorsForm__faculty-select"
-					:modelValue="selectedFaculty"
-					:options="faculties"
-					:optionDisabled="isDisabledDepartmentOption"
-					:loading="isLoading"
-					placeholder="Выберите факультет"
-					optionLabel="name_faculty"
-					@update:modelValue="onSelectFaculty"
-				/>
-			</div>
-
-			<div class="TutorsForm__input-block">
-				<label for="tutorsDate">Год обучения:</label>
-
-				<Dropdown
-					placeholder="Выберите год"
-					:modelValue="selectedYear"
-					:options="avaliableYears"
-					:disabled="!selectedFaculty"
-					style="width: 170px"
-					@update:modelValue="onSelectYear"
-				/>
-			</div>
-
-			<div class="TutorsForm__input-block">
-				<label for="tutorsDate">Форма обучения:</label>
-
-				<Dropdown
-					placeholder="Выберите форму обучения"
-					optionLabel="form"
-					:modelValue="selectedFormOfEducation"
-					:options="allFormsOfEducation"
-					:disabled="!selectedFaculty"
-					style="width: 170px"
-					@update:modelValue="onSelectFormOfEducation"
-				/>
-			</div>
-
-			<!-- <Button label="Создать распоряжение" /> -->
-
-			<!-- <ApEditMode v-model="editMode" :disabled="!selectedFaculty" /> -->
-		</div>
-
-		<TutorsTabs :empty="!selectedFaculty">
+		<TutorsTabs>
 			<TutorsTab title="Преамбула">
-				<TutorsMetaForm
-					v-model:formModel="formModel"
-					:formsOfEducation="allFormsOfEducation"
-				/>
+				<TutorsMetaForm v-model:formModel="formModel" />
 			</TutorsTab>
 
 			<TutorsTab title="Тьюторы">
-				<div v-if="editMode" class="TutorsForm__header-block">
-					<Dropdown
-						class="TutorsForm__dep-select"
-						panelClass="TutorsForm__dep-select-panel"
-						v-model="selectedDepartment"
-						:options="departments"
-						:optionDisabled="isDisabledDepartmentOption"
-						:loading="isLoading"
-						placeholder="Выберите кафедру"
-						optionLabel="name_department"
-					>
-						<template #option="{ option }">
-							<span
-								class="TutorsForm__dep-select-option"
-								v-tooltip.bottom="{
-									value: option.name_department,
-									showDelay: 500,
-								}"
-							>
-								{{ option.name_department }}
-							</span>
-						</template>
-					</Dropdown>
+				<TutorsAppointment
+					:faculty="selectedFaculty"
+					:itemsMap="localDepartmentsItemsMap"
+					@addDeparment="onAddDepartment"
+					@addRow="onAddRow"
+					@deleteRow="onDeleteRow"
+					@editStudyGroups="onEditStudyGroups"
+					@editTutor="onEditTutor"
+				/>
+			</TutorsTab>
 
-					<Button
-						label="Добавить кафедру"
-						icon="mdi mdi-plus"
-						:disabled="!selectedDepartment"
-						@click="onAddDepartment"
-					/>
-				</div>
-
-				<div class="TutorsForm__body">
-					<div v-if="departmentsItems.length" class="TutorsForm__table-wrapper">
-						<div
-							class="TutorsForm__table"
-							v-for="(department, i) in departmentsItems"
-						>
-							<TutorsDepartmentTable
-								:order="i + 1"
-								:department="department"
-								:editMode="editMode"
-								@addRow="onAddRow"
-								@deleteRow="onDeleteRow"
-								@editStudyGroups="onEditStudyGroups"
-								@editTutor="onEditTutor"
-							/>
-						</div>
-					</div>
-
-					<div v-else-if="!selectedFaculty" class="TutorsForm__table-empty">
-						Выберите факультет
-					</div>
-
-					<div
-						v-else-if="!departmentsItems.length && editMode"
-						class="TutorsForm__table-empty"
-					>
-						Добавьте кафедру
-					</div>
-
-					<div v-else class="TutorsForm__table-empty">Данные отстутствуют</div>
-				</div>
+			<TutorsTab title="Debug">
+				{{ selectedOrder }}
 			</TutorsTab>
 		</TutorsTabs>
 
@@ -145,163 +52,111 @@
 </template>
 
 <script setup>
-import TutorsDepartmentTable from '@components/admin/tutors/TutorsDepartmentTable.vue'
+import TutorsAppointment from '@components/admin/tutors/TutorsAppointment.vue'
 import TutorsMetaForm from '@components/admin/tutors/TutorsMetaForm.vue'
 import TutorsTabs from '@components/admin/tutors/TutorsTabs.vue'
 import TutorsTab from '@components/admin/tutors/TutorsTab.vue'
+import TutorsFormHeader from '@components/admin/tutors/TutorsFormHeader.vue'
 import Api from '@services/Api'
+import _ from 'lodash'
 
 import { ref, computed, onMounted, watch, toRaw } from 'vue'
 
-const isLoading = ref(false)
-const isDownloadLoading = ref(false)
-const isSaveLoading = ref(false)
-
-const avaliableOrders = ref([])
+/* Распоряжение */
+const orders = ref([])
 const selectedOrder = ref(null)
-
-const allFormsOfEducation = ref([])
-const selectedFormOfEducation = ref(null)
-const onSelectFormOfEducation = value => {
-	selectedFormOfEducation.value = value
-	onChangeOrder()
+const onSelectOrder = order => {
+	selectedOrder.value = order
+	initFormModel(order)
+	localDepartmentsItemsMap.value = order.body
+	/* initItems(order.body) */
 }
 
-const emptyForm = {
-	date: null,
-	order: null,
-	year: null,
-	executor: null,
-	signer: null,
-}
+const localDepartmentsItemsMap = ref({})
+const localDepartmentsItems = computed(() =>
+	Object.values(localDepartmentsItemsMap.value)
+)
 
-const formModel = ref(emptyForm)
+const initItems = rawItems => {
+	const mapRows = _.groupBy(rawItems, 'department_id')
 
-const onChangeOrder = () => {
-	const foundOrder = avaliableOrders.value.find(
-		order =>
-			order.year === selectedYear.value &&
-			order.form_education.id_form === selectedFormOfEducation.value.id_form
-	)
-
-	console.log('new selectedOrder')
-	console.log(selectedOrder)
-
-	if (foundOrder) {
-		formModel.value = {
-			date: new Date(foundOrder.date),
-			order: foundOrder.num_order,
-			year: foundOrder.year,
-			signer: foundOrder.signer,
-			executor: foundOrder.executor,
+	const mapDepartments = {}
+	for (const departmentId in mapRows) {
+		mapDepartments[departmentId] = {
+			name_department: mapRows[departmentId][0]?.department?.name_department,
+			id_department: departmentId,
+			rows: [...mapRows[departmentId].map(i => ({ ...i, study_groups: [] }))],
 		}
-
-		selectedOrder.value = foundOrder
-	} else {
-		formModel.value = emptyForm
 	}
+
+	console.log(mapDepartments)
+	localDepartmentsItemsMap.value = mapDepartments
 }
 
-const faculties = ref([])
-const selectedFaculty = ref(null)
-const onSelectFaculty = async value => {
-	try {
-		selectedFaculty.value = value
-		const orders = await Api.fetchTutorOrders({ id: 1 })
-		avaliableOrders.value = orders
-		selectedYear.value = avaliableYears.value?.[0]
+/*         "id_department": "0",
+        "rows": [
+            {
+                "tutors_order_id": 1,
+                "tutor": {
+                    "name": "Архипов Максим Викторович",
+                    "id": 109,
+                    "id_department": 6,
+                    "lk_id": 112276,
+                    "post": null
+                },
+                "tutor_id": 109,
+                "id": 4,
+                "id_department": 0,
+                "department": null
+            }
+        ] */
 
-		if (!selectedFormOfEducation.value)
-			selectedFormOfEducation.value = allFormsOfEducation.value?.[0]
-		onChangeOrder()
-	} catch (e) {
-		console.log(e)
-	}
-}
+/* {
+    "name_department":"Кафедра \"СМАРТ-технологии\"",
+    "id_department":6,
+    "faculty_id":1,
+    "rows":[{"id":1717890628239,"study_groups":[],"tutor":""}]
+} */
 
-const avaliableYears = computed(() =>
-	avaliableOrders.value.map(order => order.year)
-)
-const selectedYear = ref(null)
-const onSelectYear = value => {
-	selectedYear.value = value
-	onChangeOrder()
-}
+const onAddDepartment = department => {
+	if (department.id_department in localDepartmentsItemsMap.value) return
 
-const selectedDepartment = ref(null)
-const departments = computed(() => selectedFaculty.value?.departments || [])
-
-const editMode = ref(true)
-
-const onSave = async () => {
-	try {
-		isSaveLoading.value = true
-		await Api.editTutorOrder({
-			id: selectedOrder.value.id,
-			meta: formModel.value,
-			body: [],
-		})
-	} catch (e) {
-		console.log(e)
-	} finally {
-		isSaveLoading.value = false
-	}
-}
-
-const departmentsItemsMap = ref({})
-const departmentsItems = computed(() =>
-	Object.values(departmentsItemsMap.value)
-)
-
-const isDisabledDepartmentOption = department => {
-	return department.id_department in departmentsItemsMap.value
-}
-
-const onAddDepartment = () => {
-	const departmentId = selectedDepartment.value.id_department
-
-	if (departmentId in departmentsItemsMap.value) return
-
-	departmentsItemsMap.value[departmentId] = {
-		...selectedDepartment.value,
+	localDepartmentsItemsMap.value[department.id_department] = {
+		...department,
 		rows: [
 			{
 				id: Date.now(),
 				study_groups: [],
 				tutor: '',
-				tutor_jobtitle: '',
 			},
 		],
 	}
-
-	selectedDepartment.value = null
 }
 
 const onAddRow = ({ departmentId }) => {
-	departmentsItemsMap.value[departmentId].rows.push({
+	localDepartmentsItemsMap.value[departmentId].rows.push({
 		id: Date.now(),
 		study_groups: [],
 		tutor: '',
-		tutor_jobtitle: '',
 	})
 }
 
 const onDeleteRow = ({ departmentId, rowId }) => {
-	const neededDepartment = departmentsItemsMap.value[departmentId]
+	const neededDepartment = localDepartmentsItemsMap.value[departmentId]
 
 	const neededRowIndex = neededDepartment.rows.findIndex(
 		row => rowId === row.id
 	)
 
 	if (neededDepartment.rows.length === 1) {
-		delete departmentsItemsMap.value[departmentId]
+		delete localDepartmentsItemsMap.value[departmentId]
 	} else {
 		neededDepartment.rows.splice(neededRowIndex, 1)
 	}
 }
 
 const onEditStudyGroups = ({ departmentId, rowId, newGroups, newGroupId }) => {
-	const neededDepartment = departmentsItemsMap.value[departmentId]
+	const neededDepartment = localDepartmentsItemsMap.value[departmentId]
 
 	const neededRowIndex = neededDepartment.rows.findIndex(
 		row => rowId === row.id
@@ -324,8 +179,9 @@ const onEditStudyGroups = ({ departmentId, rowId, newGroups, newGroupId }) => {
 	neededDepartment.rows[neededRowIndex].study_groups = newGroups
 }
 
-const onEditTutor = ({ departmentId, rowId, newTutor }) => {
-	const neededDepartment = departmentsItemsMap.value[departmentId]
+const onEditTutor = ({ rowId, newTutor }) => {
+	const neededDepartment =
+		localDepartmentsItemsMap.value[newTutor.id_department]
 
 	const neededRowIndex = neededDepartment.rows.findIndex(
 		row => rowId === row.id
@@ -334,27 +190,72 @@ const onEditTutor = ({ departmentId, rowId, newTutor }) => {
 	neededDepartment.rows[neededRowIndex].tutor = newTutor
 }
 
-const onClickDownload = async () => {
+/* Факультет */
+const selectedFaculty = ref(null)
+
+const onSelectFaculty = async value => {
 	try {
+		selectedFaculty.value = value
+		orders.value = await Api.fetchTutorOrders({ id: 1 })
+		onSelectOrder(orders.value[0])
+	} catch (e) {
+		console.log(e)
+	}
+}
+
+/* Преамбула */
+const emptyForm = {
+	date: null,
+	order: null,
+	year: null,
+	executor: null,
+	signer: null,
+}
+
+const formModel = ref(emptyForm)
+const initFormModel = order => {
+	if (!order) formModel.value = emptyForm
+	else
+		formModel.value = {
+			date: new Date(order.meta.date),
+			order: order.meta.num_order,
+			year: order.meta.year,
+			signer: order.meta.signer,
+			executor: order.meta.executor,
+		}
+}
+
+/* Сохранить */
+const isSaveLoading = ref(false)
+const onSave = async () => {
+	try {
+		isSaveLoading.value = true
+		const editedOrder = await Api.editTutorOrder({
+			id: selectedOrder.value.meta.id,
+			meta: formModel.value,
+			body: localDepartmentsItems.value,
+		})
+
+		console.log(editedOrder)
+	} catch (e) {
+		console.log(e)
+	} finally {
+		isSaveLoading.value = false
+	}
+}
+
+/* Скачать DOCX */
+const isDownloadLoading = ref(false)
+const onClickDownload = async () => {
+	/* 	try {
 		isDownloadLoading.value = true
 		await Api.downloadTutorOrder(Object.values(departmentsItemsMap.value))
 	} catch (e) {
 		console.log(e)
 	} finally {
 		isDownloadLoading.value = false
-	}
+	} */
 }
-
-onMounted(async () => {
-	try {
-		isLoading.value = true
-		faculties.value = await Api.getFaculties()
-		allFormsOfEducation.value = await Api.fetchFormOfEducations()
-		isLoading.value = false
-	} catch (e) {
-		console.log(e)
-	}
-})
 </script>
 
 <style lang="scss">
