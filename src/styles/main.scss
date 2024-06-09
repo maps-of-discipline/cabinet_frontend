@@ -25,3 +25,11 @@ input:-webkit-autofill{
     -webkit-box-shadow: 0 0 0 30px $shade800 inset !important;
     border: none;
 }
+
+.p-button-danger {
+    color: #fff !important;
+}
+
+.p-confirm-dialog-message {
+    max-width: 500px;
+}

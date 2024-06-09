@@ -21,12 +21,6 @@
 
 							<div class="GradeTypeTab__header-controls">
 								<Button
-									v-if="localGradeType.is_custom"
-									icon="mdi mdi-delete"
-									@click.stop="onClickDelete(localGradeType)"
-								/>
-
-								<Button
 									class="GradeTypeTab__show-switcher"
 									:class="{ isActive: !localGradeType.archived }"
 									:icon="
@@ -168,16 +162,32 @@
 							1
 						</div> -->
 
-						<Button
-							class="GradeTypeTab__submit"
-							label="Применить"
-							:loading="isLoadingSave"
-							@click.stop="onClickSubmit(localGradeType)"
-						/>
+						<div class="GradeTypeTab__footer">
+							<Button
+								v-if="localGradeType.is_custom"
+								severity="danger"
+								style="color: #fff"
+								label="Удалить"
+								@click="confirmDelete(localGradeType)"
+							/>
+
+							<Button
+								class="GradeTypeTab__submit"
+								label="Применить"
+								:loading="isLoadingSave"
+								@click.stop="onClickSubmit(localGradeType)"
+							/>
+						</div>
 					</div>
 				</AccordionTab>
 			</Accordion>
 
+			<ConfirmDialog>
+				<template #message>
+					Вы уверены, что хотите удалить вид оценивания? <br />
+					Все проставленные баллы будут удалены.
+				</template>
+			</ConfirmDialog>
 			<GradeSettingsAddType />
 		</div>
 	</Transition>
@@ -187,13 +197,33 @@
 import _ from 'lodash'
 import { ref, computed, watch } from 'vue'
 import { useGradesStore } from '@/stores/grades'
+import { useConfirm } from 'primevue/useconfirm'
 
+import ConfirmDialog from 'primevue/confirmdialog'
 import GradeSettingsAddType from '@components/Grades/GradeSettingsAddType.vue'
 import ApHint from '@components/ui/ApHint.vue'
 
 import formatDateSimple from '@services/helpers/formatDateSimple'
 
 const gradesStore = useGradesStore()
+const confirm = useConfirm()
+
+const confirmDelete = localGradeType => {
+	console.log(localGradeType)
+
+	confirm.require({
+		header: `Удаление вида оценивания "${localGradeType.name}"`,
+		icon: 'pi pi-info-circle',
+		rejectLabel: 'Отменить',
+		acceptLabel: 'Удалить',
+		rejectClass: 'p-button-outlined',
+		acceptClass: 'p-button-danger',
+		accept: async () => {
+			await onClickDelete(localGradeType)
+		},
+		reject: () => {},
+	})
+}
 
 const localGradeTypes = ref([])
 const isLoadingSave = ref(false)
@@ -223,8 +253,8 @@ const onClickShowSwitch = gradeType => {
 	gradesStore.updateGradeType(newGradeType)
 }
 
-const onClickDelete = gradeType => {
-	gradesStore.deleteGradeType(gradeType.id)
+const onClickDelete = async gradeType => {
+	await gradesStore.deleteGradeType(gradeType.id)
 }
 
 const onChangeVisibleCol = (e, id) => {
@@ -376,6 +406,12 @@ const onClickSubmit = async gradeType => {
 		.p-multiselect-header {
 			display: none;
 		}
+	}
+
+	&__footer {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
 	}
 }
 

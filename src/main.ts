@@ -14,6 +14,7 @@ import Ripple from 'primevue/ripple'
 import Tooltip from 'primevue/tooltip'
 import FocusTrap from 'primevue/focustrap'
 import VueApexCharts from 'vue3-apexcharts'
+import ConfirmationService from 'primevue/confirmationservice'
 
 const app = createApp(App)
 
@@ -67,6 +68,7 @@ app.use(PrimeVue, {
 		dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 	},
 })
+app.use(ConfirmationService)
 app.use(ToastService)
 app.use(VueApexCharts)
 
