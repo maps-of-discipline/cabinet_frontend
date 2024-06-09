@@ -4,6 +4,7 @@
 			<DisciplineSelectActivator
 				@open="openDisciplineColumn"
 				:label="disciplineStore.disciplineTitle"
+				:color="disciplineStore.selectedDiscipline?.color"
 			/>
 
 			<!-- 			<Button

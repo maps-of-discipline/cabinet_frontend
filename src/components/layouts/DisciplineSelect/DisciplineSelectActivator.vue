@@ -1,6 +1,10 @@
 <template>
 	<Button
 		class="DisciplineSelectActivator"
+		:style="{
+			backgroundColor: color,
+			color: determinateTextColor(color) ? '#333' : '#fff',
+		}"
 		:label="_label"
 		:loading="loading"
 		v-tooltip.bottom="{
@@ -15,6 +19,7 @@
 import { computed } from 'vue'
 
 import { useDisciplineStore } from '@/stores/discipline'
+import determinateTextColor from '@services/helpers/determinateTextColor'
 
 const emit = defineEmits(['open'])
 
@@ -22,6 +27,10 @@ const disciplineStore = useDisciplineStore()
 
 const props = defineProps({
 	label: {
+		type: String,
+	},
+
+	color: {
 		type: String,
 	},
 

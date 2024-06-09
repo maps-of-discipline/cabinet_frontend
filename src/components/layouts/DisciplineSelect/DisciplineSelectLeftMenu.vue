@@ -84,6 +84,7 @@ const disciplines = computed(() =>
 )
 
 const onSelectDiscipline = discipline => {
+	disciplineStore.setSelectedDiscipline(discipline)
 	disciplineStore.setSelectedDisciplineId(discipline.id)
 }
 
