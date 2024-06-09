@@ -26,7 +26,7 @@
 						class="column-header--center"
 						headerStyle="width: 45px"
 						:colspan="1"
-						rowspan="2"
+						rowspan="3"
 						frozen
 					>
 						<template #header="{ column }"></template>
@@ -37,7 +37,7 @@
 						headerClass="GradesTable__name-cell"
 						style="min-width: 400px; max-width: 400px"
 						:colspan="1"
-						rowspan="2"
+						rowspan="3"
 						field="name"
 						frozen
 					>
@@ -46,18 +46,23 @@
 						</template>
 					</Column>
 
+					<!-- Заголовок вида оценивания -->
 					<Column
 						v-for="(gradeType, index) of visibleGradeTypes"
-						:colspan="getCountColsByGradeTypeId(gradeType.id) + 1"
+						:colspan="
+							gradesStore.isAllGradeType
+								? getCountColsByGradeTypeId(gradeType.id) + 1
+								: getCountColsByGradeTypeId(gradeType.id) + 2
+						"
 						:hidden="getCountColsByGradeTypeId(gradeType.id) === 0"
+						:style="{ backgroundColor: gradeType.color }"
 						rowspan="1"
 					>
 						<template #header="{ column }">{{ gradeType.name }}</template>
 					</Column>
-
-					<Column style="width: 100%" />
 				</Row>
 
+				<!-- Названия столбцов-->
 				<Row>
 					<template v-for="(gradeType, index) of visibleGradeTypes">
 						<Column
@@ -98,13 +103,50 @@
 							class="column-header--center"
 							style="min-width: 70px; width: 70px; max-width: 70px"
 							headerClass="GradesTable__avg-cell"
+							:style="{
+								backgroundColor: gradeType.color,
+								borderWidth: '0px 0px 1px 1px',
+							}"
 							:colspan="1"
+							rowspan="2"
 							:hidden="getCountColsByGradeTypeId(gradeType.id) === 0"
 						>
 							<template #header>
 								<div class="column-header--pointer">Итого</div>
 							</template>
 						</Column>
+					</template>
+
+					<Column style="width: 100%" v-if="gradesStore.isAllGradeType" />
+				</Row>
+
+				<!-- Баллы за каждое задание -->
+				<Row>
+					<template v-for="(gradeType, index) of visibleGradeTypes">
+						<Column
+							v-for="(col, index) of gradesStore.filteredColumnsByGradeTypeId?.[
+								gradeType.id
+							] || []"
+							headerClass="column-header-index GradesTable__topic-header-cell"
+							bodyClass="column-cell-index"
+							:class="{ isNear: isNearGradeColumn(gradeType, col) }"
+							style="min-width: 75px"
+							:hidden="checkNeedHideCol(col)"
+							:key="col.id"
+						>
+							<template #header="{ column }">
+								<div
+									class="GradesTable__topic-header"
+									v-tooltip.top="{
+										value: `${gradeType.max_grade} баллов`,
+									}"
+								>
+									<span> {{ gradeType.max_grade }} б. </span>
+								</div>
+							</template>
+						</Column>
+
+						<Column style="width: 100%" v-if="!gradesStore.isAllGradeType" />
 					</template>
 
 					<Column style="width: 100%" v-if="gradesStore.isAllGradeType" />
@@ -202,6 +244,7 @@
 					:colspan="1"
 					alignFrozen="right"
 					:hidden="getCountColsByGradeTypeId(gradeType.id) === 0"
+					:style="{ backgroundColor: gradeType.color }"
 				>
 					<!-- frozen -->
 					<template #body="{ data, index }">
