@@ -284,9 +284,22 @@ abstract class Api {
 		return data
 	}
 
+	static async deleteGradeType(id: Key) {
+		const { data, status } = await axios.delete(`grade-type`, {
+			params: {
+				id,
+			},
+		})
+
+		if (status !== HttpStatusCode.Ok) return {}
+
+		return data
+	}
+
 	static async createGradeType(gradeTypeSettings: any, disciplineTableId: Key) {
 		const { data, status } = await axios.post(`grade-type`, {
 			name: gradeTypeSettings.name,
+			type: gradeTypeSettings.type,
 			table_id: disciplineTableId,
 		})
 

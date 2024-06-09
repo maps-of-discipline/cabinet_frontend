@@ -54,7 +54,28 @@ export const useGradesStore = defineStore('grades', () => {
 			disciplineTableId.value
 		)
 
-		gradeTypes.value.push(data)
+		gradeTypes.value.push(data.grade_type)
+
+		const columnsMap = {}
+		data.columns.forEach(col => (columnsMap[col.id] = col))
+		columnsById.value = { ...columnsById.value, ...columnsMap }
+	}
+
+	const deleteGradeType = async id => {
+		try {
+			const data: any = await Api.deleteGradeType(id)
+
+			const indexToUpdate = gradeTypes.value.findIndex(item => item.id === id)
+			if (indexToUpdate === -1) return null
+
+			gradeTypes.value.splice(indexToUpdate, 1)
+
+			if (id === selectedGradeType.value?.id) {
+				setSelectedGradeType(availableTypesGrade.value[0])
+			}
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
 	const selectedGradeType: Ref<IGradeType | null> = ref(null)
@@ -273,6 +294,7 @@ export const useGradesStore = defineStore('grades', () => {
 		availableTypesGrade,
 		updateGradeType,
 		updateVisibleColumns,
+		deleteGradeType,
 		createGradeType,
 
 		selectedGradeType,

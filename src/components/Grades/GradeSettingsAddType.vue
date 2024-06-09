@@ -9,41 +9,76 @@
 				v-model="nameModel"
 				class="GradeSettingsAddType__input"
 				inputId="gradeType"
-				placeholder="Название"
+				placeholder="Введите название"
 			/>
 		</div>
 
-		<!-- <div class="GradeSettingsAddType__label-block">
-			<label class="GradeSettingsAddType__label" for="countCols">
-				Количество столбцов ???
+		<div class="GradeSettingsAddType__label-block">
+			<label class="GradeSettingsAddType__label">
+				<span>Основа оценивания</span>
+
+				<ApHint
+					hint='Основа оценивания позволяет сгенерировать таблицу на основе данных модуля "Задания"'
+				/>
 			</label>
 
-			<InputText
-				v-model="nameModel"
-				class="GradeSettingsAddType__input"
-				inputId="countCols"
-				placeholder="Введите кол-во столбцов"
+			<Dropdown
+				class="GradeSettingsAddType__base-select"
+				panelClass="GradeSettingsAddType__base-select-panel"
+				v-model="baseModel"
+				:options="baseOptions"
+				optionLabel="name"
+				placeholder="Выберите основу оценивания"
 			/>
-		</div> -->
+		</div>
 
-		<Button label="Добавить" @click="onClickAddType" />
+		<Button
+			:disabled="isDisabled"
+			:loading="isLoading"
+			label="Добавить"
+			@click="onClickAddType"
+		/>
 	</div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useGradesStore } from '@/stores/grades'
 
 const gradesStore = useGradesStore()
 
 const nameModel = ref('')
 
-const onClickAddType = () => {
-	gradesStore.createGradeType({
-		name: nameModel.value,
-	})
+const baseModel = ref('')
+const baseOptions = ref([
+	{
+		name: 'Посещение',
+		type: 'attendance',
+	},
+	{
+		name: 'Задания',
+		type: 'tasks',
+	},
+])
 
-	nameModel.value = ''
+const isLoading = ref(false)
+const isDisabled = computed(() => !baseModel.value || !nameModel.value)
+
+const onClickAddType = async () => {
+	try {
+		isLoading.value = true
+		await gradesStore.createGradeType({
+			name: nameModel.value,
+			type: baseModel.value.type,
+		})
+
+		nameModel.value = ''
+		baseModel.value = ''
+	} catch (e) {
+		console.log(e)
+	} finally {
+		isLoading.value = false
+	}
 }
 </script>
 
@@ -60,12 +95,25 @@ const onClickAddType = () => {
 
 	&__label-block {
 		display: grid;
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0px, 1fr);
 	}
 
 	&__label {
-		margin-bottom: 8px;
-		display: inline-block;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 6px;
+		font-size: 0.9rem;
+	}
+
+	&__base-select {
+		width: 100%;
+	}
+
+	&__base-select-panel {
+		.p-multiselect-header {
+			display: none;
+		}
 	}
 }
 </style>

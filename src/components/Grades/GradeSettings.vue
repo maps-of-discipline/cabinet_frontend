@@ -21,6 +21,12 @@
 
 							<div class="GradeTypeTab__header-controls">
 								<Button
+									v-if="localGradeType.is_custom"
+									icon="mdi mdi-delete"
+									@click.stop="onClickDelete(localGradeType)"
+								/>
+
+								<Button
 									class="GradeTypeTab__show-switcher"
 									:class="{ isActive: !localGradeType.archived }"
 									:icon="
@@ -152,6 +158,16 @@
 							</MultiSelect>
 						</div>
 
+						<!-- <div>
+							<label class="GradeTypeTab__label" :for="'max' + i">
+								<span>Цвет</span>
+
+								<ApHint hint="Цвет вида оценивания" />
+							</label>
+
+							1
+						</div> -->
+
 						<Button
 							class="GradeTypeTab__submit"
 							label="Применить"
@@ -208,8 +224,7 @@ const onClickShowSwitch = gradeType => {
 }
 
 const onClickDelete = gradeType => {
-	console.log(gradeType)
-	// gradesStore.deleteGradeType(gradeType)
+	gradesStore.deleteGradeType(gradeType.id)
 }
 
 const onChangeVisibleCol = (e, id) => {
