@@ -247,14 +247,14 @@ const onSave = async () => {
 /* Скачать DOCX */
 const isDownloadLoading = ref(false)
 const onClickDownload = async () => {
-	/* 	try {
+	try {
 		isDownloadLoading.value = true
-		await Api.downloadTutorOrder(Object.values(departmentsItemsMap.value))
+		await Api.downloadTutorOrder(Object.values(localDepartmentsItemsMap.value))
 	} catch (e) {
 		console.log(e)
 	} finally {
 		isDownloadLoading.value = false
-	} */
+	}
 }
 </script>
 
