@@ -18,3 +18,9 @@ npm run dev
 ```sh
 npm run build
 ```
+## `.env` файл (создать в корне проекта): 
+```
+VITE_API = http://localhost:5000/api/cabinet
+VITE_API_KD = http://localhost:5000/api/
+VITE_KD_ROOT = http://kd.mospolytech.ru
+```
